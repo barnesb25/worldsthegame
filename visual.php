@@ -99,10 +99,10 @@ function compileMenu($getPage_connection2,$pageType) {
 				echo "                        <div class=\"form-group form-group-sm\">\n";
 				if (isset($_SESSION["overlay"])) {
 					echo "                          <label for=\"menu_overlayInput\">Overlay</label>\n \n";
-					//showOverlayOptions($getPage_connection2);
+					showOverlayOptions($getPage_connection2);
 				} else {
 					echo "                          <label for=\"menu_overlayInput\">Overlay</label>\n \n";
-					//showOverlayOptions($getPage_connection2);
+					showOverlayOptions($getPage_connection2);
 				} // else
 				echo "                        </div>\n";
 				echo "                        <div class=\"form-group form-group-sm\">\n";
@@ -149,10 +149,10 @@ function compileMenu($getPage_connection2,$pageType) {
 				echo "                        <div class=\"form-group form-group-sm\">\n";
 				if (isset($_SESSION["overlay"])) {
 					echo "                          <label for=\"menu_overlayInput\">Overlay</label>\n \n";
-					//showOverlayOptions($getPage_connection2);
+					showOverlayOptions($getPage_connection2);
 				} else {
 					echo "                          <label for=\"menu_overlayInput\">Overlay</label>\n \n";
-					//showOverlayOptions($getPage_connection2);
+					showOverlayOptions($getPage_connection2);
 				} // else
 				echo "                        </div>\n";
 				echo "                        <div class=\"form-group form-group-sm\">\n";
@@ -347,6 +347,7 @@ function showOverlayOptions($getPage_connection2) {
 	} else {
 		$next_overlays = 0;
 	} // else
+		/*
 	while ($next_overlays > 0) {
 		$overlayInfo = getOverlayInfo($getPage_connection2,$next_overlays);
 
@@ -367,6 +368,7 @@ function showOverlayOptions($getPage_connection2) {
 			$next_overlays = 0;
 		} // else
 	} // while
+	*/
 	echo "          </select>\n";
 } // showOverlayOptions
 
