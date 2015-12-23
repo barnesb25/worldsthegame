@@ -27,7 +27,7 @@ error_reporting(E_ALL);
 
 set_time_limit(14400);
 
-//getPage($mysqli,$mysqli2,$mysqli3);
+getPage($mysqli,$mysqli2,$mysqli3);
 
 // close mySQL connection
 $mysqli->close();
