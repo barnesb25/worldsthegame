@@ -86,7 +86,6 @@ function getPage($getPage_connection,$getPage_connection2,$getPage_connection3) 
  ********************************/
 function checkLoginStatus($getPage_connection2) {
 	$loginArray = array("status"=>false,"loggingIn"=>false);
-	/*
 	$loggingIn = false;
 
 	// if login info has been submitted
@@ -188,7 +187,6 @@ function checkLoginStatus($getPage_connection2) {
 			$_SESSION["admin"] = 0;
 		} // else
 	} // else
-	*/
 
 	return $loginArray;
 } // checkLoginStatus
