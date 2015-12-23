@@ -347,12 +347,16 @@ function showOverlayOptions($getPage_connection2) {
 	} else {
 		$next_overlays = 0;
 	} // else
-		/*
+		
 	while ($next_overlays > 0) {
 		$overlayInfo = getOverlayInfo($getPage_connection2,$next_overlays);
-
-		if ($_SESSION["overlay"] == strtolower($overlayInfo["name"])) {
-			echo "            <option class=\"option1\" selected=\"selected\" value=\"".strtolower($overlayInfo["name"])."\">".$overlayInfo["name"]."</option>\n";
+		
+		if (isset($_SESSION["overlay"])) {			
+			if ($_SESSION["overlay"] == strtolower($overlayInfo["name"])) {
+				echo "            <option class=\"option1\" selected=\"selected\" value=\"".strtolower($overlayInfo["name"])."\">".$overlayInfo["name"]."</option>\n";
+			} else {
+				echo "            <option class=\"option1\" value=\"".strtolower($overlayInfo["name"])."\">".$overlayInfo["name"]."</option>\n";
+			} // else
 		} else {
 			echo "            <option class=\"option1\" value=\"".strtolower($overlayInfo["name"])."\">".$overlayInfo["name"]."</option>\n";
 		} // else
@@ -368,7 +372,7 @@ function showOverlayOptions($getPage_connection2) {
 			$next_overlays = 0;
 		} // else
 	} // while
-	*/
+	
 	echo "          </select>\n";
 } // showOverlayOptions
 
