@@ -14,7 +14,7 @@ if (count($_POST)) {
 } else {
 	getGlobals_map($getPage_connection2);
 	showTitle("Map");
-	//compileMenu($getPage_connection2,"map");
+	compileMenu($getPage_connection2,"map");
 	showWarning($getPage_connection2);
 	showMap($getPage_connection2);
 	showMapInfo($getPage_connection2);

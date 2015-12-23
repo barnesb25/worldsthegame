@@ -99,10 +99,10 @@ function compileMenu($getPage_connection2,$pageType) {
 				echo "                        <div class=\"form-group form-group-sm\">\n";
 				if (isset($_SESSION["overlay"])) {
 					echo "                          <label for=\"menu_overlayInput\">Overlay</label>\n \n";
-					showOverlayOptions($getPage_connection2);
+					//showOverlayOptions($getPage_connection2);
 				} else {
 					echo "                          <label for=\"menu_overlayInput\">Overlay</label>\n \n";
-					showOverlayOptions($getPage_connection2);
+					//showOverlayOptions($getPage_connection2);
 				} // else
 				echo "                        </div>\n";
 				echo "                        <div class=\"form-group form-group-sm\">\n";
@@ -149,10 +149,10 @@ function compileMenu($getPage_connection2,$pageType) {
 				echo "                        <div class=\"form-group form-group-sm\">\n";
 				if (isset($_SESSION["overlay"])) {
 					echo "                          <label for=\"menu_overlayInput\">Overlay</label>\n \n";
-					showOverlayOptions($getPage_connection2);
+					//showOverlayOptions($getPage_connection2);
 				} else {
 					echo "                          <label for=\"menu_overlayInput\">Overlay</label>\n \n";
-					showOverlayOptions($getPage_connection2);
+					//showOverlayOptions($getPage_connection2);
 				} // else
 				echo "                        </div>\n";
 				echo "                        <div class=\"form-group form-group-sm\">\n";
