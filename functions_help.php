@@ -60,7 +60,7 @@ function showHelpInfo($getPage_connection2) {
 		while ($stmt->fetch()) {
 			$helpCategoriesInfo1 = array("id"=>$r_id,"title"=>$r_title,"text"=>$r_text);
 			
-			echo "                <a class=\"cat\" href=\"#collapseHelp".$next_helpcategories."\">".$next_helpcategories." - ".$helpCategoriesInfo1["title"]."</a>\n";
+			echo "                <a class=\"cat\" href=\"#collapseHelp".$helpCategoriesInfo1["id"]."\">".$helpCategoriesInfo1["id"]." - ".$helpCategoriesInfo1["title"]."</a>\n";
 			echo "                <br />\n";
 			
 			$subcategoryCounter = 0;
@@ -73,7 +73,7 @@ function showHelpInfo($getPage_connection2) {
 						
 					if ($helpSubcategoriesInfo1["category"] == $helpCategoriesInfo1["id"]) {
 						$subcategoryCounter++;
-						echo "                <a class=\"subcat\" href=\"#".$next_helpcategories."-".$subcategoryCounter."\">".$next_helpcategories.".".$subcategoryCounter." - ".$helpSubcategoriesInfo1["title"]."</a>\n";
+						echo "                <a class=\"subcat\" href=\"#".$helpCategoriesInfo1["id"]."-".$subcategoryCounter."\">".$helpCategoriesInfo1["id"].".".$subcategoryCounter." - ".$helpSubcategoriesInfo1["title"]."</a>\n";
 						echo "                <br />\n";
 					} // if
 				} // while
@@ -95,7 +95,7 @@ function showHelpInfo($getPage_connection2) {
 
 	if ($stmt = $getPage_connection2->prepare("SELECT id,title,text FROM helpcategories ORDER BY id ASC")) {
 		$stmt->execute();
-		$stmt->bind_result($r_result);
+		$stmt->bind_result($r_id,$r_title,$r_text);
 		
 		while ($stmt->fetch()) {
 			$helpCategoriesInfo1 = array("id"=>$r_id,"title"=>$r_title,"text"=>$r_text);	
@@ -103,7 +103,7 @@ function showHelpInfo($getPage_connection2) {
 			echo "            <div class=\"panel-heading\">\n";
 			echo "              <h3 class=\"panel-title\">".$helpCategoriesInfo1["title"]."        <button type=\"button\" class=\"btn btn-default btn-md collapsed\" data-toggle=\"collapse\" data-target=\"#collapseHelp1\"><span class=\"glyphicon glyphicon-plus\"></span>/<span class=\"glyphicon glyphicon-minus\"></span></button></h3>\n";
 			echo "            </div>\n";
-			echo "            <div id=\"collapseHelp".$next_helpcategories."\" class=\"panel-body collapse in\">\n";
+			echo "            <div id=\"collapseHelp".$helpCategoriesInfo1["id"]."\" class=\"panel-body collapse in\">\n";
 			echo "              <div class=\"col-md-8 col-center\">\n";
 			echo "                <br />\n";
 			echo "                <p class=\"paragraph\">\n";
@@ -120,7 +120,7 @@ function showHelpInfo($getPage_connection2) {
 					
 					if ($helpSubcategoriesInfo1["category"] == $helpCategoriesInfo1["id"]) {
 						$subcategoryCounter++;
-						echo "                <a class=\"chapter-title\" id=\"".$next_helpcategories."-".$subcategoryCounter."\" href=\"#\">".$helpSubcategoriesInfo1["title"]."</a>\n";
+						echo "                <a class=\"chapter-title\" id=\"".$helpCategoriesInfo1["id"]."-".$subcategoryCounter."\" href=\"#\">".$helpSubcategoriesInfo1["title"]."</a>\n";
 						echo "                <br />\n";
 						echo "                <p class=\"paragraph\">\n";
 						echo "                  ".$helpSubcategoriesInfo1["text"]." \n";
