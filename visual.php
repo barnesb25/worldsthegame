@@ -336,17 +336,47 @@ function compileMenu($getPage_connection2,$pageType) {
  ********************************/
 function showOverlayOptions($getPage_connection2) {
 	echo "          <select id=\"menu_overlayInput\" name=\"overlay\" class=\"dropdown1 btn btn-lg btn-default\">\n";
+	
+	
+	
+	
+	
+	
 
 	$next_overlays = 1;
-	if ($stmt = $getPage_connection2->prepare("SELECT id FROM overlays ORDER BY id ASC LIMIT 1")) {
+	if ($stmt = $getPage_connection2->prepare("SELECT id,name FROM overlays ORDER BY id ASC LIMIT 1")) {
 		$stmt->execute();
-		$stmt->bind_result($r_result);
+		$stmt->bind_result($r_id,$r_name);
 		$stmt->fetch();
-		$next_overlays = $r_result;
+		
+		while ($stmt->fetch()) {
+			$overlayInfo = getOverlayInfo($getPage_connection2,$r_result);
+			
+			if (isset($_SESSION["overlay"])) {
+				if ($_SESSION["overlay"] == strtolower($overlayInfo["name"])) {
+					echo "            <option class=\"option1\" selected=\"selected\" value=\"".strtolower($overlayInfo["name"])."\">".$overlayInfo["name"]."</option>\n";
+				} else {
+					echo "            <option class=\"option1\" value=\"".strtolower($overlayInfo["name"])."\">".$overlayInfo["name"]."</option>\n";
+				} // else
+			} else {
+				echo "            <option class=\"option1\" value=\"".strtolower($overlayInfo["name"])."\">".$overlayInfo["name"]."</option>\n";
+			} // else
+		}
+		
+		//$next_overlays = $r_result;
 		$stmt->close();
 	} else {
 		$next_overlays = 0;
 	} // else
+		
+	/*
+		
+	
+	
+	
+	
+	
+	
 		
 	while ($next_overlays > 0) {
 		$overlayInfo = getOverlayInfo($getPage_connection2,$next_overlays);
@@ -372,6 +402,7 @@ function showOverlayOptions($getPage_connection2) {
 			$next_overlays = 0;
 		} // else
 	} // while
+	*/
 	
 	echo "          </select>\n";
 } // showOverlayOptions
