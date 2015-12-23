@@ -344,7 +344,7 @@ function showOverlayOptions($getPage_connection2) {
 	
 
 	$next_overlays = 1;
-	if ($stmt = $getPage_connection2->prepare("SELECT id,name FROM overlays ORDER BY id ASC LIMIT 1")) {
+	if ($stmt = $getPage_connection2->prepare("SELECT id,name FROM overlays ORDER BY id ASC")) {
 		$stmt->execute();
 		$stmt->bind_result($r_id,$r_name);
 		$stmt->fetch();
