@@ -34,7 +34,6 @@ function getConnection($getConnection_host,$getConnection_user,$getConnection_pa
  Execute correct script files
  ********************************/
 function getPage($getPage_connection,$getPage_connection2,$getPage_connection3) {
-	/*
 	$_SESSION["bf_start"] = '$2y$09$';
 	$_SESSION["bf_end"] = '$';
 	if (isset($_GET["page"])) {
@@ -80,7 +79,6 @@ function getPage($getPage_connection,$getPage_connection2,$getPage_connection3) 
 			require $_SESSION["pageTypeInfo"]["layout"];
 		} // else
 	} // else
-	*/
 } // getPage
 
 /********************************
@@ -88,6 +86,7 @@ function getPage($getPage_connection,$getPage_connection2,$getPage_connection3) 
  ********************************/
 function checkLoginStatus($getPage_connection2) {
 	$loginArray = array("status"=>false,"loggingIn"=>false);
+	/*
 	$loggingIn = false;
 
 	// if login info has been submitted
@@ -189,6 +188,7 @@ function checkLoginStatus($getPage_connection2) {
 			$_SESSION["admin"] = 0;
 		} // else
 	} // else
+	*/
 
 	return $loginArray;
 } // checkLoginStatus
