@@ -53,147 +53,94 @@ function showHelpInfo($getPage_connection2) {
 	echo "            <div id=\"collapseHelpTC\" class=\"panel-body collapse in\">\n";
 	echo "              <div class=\"col-md-8 col-center\">\n";
 
-	$next_helpcategories = 1;
-	if ($stmt = $getPage_connection2->prepare("SELECT id FROM helpcategories ORDER BY id ASC LIMIT 1")) {
+	if ($stmt = $getPage_connection2->prepare("SELECT id,title,text FROM helpcategories ORDER BY id ASC")) {
 		$stmt->execute();
-		$stmt->bind_result($r_result);
-		$stmt->fetch();
-		$next_helpcategories = $r_result;
+		$stmt->bind_result($r_id,$r_title,$r_text);
+		
+		while ($stmt->fetch()) {
+			$helpCategoriesInfo1 = array("id"=>$r_id,"title"=>$r_title,"text"=>$r_text);
+			
+			echo "                <a class=\"cat\" href=\"#collapseHelp".$next_helpcategories."\">".$next_helpcategories." - ".$helpCategoriesInfo1["title"]."</a>\n";
+			echo "                <br />\n";
+			
+			$subcategoryCounter = 0;
+			if ($stmt2 = $getPage_connection2->prepare("SELECT id,category,title,text FROM helpsubcategories ORDER BY id ASC LIMIT 1")) {
+				$stmt2->execute();
+				$stmt2->bind_result($r_id,$r_category,$r_title,$r_text);
+				
+				while ($stmt2->fetch()) {
+					$helpSubcategoriesInfo1 = array("id"=>$r_id,"category"=>$r_category,"title"=>$r_title,"text"=>$r_text);
+						
+					if ($helpSubcategoriesInfo1["category"] == $helpCategoriesInfo1["id"]) {
+						$subcategoryCounter++;
+						echo "                <a class=\"subcat\" href=\"#".$next_helpcategories."-".$subcategoryCounter."\">".$next_helpcategories.".".$subcategoryCounter." - ".$helpSubcategoriesInfo1["title"]."</a>\n";
+						echo "                <br />\n";
+					} // if
+				} // while
+				
+				$stmt2->close();
+			} else {
+			} // else	
+						
+			echo "                <br />\n";			
+		} // while		
+		
 		$stmt->close();
 	} else {
-		$next_helpcategories = 0;
 	} // else
-	while ($next_helpcategories > 0) {
-		$helpCategoriesInfo1 = getHelpCategoriesInfo($getPage_connection2,$next_helpcategories);
-
-		echo "                <a class=\"cat\" href=\"#collapseHelp".$next_helpcategories."\">".$next_helpcategories." - ".$helpCategoriesInfo1["title"]."</a>\n";
-		echo "                <br />\n";
-
-		$next_helpsubcategories = 1;
-		$subcategoryCounter = 0;
-		if ($stmt = $getPage_connection2->prepare("SELECT id FROM helpsubcategories ORDER BY id ASC LIMIT 1")) {
-			$stmt->execute();
-			$stmt->bind_result($r_result);
-			$stmt->fetch();
-			$next_helpsubcategories = $r_result;
-			$stmt->close();
-		} else {
-			$next_helpsubcategories = 0;
-		} // else
-		while ($next_helpsubcategories > 0) {
-			$helpSubcategoriesInfo1 = getHelpSubcategoriesInfo($getPage_connection2,$next_helpsubcategories);
-
-			if ($helpSubcategoriesInfo1["category"] == $helpCategoriesInfo1["id"]) {
-				$subcategoryCounter++;
-				echo "                <a class=\"subcat\" href=\"#".$next_helpcategories."-".$subcategoryCounter."\">".$next_helpcategories.".".$subcategoryCounter." - ".$helpSubcategoriesInfo1["title"]."</a>\n";
-				echo "                <br />\n";
-			} // if
-
-			if ($stmt = $getPage_connection2->prepare("SELECT id FROM helpsubcategories WHERE id = (SELECT MIN(id) FROM helpsubcategories WHERE id > ?) ORDER BY id LIMIT 1")) {
-				$stmt->bind_param("i", $next_helpsubcategories);
-				$stmt->execute();
-				$stmt->bind_result($r_result);
-				$stmt->fetch();
-				$next_helpsubcategories = $r_result;
-				$stmt->close();
-			} else {
-				$next_helpsubcategories = 0;
-			} // else
-		} // while
-
-		echo "                <br />\n";
-
-		if ($stmt = $getPage_connection2->prepare("SELECT id FROM helpcategories WHERE id = (SELECT MIN(id) FROM helpcategories WHERE id > ?) ORDER BY id LIMIT 1")) {
-			$stmt->bind_param("i", $next_helpcategories);
-			$stmt->execute();
-			$stmt->bind_result($r_result);
-			$stmt->fetch();
-			$next_helpcategories = $r_result;
-			$stmt->close();
-		} else {
-			$next_helpcategories = 0;
-		} // else
-	} // while
 
 	echo "              </div>\n";
 	echo "            </div>\n";
 	echo "          </div>\n";
 
-	$next_helpcategories = 1;
-	if ($stmt = $getPage_connection2->prepare("SELECT id FROM helpcategories ORDER BY id ASC LIMIT 1")) {
+	if ($stmt = $getPage_connection2->prepare("SELECT id,title,text FROM helpcategories ORDER BY id ASC")) {
 		$stmt->execute();
 		$stmt->bind_result($r_result);
-		$stmt->fetch();
-		$next_helpcategories = $r_result;
+		
+		while ($stmt->fetch()) {
+			$helpCategoriesInfo1 = array("id"=>$r_id,"title"=>$r_title,"text"=>$r_text);	
+			echo "          <div class=\"panel panel-info\">\n";
+			echo "            <div class=\"panel-heading\">\n";
+			echo "              <h3 class=\"panel-title\">".$helpCategoriesInfo1["title"]."        <button type=\"button\" class=\"btn btn-default btn-md collapsed\" data-toggle=\"collapse\" data-target=\"#collapseHelp1\"><span class=\"glyphicon glyphicon-plus\"></span>/<span class=\"glyphicon glyphicon-minus\"></span></button></h3>\n";
+			echo "            </div>\n";
+			echo "            <div id=\"collapseHelp".$next_helpcategories."\" class=\"panel-body collapse in\">\n";
+			echo "              <div class=\"col-md-8 col-center\">\n";
+			echo "                <br />\n";
+			echo "                <p class=\"paragraph\">\n";
+			echo "                  ".$helpCategoriesInfo1["text"]." \n";
+			echo "                </p>\n";
+			
+			$subcategoryCounter = 0;
+			if ($stmt2 = $getPage_connection2->prepare("SELECT id,category,title,text FROM helpsubcategories ORDER BY id ASC")) {
+				$stmt2->execute();
+				$stmt2->bind_result($r_result);
+				
+				while ($stmt2->fetch()) {
+					$helpSubcategoriesInfo1 = array("id"=>$r_id,"category"=>$r_category,"title"=>$r_title,"text"=>$r_text);
+					
+					if ($helpSubcategoriesInfo1["category"] == $helpCategoriesInfo1["id"]) {
+						$subcategoryCounter++;
+						echo "                <a class=\"chapter-title\" id=\"".$next_helpcategories."-".$subcategoryCounter."\" href=\"#\">".$helpSubcategoriesInfo1["title"]."</a>\n";
+						echo "                <br />\n";
+						echo "                <p class=\"paragraph\">\n";
+						echo "                  ".$helpSubcategoriesInfo1["text"]." \n";
+						echo "                </p>\n";
+					} // if
+				} // while
+				
+				$stmt2->close();
+			} else {
+			} // else
+				
+			echo "              </div>\n";
+			echo "            </div>\n";
+			echo "          </div>\n";
+			
+		} // while
+		
 		$stmt->close();
 	} else {
-		$next_helpcategories = 0;
 	} // else
-	while ($next_helpcategories > 0) {
-		$helpCategoriesInfo1 = getHelpCategoriesInfo($getPage_connection2,$next_helpcategories);
-
-		echo "          <div class=\"panel panel-info\">\n";
-		echo "            <div class=\"panel-heading\">\n";
-		echo "              <h3 class=\"panel-title\">".$helpCategoriesInfo1["title"]."        <button type=\"button\" class=\"btn btn-default btn-md collapsed\" data-toggle=\"collapse\" data-target=\"#collapseHelp1\"><span class=\"glyphicon glyphicon-plus\"></span>/<span class=\"glyphicon glyphicon-minus\"></span></button></h3>\n";
-		echo "            </div>\n";
-		echo "            <div id=\"collapseHelp".$next_helpcategories."\" class=\"panel-body collapse in\">\n";
-		echo "              <div class=\"col-md-8 col-center\">\n";
-		echo "                <br />\n";
-		echo "                <p class=\"paragraph\">\n";
-		echo "                  ".$helpCategoriesInfo1["text"]." \n";
-		echo "                </p>\n";
-
-		$next_helpsubcategories = 1;
-		$subcategoryCounter = 0;
-		if ($stmt = $getPage_connection2->prepare("SELECT id FROM helpsubcategories ORDER BY id ASC LIMIT 1")) {
-			$stmt->execute();
-			$stmt->bind_result($r_result);
-			$stmt->fetch();
-			$next_helpsubcategories = $r_result;
-			$stmt->close();
-		} else {
-			$next_helpsubcategories = 0;
-		} // else
-		while ($next_helpsubcategories > 0) {
-			$helpSubcategoriesInfo1 = getHelpSubcategoriesInfo($getPage_connection2,$next_helpsubcategories);
-
-			if ($helpSubcategoriesInfo1["category"] == $helpCategoriesInfo1["id"]) {
-				$subcategoryCounter++;
-				echo "                <a class=\"chapter-title\" id=\"".$next_helpcategories."-".$subcategoryCounter."\" href=\"#\">".$helpSubcategoriesInfo1["title"]."</a>\n";
-				echo "                <br />\n";
-				echo "                <p class=\"paragraph\">\n";
-				echo "                  ".$helpSubcategoriesInfo1["text"]." \n";
-				echo "                </p>\n";
-			} // if
-
-			if ($stmt = $getPage_connection2->prepare("SELECT id FROM helpsubcategories WHERE id = (SELECT MIN(id) FROM helpsubcategories WHERE id > ?) ORDER BY id LIMIT 1")) {
-				$stmt->bind_param("i", $next_helpsubcategories);
-				$stmt->execute();
-				$stmt->bind_result($r_result);
-				$stmt->fetch();
-				$next_helpsubcategories = $r_result;
-				$stmt->close();
-			} else {
-				$next_helpsubcategories = 0;
-			} // else
-		} // while
-
-		echo "              </div>\n";
-		echo "            </div>\n";
-		echo "          </div>\n";
-
-
-		if ($stmt = $getPage_connection2->prepare("SELECT id FROM helpcategories WHERE id = (SELECT MIN(id) FROM helpcategories WHERE id > ?) ORDER BY id LIMIT 1")) {
-			$stmt->bind_param("i", $next_helpcategories);
-			$stmt->execute();
-			$stmt->bind_result($r_result);
-			$stmt->fetch();
-			$next_helpcategories = $r_result;
-			$stmt->close();
-		} else {
-			$next_helpcategories = 0;
-		} // else
-	} // while
 
 	echo "        </div>\n";
 } // showHelpInfo
