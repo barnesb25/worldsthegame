@@ -350,16 +350,16 @@ function showOverlayOptions($getPage_connection2) {
 		$stmt->fetch();
 		
 		while ($stmt->fetch()) {
-			$overlayInfo = getOverlayInfo($getPage_connection2,$r_result);
+			//$overlayInfo = getOverlayInfo($getPage_connection2,$r_result);
 			
 			if (isset($_SESSION["overlay"])) {
-				if ($_SESSION["overlay"] == strtolower($overlayInfo["name"])) {
-					echo "            <option class=\"option1\" selected=\"selected\" value=\"".strtolower($overlayInfo["name"])."\">".$overlayInfo["name"]."</option>\n";
+				if ($_SESSION["overlay"] == strtolower($r_name)) {
+					echo "            <option class=\"option1\" selected=\"selected\" value=\"".strtolower($r_name)."\">".$r_name."</option>\n";
 				} else {
-					echo "            <option class=\"option1\" value=\"".strtolower($overlayInfo["name"])."\">".$overlayInfo["name"]."</option>\n";
+					echo "            <option class=\"option1\" value=\"".strtolower($r_name)."\">".$r_name."</option>\n";
 				} // else
 			} else {
-				echo "            <option class=\"option1\" value=\"".strtolower($overlayInfo["name"])."\">".$overlayInfo["name"]."</option>\n";
+				echo "            <option class=\"option1\" value=\"".strtolower($r_name)."\">".$r_name."</option>\n";
 			} // else
 		}
 		
