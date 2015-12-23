@@ -1,0 +1,22 @@
+  <body onload="bodyLoad()" role="document">
+    <div id="iesplash">
+      <div class="alert alert-danger" role="alert">
+        WARNING!  You are detected using an unsupported browser.
+        <br />
+        For this web application to work as intended, you must upgrade to a newer browser.
+        <br />  
+        Please consider upgrading to a newer alternative:
+        <br />
+        Try <a href="http://www.google.com/chrome">Google Chrome</a> or <a href="http://www.mozilla.org">Mozilla Firefox</a>
+      </div>
+    </div>
+    <div id="jssplash">
+      <div class="alert alert-danger" role="alert">
+        WARNING!  JavaScript is not detected.
+        <br />
+        For this web application to work as intended, you must enable JavaScript on your browser.
+        <br />  
+        Please enable JavaScript to continue to use the website.
+        <br />
+      </div>
+    </div>

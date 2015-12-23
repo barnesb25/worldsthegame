@@ -1,0 +1,108 @@
+/****************************************************************************
+* Name:        unsupported.php
+* Author:      Ben Barnes
+* Date:        2015-12-21
+* Purpose:     Stylesheet: Unsupported browser.
+*****************************************************************************/
+
+/* ---------------------------- */
+/* General Styling */
+/* ---------------------------- */
+
+/* applies 0 to all margin/padding (initially) */
+*
+{                   
+  /* margin */
+  margin:0;
+  /* padding */
+  padding:0;
+}
+
+/* gets rid of image spacing */
+img
+{
+  /* border */
+  border:0px none #000000;
+  border-collapse:collapse;
+  border-spacing:0px;
+  /* margin */
+  margin:0;
+  /* padding */
+  padding:0;
+}
+
+/* entire html document */
+html
+{
+  /* dimensions */
+  height:100%;
+}
+
+/* body (contains all main html) */
+body
+{
+  /* dimensions */
+  height:100%;
+  /* margin */
+  margin-left:auto;
+  margin-right:auto;
+  margin-top:0;
+  margin-bottom:0;
+  /* padding */
+  padding:0;
+  /* background */
+  background-color:#ffffff;
+  /* text */
+  text-align:center;
+  color:#000000;
+  font-family: 'Merriweather', serif;
+  font-size:12px;
+}
+
+/* Opera Fix */
+body:before 
+{
+  content:"";
+  height:100%;
+  float:left;
+  width:0;
+  margin-top:-32767px;
+}
+
+/* Real Content: used for js and ie checking */
+#real_content
+{
+  display:none;
+}
+
+/* ---------------------------- */
+/* Misc. Styling */
+/* ---------------------------- */
+
+/* Clear floated elements */
+.clear
+{
+  clear:both;
+}
+
+/* No-JS Display */
+#jssplash
+{
+  display:none;
+  /* dimensions */
+  width:400px;
+  /* margin */
+  margin-left:auto;
+  margin-right:auto;
+}
+
+/* No-IE Display */
+#iesplash
+{
+  display:block;
+  /* dimensions */
+  width:400px;
+  /* margin */
+  margin-left:auto;
+  margin-right:auto;
+}

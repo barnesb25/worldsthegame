@@ -1,0 +1,1717 @@
+/****************************************************************************
+* Name:        theme.php
+* Author:      Ben Barnes
+* Date:        2015-12-21
+* Purpose:     Stylesheet: custom content
+*****************************************************************************/
+
+/* ---------------------------- */
+/* General Styling */
+/* ---------------------------- */
+
+/* applies 0 to all margin/padding (initially) */
+*
+{                   
+  /* margin */
+  margin:0;
+  /* padding */
+  padding:0;
+}
+
+/* gets rid of image spacing */
+img
+{
+  /* border */
+  border:0px none #000000;
+  border-collapse:collapse;
+  border-spacing:0px;
+  /* margin */
+  margin:0;
+  /* padding */
+  padding:0;
+}
+
+/* entire html document */
+html
+{
+  /* dimensions */
+  height:100%;
+}
+
+/* body (contains all main html) */
+body
+{
+  /* dimensions */
+  height:100%;
+  /* margin */
+  margin-left:auto;
+  margin-right:auto;
+  margin-top:0;
+  margin-bottom:0;
+  /* padding */
+  padding:0;
+  /* background */
+  background-color:#ffffff;
+  /* text */
+  text-align:center;
+  color:#000000;
+  font-family: 'Merriweather', serif;
+  font-size:12px;
+}
+
+/* Opera Fix */
+body:before 
+{
+  content:"";
+  height:100%;
+  float:left;
+  width:0;
+  margin-top:-32767px;
+}
+
+/* Real Content: used for js and ie checking */
+#real_content
+{
+  display:block;
+  /* display:none */
+}
+
+/* ---------------------------- */
+/* Misc. Styling */
+/* ---------------------------- */
+
+/* Clear floated elements */
+.clear
+{
+  clear:both;
+}
+
+/* No-JS Display */
+#jssplash
+{
+  display:none;
+  /* dimensions */
+  width:400px;
+  /* margin */
+  margin-left:auto;
+  margin-right:auto;
+}
+
+/* IE <=7 display */
+#iesplash
+{
+  display:none;
+}
+
+.inline
+{
+  display:inline;
+}
+
+.space-left
+{
+  padding-left:20px;
+}
+
+.space-right
+{
+  padding-right:20px;
+}
+
+.col-center
+{
+    float:none;
+    margin:0 auto;
+}
+
+.standard-text
+{
+  font-size:1.3em;
+}
+
+.sm-standard-text
+{
+  font-size:0.6em;
+}
+
+.cat
+{
+  font-weight:bold;
+}
+
+.subcat
+{
+  font-weight:normal;
+}
+
+.chapter-title
+{
+  display:block;
+  font-size:1.2em;
+}
+
+.paragraph
+{
+  text-align:left;
+  text-indent:1.2em;
+  font-size:1em;
+}
+
+/* ---------------------------- */
+/* Menu section related elements */
+/* ---------------------------- */
+
+.menu_login
+{
+  margin-top:1.6em;
+  margin-left:auto;
+  margin-right:auto;
+}
+
+.menu_text
+{
+  font-size:1.8em;
+}
+
+.menu_glyph
+{
+  padding-bottom:10px;
+}
+
+#menu_submit
+{
+  margin-left:auto;
+  margin-right:auto;
+  padding-left:2.56em;
+  padding-right:2.56em;
+}
+
+.dropdown1
+{
+  padding:5px; 
+  margin:0;
+  border:2px solid #eeeeee;
+  background-color:#ffffff;
+  /* text */
+  color:#000000;
+  font-family: 'Merriweather', serif;
+  font-size:1.5em;
+  text-align:left;
+  text-decoration:none;
+}
+
+.option1
+{
+  background-color:#eeeeee;
+  /* text */
+  color:#000000;
+  font-family: 'Merriweather', serif;
+  font-size:1.5em;
+  text-align:left;
+  text-decoration:none;
+}
+
+.more_buttons_main
+{
+	display:block;
+	visibility:visible;
+}
+
+.more_buttons_menu
+{
+	display:none;
+	visibility:hidden;
+}
+
+.more_buttons_mobileVisible
+{
+  display:block;
+  visibility:visible;
+}   
+
+.more_buttons_mobileHidden
+{
+ display:none !important;
+ visibility:hidden;
+}    
+
+/* ---------------------------- */
+/* Misc. section elements */
+/* ---------------------------- */
+
+.front 
+{
+	width:200px;
+	height:auto;
+}
+
+.registration_ad
+{
+	padding-top:0;
+	padding-right:3em;
+}
+
+.alert-spacer
+{
+  margin-top:1.6em;
+}
+
+ .spacing-from-menu
+{
+	padding-top:2em;
+ 	margin-top:0.5em;
+} 
+
+/*
+SPECIAL THANKS TO user claviska on Stack Overflow for an excellent upload template!
+*/
+
+/* ---------------------------- */
+/* File Upload section elements */
+/* ---------------------------- */
+
+.btn-file
+{
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-file input[type=file] 
+{
+  position: absolute;
+  top: 0;
+  right: 0;
+  min-width: 100%;
+  min-height: 100%;
+  font-size: 100px;
+  text-align: right;
+  filter: alpha(opacity=0);
+  opacity: 0;
+  outline: none;
+  background: white;
+  cursor: inherit;
+  display: block;
+}
+
+/* ---------------------------- */
+/* Map and info section related elements */
+/* ---------------------------- */
+
+.tile-header
+{
+  padding-bottom:10px;
+}
+
+#map
+{
+  width:430px;
+  min-height:430px;
+  margin-left:auto;
+  margin-right:auto;
+  padding:0;
+}
+
+.map_well
+{
+  min-width:460px;
+  min-height:460px;
+}
+
+.info_well
+{
+  background:rgba(255, 255, 255, 0.9);
+}
+
+.info_flag
+{
+  width:200px;
+  height:100px;
+}
+
+.info_button
+{
+  margin-top:2em;
+}
+
+/* ---------------------------- */
+/* Tiles related elements */
+/* ---------------------------- */
+
+.tile_container
+{
+  margin:0;
+  padding:0;
+  float:left;
+  width:20px;
+  height:20px;
+}
+
+.tile_link
+{
+  margin:0;
+  padding:0;
+}
+
+.tile_float
+{
+  margin:0;
+  padding:0;
+  height:auto;
+  width:100%;
+}
+
+.tile_img
+{
+  margin:0;
+  padding:0;
+  height:auto;
+  width:100%;
+}
+
+.grass
+{
+  background-image:url('../images/terrain/grass.png');
+  background-size: 100% 100%;
+}
+
+.grass_friendly
+{
+  background-image:url('../images/terrain/grass_friendly.png');
+  background-size: 100% 100%;
+}
+
+.grass_player_contested
+{
+  background-image:url('../images/terrain/grass_player_contested.png');
+  background-size: 100% 100%;
+}
+
+.grass_enemy
+{
+  background-image:url('../images/terrain/grass_enemy.png');
+  background-size: 100% 100%;
+}
+
+.grass_enemy_contested
+{
+  background-image:url('../images/terrain/grass_enemy_contested.png');
+  background-size: 100% 100%;
+}
+
+.grass_nation_0
+{
+  background-image:url('../images/terrain/grass.png');
+  background-size: 100% 100%;
+}
+
+.grass_nation_1
+{
+  background-image:url('../images/terrain/grass_nation_1.png');
+  background-size: 100% 100%;
+}
+
+.grass_nation_2
+{
+  background-image:url('../images/terrain/grass_nation_2.png');
+  background-size: 100% 100%;
+}
+
+.grass_nation_3
+{
+  background-image:url('../images/terrain/grass_nation_3.png');
+  background-size: 100% 100%;
+}
+
+.grass_nation_4
+{
+  background-image:url('../images/terrain/grass_nation_4.png');
+  background-size: 100% 100%;
+}
+
+.grass_nation_5
+{
+  background-image:url('../images/terrain/grass_nation_5.png');
+  background-size: 100% 100%;
+}
+
+.grass_nation_6
+{
+  background-image:url('../images/terrain/grass_nation_6.png');
+  background-size: 100% 100%;
+}
+
+.grass_nation_6
+{
+  background-image:url('../images/terrain/grass_nation_6.png');
+  background-size: 100% 100%;
+}
+
+.grass_nation_7
+{
+  background-image:url('../images/terrain/grass_nation_7.png');
+  background-size: 100% 100%;
+}
+
+.grass_nation_8
+{
+  background-image:url('../images/terrain/grass_nation_8.png');
+  background-size: 100% 100%;
+}
+
+.grass_nation_9
+{
+  background-image:url('../images/terrain/grass_nation_9.png');
+  background-size: 100% 100%;
+}
+
+.grass_nation_10
+{
+  background-image:url('../images/terrain/grass_nation_10.png');
+  background-size: 100% 100%;
+}
+
+.grass_nation_11
+{
+  background-image:url('../images/terrain/grass_nation_11.png');
+  background-size: 100% 100%;
+}
+
+.grass_nation_12
+{
+  background-image:url('../images/terrain/grass_nation_12.png');
+  background-size: 100% 100%;
+}
+
+.grass_nation_13
+{
+  background-image:url('../images/terrain/grass_nation_13.png');
+  background-size: 100% 100%;
+}
+
+.grass_nation_14
+{
+  background-image:url('../images/terrain/grass_nation_14.png');
+  background-size: 100% 100%;
+}
+
+.grass_nation_15
+{
+  background-image:url('../images/terrain/grass_nation_15.png');
+  background-size: 100% 100%;
+}
+
+.grass_nation_16
+{
+  background-image:url('../images/terrain/grass_nation_16.png');
+  background-size: 100% 100%;
+}
+
+.grass_nation_17
+{
+  background-image:url('../images/terrain/grass_nation_17.png');
+  background-size: 100% 100%;
+}
+
+.grass_nation_18
+{
+  background-image:url('../images/terrain/grass_nation_18.png');
+  background-size: 100% 100%;
+}
+
+.grass_nation_19
+{
+  background-image:url('../images/terrain/grass_nation_19.png');
+  background-size: 100% 100%;
+}
+
+.grass_nation_20
+{
+  background-image:url('../images/terrain/grass_nation_20.png');
+  background-size: 100% 100%;
+}
+
+.water
+{
+  background-image:url('../images/terrain/water.png');
+  background-size: 100% 100%;
+}
+
+.water_friendly
+{
+  background-image:url('../images/terrain/water_friendly.png');
+  background-size: 100% 100%;
+}
+
+.water_player_contested
+{
+  background-image:url('../images/terrain/water_player_contested.png');
+  background-size: 100% 100%;
+}
+
+.water_enemy
+{
+  background-image:url('../images/terrain/water_enemy.png');
+  background-size: 100% 100%;
+}
+
+.water_enemy_contested
+{
+  background-image:url('../images/terrain/water_enemy_contested.png');
+  background-size: 100% 100%;
+}
+
+.water_nation_0
+{
+  background-image:url('../images/terrain/water.png');
+  background-size: 100% 100%;
+}
+
+.water_nation_1
+{
+  background-image:url('../images/terrain/water_nation_1.png');
+  background-size: 100% 100%;
+}
+
+.water_nation_2
+{
+  background-image:url('../images/terrain/water_nation_2.png');
+  background-size: 100% 100%;
+}
+
+.water_nation_3
+{
+  background-image:url('../images/terrain/water_nation_3.png');
+  background-size: 100% 100%;
+}
+
+.water_nation_4
+{
+  background-image:url('../images/terrain/water_nation_4.png');
+  background-size: 100% 100%;
+}
+
+.water_nation_5
+{
+  background-image:url('../images/terrain/water_nation_5.png');
+  background-size: 100% 100%;
+}
+
+.water_nation_6
+{
+  background-image:url('../images/terrain/water_nation_6.png');
+  background-size: 100% 100%;
+}
+
+.water_nation_6
+{
+  background-image:url('../images/terrain/water_nation_6.png');
+  background-size: 100% 100%;
+}
+
+.water_nation_7
+{
+  background-image:url('../images/terrain/water_nation_7.png');
+  background-size: 100% 100%;
+}
+
+.water_nation_8
+{
+  background-image:url('../images/terrain/water_nation_8.png');
+  background-size: 100% 100%;
+}
+
+.water_nation_9
+{
+  background-image:url('../images/terrain/water_nation_9.png');
+  background-size: 100% 100%;
+}
+
+.water_nation_10
+{
+  background-image:url('../images/terrain/water_nation_10.png');
+  background-size: 100% 100%;
+}
+
+.water_nation_11
+{
+  background-image:url('../images/terrain/water_nation_11.png');
+  background-size: 100% 100%;
+}
+
+.water_nation_12
+{
+  background-image:url('../images/terrain/water_nation_12.png');
+  background-size: 100% 100%;
+}
+
+.water_nation_13
+{
+  background-image:url('../images/terrain/water_nation_13.png');
+  background-size: 100% 100%;
+}
+
+.water_nation_14
+{
+  background-image:url('../images/terrain/water_nation_14.png');
+  background-size: 100% 100%;
+}
+
+.water_nation_15
+{
+  background-image:url('../images/terrain/water_nation_15.png');
+  background-size: 100% 100%;
+}
+
+.water_nation_16
+{
+  background-image:url('../images/terrain/water_nation_16.png');
+  background-size: 100% 100%;
+}
+
+.water_nation_17
+{
+  background-image:url('../images/terrain/water_nation_17.png');
+  background-size: 100% 100%;
+}
+
+.water_nation_18
+{
+  background-image:url('../images/terrain/water_nation_18.png');
+  background-size: 100% 100%;
+}
+
+.water_nation_19
+{
+  background-image:url('../images/terrain/water_nation_19.png');
+  background-size: 100% 100%;
+}
+
+.water_nation_20
+{
+  background-image:url('../images/terrain/water_nation_20.png');
+  background-size: 100% 100%;
+}
+
+.desert
+{
+  background-image:url('../images/terrain/desert.png');
+  background-size: 100% 100%;
+}
+
+.desert_friendly
+{
+  background-image:url('../images/terrain/desert_friendly.png');
+  background-size: 100% 100%;
+}
+
+.desert_player_contested
+{
+  background-image:url('../images/terrain/desert_player_contested.png');
+  background-size: 100% 100%;
+}
+
+.desert_enemy
+{
+  background-image:url('../images/terrain/desert_enemy.png');
+  background-size: 100% 100%;
+}
+
+.desert_enemy_contested
+{
+  background-image:url('../images/terrain/desert_enemy_contested.png');
+  background-size: 100% 100%;
+}
+
+.desert_nation_0
+{
+  background-image:url('../images/terrain/desert.png');
+  background-size: 100% 100%;
+}
+
+.desert_nation_1
+{
+  background-image:url('../images/terrain/desert_nation_1.png');
+  background-size: 100% 100%;
+}
+
+.desert_nation_2
+{
+  background-image:url('../images/terrain/desert_nation_2.png');
+  background-size: 100% 100%;
+}
+
+.desert_nation_3
+{
+  background-image:url('../images/terrain/desert_nation_3.png');
+  background-size: 100% 100%;
+}
+
+.desert_nation_4
+{
+  background-image:url('../images/terrain/desert_nation_4.png');
+  background-size: 100% 100%;
+}
+
+.desert_nation_5
+{
+  background-image:url('../images/terrain/desert_nation_5.png');
+  background-size: 100% 100%;
+}
+
+.desert_nation_6
+{
+  background-image:url('../images/terrain/desert_nation_6.png');
+  background-size: 100% 100%;
+}
+
+.desert_nation_6
+{
+  background-image:url('../images/terrain/desert_nation_6.png');
+  background-size: 100% 100%;
+}
+
+.desert_nation_7
+{
+  background-image:url('../images/terrain/desert_nation_7.png');
+  background-size: 100% 100%;
+}
+
+.desert_nation_8
+{
+  background-image:url('../images/terrain/desert_nation_8.png');
+  background-size: 100% 100%;
+}
+
+.desert_nation_9
+{
+  background-image:url('../images/terrain/desert_nation_9.png');
+  background-size: 100% 100%;
+}
+
+.desert_nation_10
+{
+  background-image:url('../images/terrain/desert_nation_10.png');
+  background-size: 100% 100%;
+}
+
+.desert_nation_11
+{
+  background-image:url('../images/terrain/desert_nation_11.png');
+  background-size: 100% 100%;
+}
+
+.desert_nation_12
+{
+  background-image:url('../images/terrain/desert_nation_12.png');
+  background-size: 100% 100%;
+}
+
+.desert_nation_13
+{
+  background-image:url('../images/terrain/desert_nation_13.png');
+  background-size: 100% 100%;
+}
+
+.desert_nation_14
+{
+  background-image:url('../images/terrain/desert_nation_14.png');
+  background-size: 100% 100%;
+}
+
+.desert_nation_15
+{
+  background-image:url('../images/terrain/desert_nation_15.png');
+  background-size: 100% 100%;
+}
+
+.desert_nation_16
+{
+  background-image:url('../images/terrain/desert_nation_16.png');
+  background-size: 100% 100%;
+}
+
+.desert_nation_17
+{
+  background-image:url('../images/terrain/desert_nation_17.png');
+  background-size: 100% 100%;
+}
+
+.desert_nation_18
+{
+  background-image:url('../images/terrain/desert_nation_18.png');
+  background-size: 100% 100%;
+}
+
+.desert_nation_19
+{
+  background-image:url('../images/terrain/desert_nation_19.png');
+  background-size: 100% 100%;
+}
+
+.desert_nation_20
+{
+  background-image:url('../images/terrain/desert_nation_20.png');
+  background-size: 100% 100%;
+}
+
+.marsh
+{
+  background-image:url('../images/terrain/marsh.png');
+  background-size: 100% 100%;
+}
+
+.marsh_friendly
+{
+  background-image:url('../images/terrain/marsh_friendly.png');
+  background-size: 100% 100%;
+}
+
+.marsh_player_contested
+{
+  background-image:url('../images/terrain/marsh_player_contested.png');
+  background-size: 100% 100%;
+}
+
+.marsh_enemy
+{
+  background-image:url('../images/terrain/marsh_enemy.png');
+  background-size: 100% 100%;
+}
+
+.marsh_enemy_contested
+{
+  background-image:url('../images/terrain/marsh_enemy_contested.png');
+  background-size: 100% 100%;
+}
+
+.marsh_nation_0
+{
+  background-image:url('../images/terrain/marsh.png');
+  background-size: 100% 100%;
+}
+
+.marsh_nation_1
+{
+  background-image:url('../images/terrain/marsh_nation_1.png');
+  background-size: 100% 100%;
+}
+
+.marsh_nation_2
+{
+  background-image:url('../images/terrain/marsh_nation_2.png');
+  background-size: 100% 100%;
+}
+
+.marsh_nation_3
+{
+  background-image:url('../images/terrain/marsh_nation_3.png');
+  background-size: 100% 100%;
+}
+
+.marsh_nation_4
+{
+  background-image:url('../images/terrain/marsh_nation_4.png');
+  background-size: 100% 100%;
+}
+
+.marsh_nation_5
+{
+  background-image:url('../images/terrain/marsh_nation_5.png');
+  background-size: 100% 100%;
+}
+
+.marsh_nation_6
+{
+  background-image:url('../images/terrain/marsh_nation_6.png');
+  background-size: 100% 100%;
+}
+
+.marsh_nation_6
+{
+  background-image:url('../images/terrain/marsh_nation_6.png');
+  background-size: 100% 100%;
+}
+
+.marsh_nation_7
+{
+  background-image:url('../images/terrain/marsh_nation_7.png');
+  background-size: 100% 100%;
+}
+
+.marsh_nation_8
+{
+  background-image:url('../images/terrain/marsh_nation_8.png');
+  background-size: 100% 100%;
+}
+
+.marsh_nation_9
+{
+  background-image:url('../images/terrain/marsh_nation_9.png');
+  background-size: 100% 100%;
+}
+
+.marsh_nation_10
+{
+  background-image:url('../images/terrain/marsh_nation_10.png');
+  background-size: 100% 100%;
+}
+
+.marsh_nation_11
+{
+  background-image:url('../images/terrain/marsh_nation_11.png');
+  background-size: 100% 100%;
+}
+
+.marsh_nation_12
+{
+  background-image:url('../images/terrain/marsh_nation_12.png');
+  background-size: 100% 100%;
+}
+
+.marsh_nation_13
+{
+  background-image:url('../images/terrain/marsh_nation_13.png');
+  background-size: 100% 100%;
+}
+
+.marsh_nation_14
+{
+  background-image:url('../images/terrain/marsh_nation_14.png');
+  background-size: 100% 100%;
+}
+
+.marsh_nation_15
+{
+  background-image:url('../images/terrain/marsh_nation_15.png');
+  background-size: 100% 100%;
+}
+
+.marsh_nation_16
+{
+  background-image:url('../images/terrain/marsh_nation_16.png');
+  background-size: 100% 100%;
+}
+
+.marsh_nation_17
+{
+  background-image:url('../images/terrain/marsh_nation_17.png');
+  background-size: 100% 100%;
+}
+
+.marsh_nation_18
+{
+  background-image:url('../images/terrain/marsh_nation_18.png');
+  background-size: 100% 100%;
+}
+
+.marsh_nation_19
+{
+  background-image:url('../images/terrain/marsh_nation_19.png');
+  background-size: 100% 100%;
+}
+
+.marsh_nation_20
+{
+  background-image:url('../images/terrain/marsh_nation_20.png');
+  background-size: 100% 100%;
+}
+
+.mountain
+{
+  background-image:url('../images/terrain/mountain.png');
+  background-size: 100% 100%;
+}
+
+.mountain_friendly
+{
+  background-image:url('../images/terrain/mountain_friendly.png');
+  background-size: 100% 100%;
+}
+
+.mountain_player_contested
+{
+  background-image:url('../images/terrain/mountain_player_contested.png');
+  background-size: 100% 100%;
+}
+
+.mountain_enemy
+{
+  background-image:url('../images/terrain/mountain_enemy.png');
+  background-size: 100% 100%;
+}
+
+.mountain_enemy_contested
+{
+  background-image:url('../images/terrain/mountain_enemy_contested.png');
+  background-size: 100% 100%;
+}
+
+.mountain_nation_0
+{
+  background-image:url('../images/terrain/mountain.png');
+  background-size: 100% 100%;
+}
+
+.mountain_nation_1
+{
+  background-image:url('../images/terrain/mountain_nation_1.png');
+  background-size: 100% 100%;
+}
+
+.mountain_nation_2
+{
+  background-image:url('../images/terrain/mountain_nation_2.png');
+  background-size: 100% 100%;
+}
+
+.mountain_nation_3
+{
+  background-image:url('../images/terrain/mountain_nation_3.png');
+  background-size: 100% 100%;
+}
+
+.mountain_nation_4
+{
+  background-image:url('../images/terrain/mountain_nation_4.png');
+  background-size: 100% 100%;
+}
+
+.mountain_nation_5
+{
+  background-image:url('../images/terrain/mountain_nation_5.png');
+  background-size: 100% 100%;
+}
+
+.mountain_nation_6
+{
+  background-image:url('../images/terrain/mountain_nation_6.png');
+  background-size: 100% 100%;
+}
+
+.mountain_nation_6
+{
+  background-image:url('../images/terrain/mountain_nation_6.png');
+  background-size: 100% 100%;
+}
+
+.mountain_nation_7
+{
+  background-image:url('../images/terrain/mountain_nation_7.png');
+  background-size: 100% 100%;
+}
+
+.mountain_nation_8
+{
+  background-image:url('../images/terrain/mountain_nation_8.png');
+  background-size: 100% 100%;
+}
+
+.mountain_nation_9
+{
+  background-image:url('../images/terrain/mountain_nation_9.png');
+  background-size: 100% 100%;
+}
+
+.mountain_nation_10
+{
+  background-image:url('../images/terrain/mountain_nation_10.png');
+  background-size: 100% 100%;
+}
+
+.mountain_nation_11
+{
+  background-image:url('../images/terrain/mountain_nation_11.png');
+  background-size: 100% 100%;
+}
+
+.mountain_nation_12
+{
+  background-image:url('../images/terrain/mountain_nation_12.png');
+  background-size: 100% 100%;
+}
+
+.mountain_nation_13
+{
+  background-image:url('../images/terrain/mountain_nation_13.png');
+  background-size: 100% 100%;
+}
+
+.mountain_nation_14
+{
+  background-image:url('../images/terrain/mountain_nation_14.png');
+  background-size: 100% 100%;
+}
+
+.mountain_nation_15
+{
+  background-image:url('../images/terrain/mountain_nation_15.png');
+  background-size: 100% 100%;
+}
+
+.mountain_nation_16
+{
+  background-image:url('../images/terrain/mountain_nation_16.png');
+  background-size: 100% 100%;
+}
+
+.mountain_nation_17
+{
+  background-image:url('../images/terrain/mountain_nation_17.png');
+  background-size: 100% 100%;
+}
+
+.mountain_nation_18
+{
+  background-image:url('../images/terrain/mountain_nation_18.png');
+  background-size: 100% 100%;
+}
+
+.mountain_nation_19
+{
+  background-image:url('../images/terrain/mountain_nation_19.png');
+  background-size: 100% 100%;
+}
+
+.mountain_nation_20
+{
+  background-image:url('../images/terrain/mountain_nation_20.png');
+  background-size: 100% 100%;
+}
+
+/*********************
+Smaller Mobile
+*********************/
+@media only screen
+and (min-device-width : 176px)
+and (max-device-width : 480px) {
+  #map
+  {
+    min-width:430px;
+    min-height:430px;
+  }
+  
+  .tile_container,.tile_link,.tile_img,.tile_float
+  {
+    width:20px;
+    height:20px;
+  }
+
+  #menu_submit
+  {
+    margin-left:auto;
+    margin-right:auto;
+  }
+  
+  .spacing-from-menu
+  {
+    padding-top:2em;
+    margin-top:0.5em;
+  } 
+  
+  .alert-spacer
+  {
+    margin-top:1.6em;
+  }
+
+  .info_flag
+  {
+    width:200px;
+    height:100px;
+  }
+  
+  .more_buttons_main
+  {  	
+  	display:block !important;
+  	visibility:visible;  	
+  }
+  
+  .more_buttons_menu
+  {  	
+  	display:none !important;
+  	visibility:hidden;  	
+  } 
+  
+  .more_buttons_mobileVisible
+  {
+  	display:block !important;
+  	visibility:visible;
+  } 
+  
+  .more_buttons_mobileHidden
+  {
+  	display:none !important;
+  	visibility:hidden;
+  }        
+  
+  .registration_ad
+  {
+  	padding-top:0;
+  	padding-right:3em;
+  }
+  
+  .front 
+  {
+	width:200px;
+	height:auto;
+  }
+}
+
+/*********************
+Larger Mobile
+*********************/
+@media only screen and (min-width: 481px) {
+  #map
+  {
+    width:465px;
+    height:465px;
+  }
+  .tile_container,.tile_link,.tile_img,.tile_float
+  {
+    width:23px;
+    height:23px;
+  }
+  
+  #menu_submit
+  {
+    margin-left:auto;
+    margin-right:auto;
+  }
+  
+  .spacing-from-menu
+  {
+    padding-top:2em;
+    margin-top:0.5em;
+  } 
+  
+  .alert-spacer
+  {
+    margin-top:1.6em;
+  }
+
+  
+  .info_flag
+  {
+    width:200px;
+    height:100px;
+  }
+  
+  .more_buttons_main
+  {  	
+  	display:block !important;
+  	visibility:visible;  	
+  }
+  
+  .more_buttons_menu
+  {  	
+  	display:none !important;
+  	visibility:hidden;  	
+  }  
+  
+  .more_buttons_mobileVisible
+  {
+  	display:block !important;
+  	visibility:visible;
+  }  
+  
+  .more_buttons_mobileHidden
+  {
+  	display:none !important;
+  	visibility:hidden;
+  }        
+  
+  .registration_ad
+  {
+  	padding-top:0;
+  	padding-right:3em;
+  }  
+  
+  .front 
+  {
+	width:450px;
+	height:auto;
+  }
+}
+
+/*********************
+Tablet/Small Laptops, pt.1
+*********************/
+@media only screen and (min-width: 610px) {
+  #map
+  {
+    width:600px;
+    height:600px;
+  }
+  .tile_container,.tile_link,.tile_img,.tile_float
+  {
+    width:29px;
+    height:29px;
+  }
+  
+  #menu_submit
+  {
+    margin-left:auto;
+    margin-right:auto;
+  }
+  
+  .spacing-from-menu
+  {
+    padding-top:2em;
+    margin-top:0.5em;
+  } 
+  
+  .alert-spacer
+  {
+    margin-top:2.0em;
+  }
+  
+  .info_flag
+  {
+    width:400px;
+    height:200px;
+  }
+  
+  .more_buttons_main
+  {  	
+  	display:block !important;
+  	visibility:visible;  	
+  }
+  
+  .more_buttons_menu
+  {  	
+  	display:none !important;
+  	visibility:hidden;  	
+  }  
+  
+  .more_buttons_mobileVisible
+  {
+  	display:block !important;
+  	visibility:visible;
+  }  
+  
+  .more_buttons_mobileHidden
+  {
+  	display:none !important;
+  	visibility:hidden;
+  }        
+  
+  .registration_ad
+  {
+  	padding-top:0;
+  	padding-right:3em;
+  }  
+  
+  .front 
+  {
+	width:560px;
+	height:auto;
+  }
+}
+
+/*********************
+Tablets/Small laptops, pt.2
+*********************/
+@media only screen and (min-width: 768px) {
+  #map
+  {
+    width:650px;
+    height:650px;
+  }
+  .tile_container,.tile_link,.tile_img,.tile_float
+  {
+    width:31.25px;
+    height:31.25px;
+  }
+  
+  #menu_submit
+  {
+    margin-left:auto;
+    margin-right:auto;
+  }
+  
+  .spacing-from-menu
+  {
+    padding-top:2em;
+    margin-top:2em;
+  } 
+  
+  .alert-spacer
+  {
+    margin-top:2.0em;
+  }
+  
+  .info_flag
+  {
+    width:400px;
+    height:200px;
+  }
+  
+  .more_buttons_main
+  {
+  	display:none !important;
+  	visibility:hidden;
+  }
+  
+  .more_buttons_menu
+  {
+  	display:block !important;
+  	visibility:visible;
+  }  
+  
+  .more_buttons_mobileVisible
+  {
+  	display:none !important;
+  	visibility:hidden;
+  }   
+  
+  .more_buttons_mobileHidden
+  {
+  	display:block !important;
+  	visibility:visible;
+  }       
+  
+   .registration_ad
+  {
+  	padding-top:5em;
+  	padding-right:3em;
+  }
+  
+  .front 
+  {
+	width:560px;
+	height:auto;
+  }
+}
+
+/*********************
+Smaller Desktop
+*********************/
+@media only screen and (min-width: 990px) {
+  #map
+  {
+    width:750px;
+    height:750px;
+  }
+  .tile_container,.tile_link,.tile_img,.tile_float
+  {
+    width:37px;
+    height:37px;
+  }
+  
+  #menu_submit
+  {
+    margin-left:auto;
+    margin-right:auto;
+  }
+  
+  .spacing-from-menu
+  {
+    padding-top:2em;
+    margin-top:2em;
+  } 
+  
+  .alert-spacer
+  {
+    margin-top:2.0em;
+  }
+  
+  .info_flag
+  {
+    width:400px;
+    height:200px;
+  }
+  
+  .more_buttons_main
+  {
+  	display:none !important;
+  	visibility:hidden;
+  }
+  
+  .more_buttons_menu
+  {
+  	display:block !important;
+  	visibility:visible;
+  } 
+   
+  .more_buttons_mobileVisible
+  {
+  	display:none !important;
+  	visibility:hidden;
+  }   
+   
+  .more_buttons_mobileHidden
+  {
+  	display:block !important;
+  	visibility:visible;
+  }   
+     
+   .registration_ad
+  {
+  	padding-top:5em;
+  	padding-right:0;
+  }  
+  
+  .front 
+  {
+	width:560px;
+	height:auto;
+  }
+}
+
+/*********************
+Larger Desktop
+*********************/
+@media only screen and (min-width: 1200px) {
+  #map
+  {
+    width:850px;
+    height:850px;
+  }
+  .tile_container,.tile_link,.tile_img,.tile_float
+  {
+    width:42px;
+    height:42px;
+  }
+  
+  #menu_submit
+  {
+    margin-left:auto;
+    margin-right:auto;
+  }
+
+  .spacing-from-menu
+  {
+    padding-top:2em;
+    margin-top:2em;
+  } 
+  
+  .alert-spacer
+  {
+    margin-top:2.0em;
+  }
+  
+  .info_flag
+  {
+    width:600px;
+    height:300px;
+  }
+  
+  .more_buttons_main
+  {
+  	display:block !important;
+  	visibility:visible;
+  }
+  
+  .more_buttons_menu
+  {
+  	display:none !important;
+  	visibility:hidden;
+  }
+  
+  .more_buttons_mobileVisible
+  {
+  	display:none !important;
+  	visibility:hidden;
+  }  
+  
+  .more_buttons_mobileHidden
+  {
+  	display:block !important;
+  	visibility:visible;
+  }     
+  
+   .registration_ad
+  {
+  	padding-top:5em;
+  	padding-right:0;
+  } 
+  
+  .front 
+  {
+	width:560px;
+	height:auto;
+  } 
+}
+
+/*********************
+HD+
+*********************/
+@media only screen and (min-width: 1880px) {
+  #map
+  {
+    width:850px;
+    height:850px;
+  }
+  .tile_container,.tile_link,.tile_img,.tile_float
+  {
+    width:42px;
+    height:42px;
+  }
+  
+  #menu_submit
+  {
+    margin-left:auto;
+    margin-right:auto;
+  }
+
+  .spacing-from-menu
+  {
+    padding-top:2em;
+    margin-top:2em;
+  } 
+
+  .alert-spacer
+  {
+    margin-top:2.0em;
+  }
+  
+  .info_flag
+  {
+    width:600px;
+    height:300px;
+  }
+  
+  .more_buttons_main
+  {
+  	display:block !important;
+  	visibility:visible;
+  }
+  
+  .more_buttons_menu
+  {
+  	display:none !important;
+  	visibility:hidden;
+  }
+  
+  .more_buttons_mobileVisible
+  {
+  	display:none !important;
+  	visibility:hidden;
+  }   
+  
+  .more_buttons_mobileHidden
+  {
+  	display:block !important;
+  	visibility:visible;
+  }    
+  
+   .registration_ad
+  {
+  	padding-top:5em;
+  	padding-right:0;
+  }  
+  
+  .front 
+  {
+	width:560px;
+	height:auto;
+  }
+}
+
+/*********************
+RETINA (2x RESOLUTION DEVICES)
+This applies to the retina iPhone (4s) and iPad (2,3) along with
+other displays with a 2x resolution. You can also create a media
+query for retina AND a certain size if you want. Go Nuts.
+*********************/
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (min-device-pixel-ratio: 1.5) {
+}
