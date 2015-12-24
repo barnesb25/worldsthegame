@@ -905,39 +905,27 @@ function deleteOrganizationInfo($s_connection,$s_id) {
 	} else {
 	} // else
 
-	$next_nations = 1;
-	if ($stmt = $getPage_connection2->prepare("SELECT id FROM nations ORDER BY id ASC LIMIT 1")) {
+	if ($stmt = $getPage_connection2->prepare("SELECT id FROM nations ORDER BY id ASC")) {
 		$stmt->execute();
 		$stmt->bind_result($r_result);
-		$stmt->fetch();
-		$next_nations = $r_result;
+		$stmt->store_result();
+
+		while ($stmt->fetch()) {	
+			$next_nations = $r_result;
+			$nationInfo2 = getNationInfo($s_connection,$next_nations);
+			$new_organizations = array(0=>0);
+			$counter1 = 0;
+			for ($xx=0; $xx < count($nationInfo2["organizations"]); $xx++) {
+				if ($nationInfo2["organizations"][$xx] != $s_id) {
+					$new_organizations[$counter1] = $nationInfo2["organizations"][$xx];
+					$counter1++;
+				} // if
+			} // for
+			setNationInfo($s_connection,$nationInfo2["id"],$nationInfo2["name"],$nationInfo2["home"],$nationInfo2["formal"],$nationInfo2["flag"],$nationInfo2["production"],$nationInfo2["money"],$nationInfo2["debt"],$nationInfo2["happiness"],$nationInfo2["food"],$nationInfo2["authority"],$nationInfo2["authorityChanged"],$nationInfo2["economy"],$nationInfo2["economyChanged"],$new_organizations, $nationInfo2["invites"],$nationInfo2["goods"],$nationInfo2["resources"],$nationInfo2["population"],$nationInfo2["strike"]);
+		} // while
 		$stmt->close();
 	} else {
-		$next_nations = 0;
 	} // else
-	while ($next_nations > 0) {
-		$nationInfo2 = getNationInfo($s_connection,$next_nations);
-		$new_organizations = array(0=>0);
-		$counter1 = 0;
-		for ($xx=0; $xx < count($nationInfo2["organizations"]); $xx++) {
-			if ($nationInfo2["organizations"][$xx] != $s_id) {
-				$new_organizations[$counter1] = $nationInfo2["organizations"][$xx];
-				$counter1++;
-			} // if
-		} // for
-		setNationInfo($s_connection,$nationInfo2["id"],$nationInfo2["name"],$nationInfo2["home"],$nationInfo2["formal"],$nationInfo2["flag"],$nationInfo2["production"],$nationInfo2["money"],$nationInfo2["debt"],$nationInfo2["happiness"],$nationInfo2["food"],$nationInfo2["authority"],$nationInfo2["authorityChanged"],$nationInfo2["economy"],$nationInfo2["economyChanged"],$new_organizations, $nationInfo2["invites"],$nationInfo2["goods"],$nationInfo2["resources"],$nationInfo2["population"],$nationInfo2["strike"]);
-		 
-		if ($stmt = $s_connection->prepare("SELECT id FROM nations WHERE id = (SELECT MIN(id) FROM nations WHERE id > ?) ORDER BY id LIMIT 1")) {
-			$stmt->bind_param("i", $next_nations);
-			$stmt->execute();
-			$stmt->bind_result($r_result);
-			$stmt->fetch();
-			$next_nations = $r_result;
-			$stmt->close();
-		} else {
-			$next_nations = 0;
-		} // else
-	} // while
 } // deleteOrganizationInfo
 
 // overlays
