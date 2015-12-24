@@ -56,6 +56,7 @@ function showHelpInfo($getPage_connection2) {
 	if ($stmt = $getPage_connection2->prepare("SELECT id,title,text FROM helpcategories ORDER BY id ASC")) {
 		$stmt->execute();
 		$stmt->bind_result($r_id,$r_title,$r_text);
+		$stmt->store_result();
 		
 		while ($stmt->fetch()) {
 			$helpCategoriesInfo1 = array("id"=>$r_id,"title"=>$r_title,"text"=>$r_text);
