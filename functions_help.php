@@ -68,6 +68,7 @@ function showHelpInfo($getPage_connection2) {
 			if ($stmt2 = $getPage_connection2->prepare("SELECT id,category,title,text FROM helpsubcategories ORDER BY id ASC")) {
 				$stmt2->execute();
 				$stmt2->bind_result($r_id1,$r_category1,$r_title1,$r_text1);
+				$stmt2->store_result();
 				
 				while ($stmt2->fetch()) {
 					$helpSubcategoriesInfo1 = array("id"=>$r_id1,"category"=>$r_category1,"title"=>$r_title1,"text"=>$r_text1);
@@ -97,6 +98,7 @@ function showHelpInfo($getPage_connection2) {
 	if ($stmt = $getPage_connection2->prepare("SELECT id,title,text FROM helpcategories ORDER BY id ASC")) {
 		$stmt->execute();
 		$stmt->bind_result($r_id,$r_title,$r_text);
+		$stmt->store_result();
 		
 		while ($stmt->fetch()) {
 			$helpCategoriesInfo1 = array("id"=>$r_id,"title"=>$r_title,"text"=>$r_text);	
@@ -115,6 +117,7 @@ function showHelpInfo($getPage_connection2) {
 			if ($stmt2 = $getPage_connection2->prepare("SELECT id,category,title,text FROM helpsubcategories ORDER BY id ASC")) {
 				$stmt2->execute();
 				$stmt2->bind_result($r_id1,$r_category1,$r_title1,$r_text1);
+				$stmt2->store_result();
 				
 				while ($stmt2->fetch()) {
 					$helpSubcategoriesInfo1 = array("id"=>$r_id1,"category"=>$r_category1,"title"=>$r_title1,"text"=>$r_text1);
