@@ -197,89 +197,74 @@ function registerUser($getPage_connection2) {
 						$availableTiles = array(0=>0,1=>0,2=>0,3=>0,4=>0);
 						$finalTiles = array(0=>0,1=>0);
 	
-						$next_continents = 1;
 						$availableContinent = 0;
-						if ($stmt = $getPage_connection2->prepare("SELECT id FROM continents ORDER BY id ASC LIMIT 1")) {
+						if ($stmt = $getPage_connection2->prepare("SELECT id FROM continents ORDER BY id ASC")) {
 							$stmt->execute();
-							$stmt->bind_result($r_result);
-							$stmt->fetch();
-							$next_continents = $r_result;
+							$stmt->bind_result($r_id);
+							$stmt->store_result();
+							
+							while ($stmt->fetch()) {	
+								$next_continents = $r_id;
+								$availableTiles = array(0=>0,1=>0,2=>0,3=>0,4=>0);
+		
+								$counter1 = 0;
+								if ($stmt2 = $getPage_connection2->prepare("SELECT id FROM tilesmap ORDER BY id ASC")) {
+									$stmt2->execute();
+									$stmt2->bind_result($r_id1);
+									$stmt2->store_result();
+
+									while ($stmt2->fetch()) {
+										$next_tiles = $r_id1;
+										$tileInfoD = getTileInfoByID($getPage_connection2,$next_tiles);
+																
+										if ($tileInfoD["continent"] == $next_continents && $tileInfoD["owner"] == 0 && $tileInfoD["terrain"] != 2) {																
+											$tileInfoDWest = getTileInfo($getPage_connection2, $tileInfoD["continent"], $tileInfoD["xpos"] - 1, $tileInfoD["ypos"]);
+											$tileInfoDNorthWest = getTileInfo($getPage_connection2, $tileInfoD["continent"], $tileInfoD["xpos"] - 1, $tileInfoD["ypos"] - 1);
+											$tileInfoDNorth = getTileInfo($getPage_connection2, $tileInfoD["continent"], $tileInfoD["xpos"] - 1, $tileInfoD["ypos"] - 1);
+											$tileInfoDNorthEast = getTileInfo($getPage_connection2, $tileInfoD["continent"], $tileInfoD["xpos"] + 1, $tileInfoD["ypos"] - 1);
+											$tileInfoDEast = getTileInfo($getPage_connection2, $tileInfoD["continent"], $tileInfoD["xpos"] + 1, $tileInfoD["ypos"]);
+											$tileInfoDSouthEast = getTileInfo($getPage_connection2, $tileInfoD["continent"], $tileInfoD["xpos"] + 1, $tileInfoD["ypos"] + 1);
+											$tileInfoDSouth = getTileInfo($getPage_connection2, $tileInfoD["continent"], $tileInfoD["xpos"], $tileInfoD["ypos"] + 1);
+											$tileInfoDSouthWest = getTileInfo($getPage_connection2, $tileInfoD["continent"], $tileInfoD["xpos"] - 1, $tileInfoD["ypos"] + 1);								
+											
+											if ( ($tileInfoDWest["continent"] == $next_continents && $tileInfoDWest["owner"] == 0 && $tileInfoDWest["terrain"] != 2) ||
+												($tileInfoDNorthWest["continent"] == $next_continents && $tileInfoDNorthWest["owner"] == 0 && $tileInfoDNorthWest["terrain"] != 2) ||
+												($tileInfoDNorth["continent"] == $next_continents && $tileInfoDNorth["owner"] == 0 && $tileInfoDNorth["terrain"] != 2) ||
+												($tileInfoDNorthEast["continent"] == $next_continents && $tileInfoDNorthEast["owner"] == 0 && $tileInfoDNorthEast["terrain"] != 2) ||
+												($tileInfoDEast["continent"] == $next_continents && $tileInfoDEast["owner"] == 0 && $tileInfoDEast["terrain"] != 2) ||
+												($tileInfoDSouthEast["continent"] == $next_continents && $tileInfoDSouthEast["owner"] == 0 && $tileInfoDSouthEast["terrain"] != 2) ||
+												($tileInfoDSouth["continent"] == $next_continents && $tileInfoDSouth["owner"] == 0 && $tileInfoDSouth["terrain"] != 2) ||
+												($tileInfoDSouthWest["continent"] == $next_continents && $tileInfoDSouthWest["owner"] == 0 && $tileInfoDSouthWest["terrain"] != 2) ) 
+											{									
+												$availableTiles[$counter1] = $tileInfoD["id"];
+												$counter1++;
+											} // if
+										} // if
+			
+										if ($counter1 == 4) {
+											$availableContinent = $next_continents;
+										} // if
+									} // while
+									$stmt2->close();												
+								} else {
+								} // else									
+								if ($counter1 == 4) {
+									break;
+								} // if
+							} // while						
 							$stmt->close();
 						} else {
-							$next_continents = 0;
 						} // else
-						while ($next_continents > 0) {
-							$availableTiles = array(0=>0,1=>0,2=>0,3=>0,4=>0);
-	
-							$next_tiles = 1;
-							$counter1 = 0;
-							if ($stmt = $getPage_connection2->prepare("SELECT id FROM tilesmap ORDER BY id ASC LIMIT 1")) {
-								$stmt->execute();
-								$stmt->bind_result($r_result);
-								$stmt->fetch();
-								$next_tiles = $r_result;
-								$stmt->close();
-							} else {
-								$next_tiles = 0;
-							} // else
-							while ($next_tiles > 0) {
-								$tileInfoD = getTileInfoByID($getPage_connection2,$next_tiles);
-														
-								if ($tileInfoD["continent"] == $next_continents && $tileInfoD["owner"] == 0 && $tileInfoD["terrain"] != 2) {																
-									$tileInfoDWest = getTileInfo($getPage_connection2, $tileInfoD["continent"], $tileInfoD["xpos"] - 1, $tileInfoD["ypos"]);
-									$tileInfoDNorthWest = getTileInfo($getPage_connection2, $tileInfoD["continent"], $tileInfoD["xpos"] - 1, $tileInfoD["ypos"] - 1);
-									$tileInfoDNorth = getTileInfo($getPage_connection2, $tileInfoD["continent"], $tileInfoD["xpos"] - 1, $tileInfoD["ypos"] - 1);
-									$tileInfoDNorthEast = getTileInfo($getPage_connection2, $tileInfoD["continent"], $tileInfoD["xpos"] + 1, $tileInfoD["ypos"] - 1);
-									$tileInfoDEast = getTileInfo($getPage_connection2, $tileInfoD["continent"], $tileInfoD["xpos"] + 1, $tileInfoD["ypos"]);
-									$tileInfoDSouthEast = getTileInfo($getPage_connection2, $tileInfoD["continent"], $tileInfoD["xpos"] + 1, $tileInfoD["ypos"] + 1);
-									$tileInfoDSouth = getTileInfo($getPage_connection2, $tileInfoD["continent"], $tileInfoD["xpos"], $tileInfoD["ypos"] + 1);
-									$tileInfoDSouthWest = getTileInfo($getPage_connection2, $tileInfoD["continent"], $tileInfoD["xpos"] - 1, $tileInfoD["ypos"] + 1);								
-									
-									if ( ($tileInfoDWest["continent"] == $next_continents && $tileInfoDWest["owner"] == 0 && $tileInfoDWest["terrain"] != 2) ||
-										($tileInfoDNorthWest["continent"] == $next_continents && $tileInfoDNorthWest["owner"] == 0 && $tileInfoDNorthWest["terrain"] != 2) ||
-										($tileInfoDNorth["continent"] == $next_continents && $tileInfoDNorth["owner"] == 0 && $tileInfoDNorth["terrain"] != 2) ||
-										($tileInfoDNorthEast["continent"] == $next_continents && $tileInfoDNorthEast["owner"] == 0 && $tileInfoDNorthEast["terrain"] != 2) ||
-										($tileInfoDEast["continent"] == $next_continents && $tileInfoDEast["owner"] == 0 && $tileInfoDEast["terrain"] != 2) ||
-										($tileInfoDSouthEast["continent"] == $next_continents && $tileInfoDSouthEast["owner"] == 0 && $tileInfoDSouthEast["terrain"] != 2) ||
-										($tileInfoDSouth["continent"] == $next_continents && $tileInfoDSouth["owner"] == 0 && $tileInfoDSouth["terrain"] != 2) ||
-										($tileInfoDSouthWest["continent"] == $next_continents && $tileInfoDSouthWest["owner"] == 0 && $tileInfoDSouthWest["terrain"] != 2) ) 
-									{									
-										$availableTiles[$counter1] = $tileInfoD["id"];
-										$counter1++;
-									} // if
-								} // if
-	
-								if ($counter1 == 4) {
-									$availableContinent = $next_continents;
-								} // if
-	
-								if ($stmt = $getPage_connection2->prepare("SELECT id FROM tilesmap WHERE id = (SELECT MIN(id) FROM tilesmap WHERE id > ?) ORDER BY id LIMIT 1")) {
-									$stmt->bind_param("i", $next_tiles);
-									$stmt->execute();
-									$stmt->bind_result($r_result);
-									$stmt->fetch();
-									$next_tiles = $r_result;
-									$stmt->close();
-								} else {
-									$next_tiles = 0;
-								} // else
-							} // while
-	
-							if ($counter1 == 4) {
-								break;
-							} // if
-	
-							if ($stmt = $getPage_connection2->prepare("SELECT id FROM continents WHERE id = (SELECT MIN(id) FROM continents WHERE id > ?) ORDER BY id LIMIT 1")) {
-								$stmt->bind_param("i", $next_continents);
-								$stmt->execute();
-								$stmt->bind_result($r_result);
-								$stmt->fetch();
-								$next_continents = $r_result;
-								$stmt->close();
-							} else {
-								$next_continents = 0;
-							} // else
-						} // while
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
 						
 						// get available tiles from newly created continent if no continent is available
 						if ($availableContinent < 1) {
@@ -293,53 +278,41 @@ function registerUser($getPage_connection2) {
 							
 							$next_tiles = 1;
 							$counter1 = 0;
-							if ($stmt = $getPage_connection2->prepare("SELECT id FROM tilesmap ORDER BY id ASC LIMIT 1")) {
+							if ($stmt = $getPage_connection2->prepare("SELECT id FROM tilesmap ORDER BY id ASC")) {
 								$stmt->execute();
-								$stmt->bind_result($r_result);
-								$stmt->fetch();
-								$next_tiles = $r_result;
+								$stmt->bind_result($r_id);
+								$stmt->store_result();
+								while ($stmt->fetch()) {
+									$next_tiles = $r_id;
+									$tileInfoD = getTileInfoByID($getPage_connection2,$next_tiles);
+											
+									if ($tileInfoD["continent"] == $next_continents && $tileInfoD["owner"] == 0 && ($tileInfoD["terrain"] != 2 && $tileInfoD["terrain"] != 3)) {
+										$tileInfoDWest = getTileInfo($getPage_connection2, $tileInfoD["continent"], $tileInfoD["xpos"] - 1, $tileInfoD["ypos"]);
+										$tileInfoDNorthWest = getTileInfo($getPage_connection2, $tileInfoD["continent"], $tileInfoD["xpos"] - 1, $tileInfoD["ypos"] - 1);
+										$tileInfoDNorth = getTileInfo($getPage_connection2, $tileInfoD["continent"], $tileInfoD["xpos"] - 1, $tileInfoD["ypos"] - 1);
+										$tileInfoDNorthEast = getTileInfo($getPage_connection2, $tileInfoD["continent"], $tileInfoD["xpos"] + 1, $tileInfoD["ypos"] - 1);
+										$tileInfoDEast = getTileInfo($getPage_connection2, $tileInfoD["continent"], $tileInfoD["xpos"] + 1, $tileInfoD["ypos"]);
+										$tileInfoDSouthEast = getTileInfo($getPage_connection2, $tileInfoD["continent"], $tileInfoD["xpos"] + 1, $tileInfoD["ypos"] + 1);
+										$tileInfoDSouth = getTileInfo($getPage_connection2, $tileInfoD["continent"], $tileInfoD["xpos"], $tileInfoD["ypos"] + 1);
+										$tileInfoDSouthWest = getTileInfo($getPage_connection2, $tileInfoD["continent"], $tileInfoD["xpos"] - 1, $tileInfoD["ypos"] + 1);
+										
+										if ( ($tileInfoDWest["continent"] == $next_continents && $tileInfoDWest["owner"] == 0 && ($tileInfoDWest["terrain"] != 2 && $tileInfoDWest["terrain"] != 3)) ||
+											($tileInfoDNorthWest["continent"] == $next_continents && $tileInfoDNorthWest["owner"] == 0 && ($tileInfoDNorthWest["terrain"] != 2 && $tileInfoDNorthWest["terrain"] != 3)) ||
+												($tileInfoDNorth["continent"] == $next_continents && $tileInfoDNorth["owner"] == 0 && ($tileInfoDNorth["terrain"] != 2 && $tileInfoDNorth["terrain"] != 3)) ||
+												($tileInfoDNorthEast["continent"] == $next_continents && $tileInfoDNorthEast["owner"] == 0 && ($tileInfoDNorthEast["terrain"] != 2 && $tileInfoDNorthEast["terrain"] != 3)) ||
+												($tileInfoDEast["continent"] == $next_continents && $tileInfoDEast["owner"] == 0 && ($tileInfoDEast["terrain"] != 2 && $tileInfoDEast["terrain"] != 3)) ||
+												($tileInfoDSouthEast["continent"] == $next_continents && $tileInfoDSouthEast["owner"] == 0 && ($tileInfoDSouthEast["terrain"] != 2 && $tileInfoDSouthEast["terrain"] != 3)) ||
+												($tileInfoDSouth["continent"] == $next_continents && $tileInfoDSouth["owner"] == 0 && ($tileInfoDSouth["terrain"] != 2 && $tileInfoDSouth["terrain"] != 3)) ||
+												($tileInfoDSouthWest["continent"] == $next_continents && $tileInfoDSouthWest["owner"] == 0 && ($tileInfoDSouthWest["terrain"] != 2 && $tileInfoDSouthWest["terrain"] != 3)) )
+										{
+											$availableTiles[$counter1] = $tileInfoD["id"];
+											$counter1++;
+										} // if
+									} // if				
+								} // while	
 								$stmt->close();
 							} else {
-								$next_tiles = 0;
 							} // else
-							while ($next_tiles > 0) {
-								$tileInfoD = getTileInfoByID($getPage_connection2,$next_tiles);
-										
-								if ($tileInfoD["continent"] == $next_continents && $tileInfoD["owner"] == 0 && ($tileInfoD["terrain"] != 2 && $tileInfoD["terrain"] != 3)) {
-									$tileInfoDWest = getTileInfo($getPage_connection2, $tileInfoD["continent"], $tileInfoD["xpos"] - 1, $tileInfoD["ypos"]);
-									$tileInfoDNorthWest = getTileInfo($getPage_connection2, $tileInfoD["continent"], $tileInfoD["xpos"] - 1, $tileInfoD["ypos"] - 1);
-									$tileInfoDNorth = getTileInfo($getPage_connection2, $tileInfoD["continent"], $tileInfoD["xpos"] - 1, $tileInfoD["ypos"] - 1);
-									$tileInfoDNorthEast = getTileInfo($getPage_connection2, $tileInfoD["continent"], $tileInfoD["xpos"] + 1, $tileInfoD["ypos"] - 1);
-									$tileInfoDEast = getTileInfo($getPage_connection2, $tileInfoD["continent"], $tileInfoD["xpos"] + 1, $tileInfoD["ypos"]);
-									$tileInfoDSouthEast = getTileInfo($getPage_connection2, $tileInfoD["continent"], $tileInfoD["xpos"] + 1, $tileInfoD["ypos"] + 1);
-									$tileInfoDSouth = getTileInfo($getPage_connection2, $tileInfoD["continent"], $tileInfoD["xpos"], $tileInfoD["ypos"] + 1);
-									$tileInfoDSouthWest = getTileInfo($getPage_connection2, $tileInfoD["continent"], $tileInfoD["xpos"] - 1, $tileInfoD["ypos"] + 1);
-									
-									if ( ($tileInfoDWest["continent"] == $next_continents && $tileInfoDWest["owner"] == 0 && ($tileInfoDWest["terrain"] != 2 && $tileInfoDWest["terrain"] != 3)) ||
-										($tileInfoDNorthWest["continent"] == $next_continents && $tileInfoDNorthWest["owner"] == 0 && ($tileInfoDNorthWest["terrain"] != 2 && $tileInfoDNorthWest["terrain"] != 3)) ||
-											($tileInfoDNorth["continent"] == $next_continents && $tileInfoDNorth["owner"] == 0 && ($tileInfoDNorth["terrain"] != 2 && $tileInfoDNorth["terrain"] != 3)) ||
-											($tileInfoDNorthEast["continent"] == $next_continents && $tileInfoDNorthEast["owner"] == 0 && ($tileInfoDNorthEast["terrain"] != 2 && $tileInfoDNorthEast["terrain"] != 3)) ||
-											($tileInfoDEast["continent"] == $next_continents && $tileInfoDEast["owner"] == 0 && ($tileInfoDEast["terrain"] != 2 && $tileInfoDEast["terrain"] != 3)) ||
-											($tileInfoDSouthEast["continent"] == $next_continents && $tileInfoDSouthEast["owner"] == 0 && ($tileInfoDSouthEast["terrain"] != 2 && $tileInfoDSouthEast["terrain"] != 3)) ||
-											($tileInfoDSouth["continent"] == $next_continents && $tileInfoDSouth["owner"] == 0 && ($tileInfoDSouth["terrain"] != 2 && $tileInfoDSouth["terrain"] != 3)) ||
-											($tileInfoDSouthWest["continent"] == $next_continents && $tileInfoDSouthWest["owner"] == 0 && ($tileInfoDSouthWest["terrain"] != 2 && $tileInfoDSouthWest["terrain"] != 3)) )
-									{
-										$availableTiles[$counter1] = $tileInfoD["id"];
-										$counter1++;
-									} // if
-								} // if
-							
-								if ($stmt = $getPage_connection2->prepare("SELECT id FROM tilesmap WHERE id = (SELECT MIN(id) FROM tilesmap WHERE id > ?) ORDER BY id LIMIT 1")) {
-									$stmt->bind_param("i", $next_tiles);
-									$stmt->execute();
-									$stmt->bind_result($r_result);
-									$stmt->fetch();
-									$next_tiles = $r_result;
-									$stmt->close();
-								} else {
-									$next_tiles = 0;
-								} // else
-							} // while			
 						} // if
 						
 						$sameTile = true;
