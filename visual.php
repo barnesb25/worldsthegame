@@ -343,7 +343,7 @@ function showOverlayOptions($getPage_connection2) {
 		$stmt->store_result();
 		
 		while ($stmt->fetch()) {		
-			$overlayInfo1 = array("id"=>$r_id,"name"=>$_name);	
+			$overlayInfo1 = array("id"=>$r_id,"name"=>$r_name);	
 			
 			if (isset($_SESSION["overlay"])) {
 				if ($_SESSION["overlay"] == strtolower($overlayInfo1["name"])) {
