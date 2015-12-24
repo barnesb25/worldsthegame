@@ -593,24 +593,24 @@ function updateNations($getPage_connection2) {
 			$tradeCount = 0;
 	
 			$limit_allTilesOwned = 0;
-			if ($stmt = $getPage_connection2->prepare("SELECT COUNT(id) FROM tilesmap WHERE owner=?")) {
-				$stmt->bind_param("i", $next_nations);
-				$stmt->execute();
-				$stmt->bind_result($r_result);
-				$stmt->fetch();
+			if ($stmt1 = $getPage_connection2->prepare("SELECT COUNT(id) FROM tilesmap WHERE owner=?")) {
+				$stmt1->bind_param("i", $next_nations);
+				$stmt1->execute();
+				$stmt1->bind_result($r_result);
+				$stmt1->fetch();
 				$limit_allTilesOwned = $r_result;
-				$stmt->close();
+				$stmt1->close();
 			} else {
 				$endTurnFailed = "failed";
 			} // else
 	
 			$limit_allImprovements = 0;
-			if ($stmt = $getPage_connection2->prepare("SELECT COUNT(id) FROM improvementsmap")) {
-				$stmt->execute();
-				$stmt->bind_result($r_result);
-				$stmt->fetch();
+			if ($stmt1 = $getPage_connection2->prepare("SELECT COUNT(id) FROM improvementsmap")) {
+				$stmt1->execute();
+				$stmt1->bind_result($r_result);
+				$stmt1->fetch();
 				$limit_allImprovements = $r_result;
-				$stmt->close();
+				$stmt1->close();
 			} else {
 				$endTurnFailed = "failed";
 			} // else
@@ -621,120 +621,109 @@ function updateNations($getPage_connection2) {
 	
 			// get tiles info for production/claims/bonus addition
 			$_SESSION["scriptOutput"] .= "Get tiles info for production/claims/bonus addition...<br />";
-			if ($stmt = $getPage_connection2->prepare("SELECT id FROM tilesmap ORDER BY id ASC LIMIT 1")) {
-				$stmt->execute();
-				$stmt->bind_result($r_result);
-				$stmt->fetch();
-				$next_tiles = $r_result;
-				$stmt->close();
-			} else {
-				$next_tiles = 0;
-			} // else
-			while ($next_tiles > 0) {			
-				$tileInfoW = getTileInfoByID($getPage_connection2, $next_tiles);				
-						
-				if ($tileInfoW["owner"] == $next_nations) {					
-					// add claim strength if claim is dominant and tile is controlled
-					$claimsStateW = checkClaimsState($getPage_connection2, $tileInfoW, $next_nations);				
-					if ($claimsStateW == 1) {
-						for ($e=0; $e < count($tileInfoW["claims"]); $e++) {
-							$claimInfoW = getClaimInfo($getPage_connection2, $tileInfoW["claims"][$e]);
-							if ($claimInfoW["owner"] == $next_nations) {
-								if ($claimInfoW["strength"] > 0) {
-									$bonus_new_strength = 0;
-									for ($c=0; $c < count($tileInfoW["improvements"]); $c++) {
-										$improvementInfoV = getImprovementInfo($getPage_connection2, $tileInfoW["improvements"][$c]);
-										if ($improvementInfoV["type"] == 1) {
-											$bonus_new_strength = 3;
-										} // if
-									} // for
-									$new_strength = $bonus_new_strength + $claimInfoW["strength"] + 2;
-								} // if
-								setClaimInfo($getPage_connection2, $claimInfoW["id"], $new_strength, $claimInfoW["owner"]);
-							} // if
-						} // for
-					} // if
-					
-					// trade
-					$_SESSION["scriptOutput"] .= "Trade Count adjust...<br />";
-					
-					for ($ss=0; $ss < count ($tileInfoW["improvements"]); $ss++) {
-						$improvementInfoF = getImprovementInfo($getPage_connection2,$tileInfoW["improvements"][$ss]);
-						if ($improvementInfoF["type"] == 1 || $improvementInfoF["type"] == 2) {
-							for ($cc=0; $cc < count($improvementInfoF["owners"]); $cc++) {
-								if ($improvementInfoF["owners"] == $next_nations) {
-									if ($improvementInfoF["type"] == 1) {
-										$tradeCount++;
-									} else if ($improvementInfoF["type"] == 2) {
-										$tradeCount = $tradeCount + 2;
-									} // else if
+			if ($stmt2 = $getPage_connection2->prepare("SELECT id FROM tilesmap ORDER BY id ASC")) {
+				$stmt2->execute();
+				$stmt2->bind_result($r_result);
+				$stmt2->store_result();
+
+				while ($stmt2->fetch()) {
+					$next_tiles = $r_result;
+					$tileInfoW = getTileInfoByID($getPage_connection2, $next_tiles);				
+							
+					if ($tileInfoW["owner"] == $next_nations) {					
+						// add claim strength if claim is dominant and tile is controlled
+						$claimsStateW = checkClaimsState($getPage_connection2, $tileInfoW, $next_nations);				
+						if ($claimsStateW == 1) {
+							for ($e=0; $e < count($tileInfoW["claims"]); $e++) {
+								$claimInfoW = getClaimInfo($getPage_connection2, $tileInfoW["claims"][$e]);
+								if ($claimInfoW["owner"] == $next_nations) {
+									if ($claimInfoW["strength"] > 0) {
+										$bonus_new_strength = 0;
+										for ($c=0; $c < count($tileInfoW["improvements"]); $c++) {
+											$improvementInfoV = getImprovementInfo($getPage_connection2, $tileInfoW["improvements"][$c]);
+											if ($improvementInfoV["type"] == 1) {
+												$bonus_new_strength = 3;
+											} // if
+										} // for
+										$new_strength = $bonus_new_strength + $claimInfoW["strength"] + 2;
+									} // if
+									setClaimInfo($getPage_connection2, $claimInfoW["id"], $new_strength, $claimInfoW["owner"]);
 								} // if
 							} // for
 						} // if
-					} // for
-					
-					// claims for happiness
-					$_SESSION["scriptOutput"] .= "Happiness+Claims adjust...<br />";
-					
-					$claimsStateW = checkClaimsState($getPage_connection2, $tileInfoW, $next_nations);				
-					
-					// set happiness addition dependent on claim to tile
-					
-					// if current nation claims successfully
-					if ($claimsStateW == 1) {
-						$new_happiness = $new_happiness + 5;
-					
-					// if enemy nation claims successfully
-					} else if ($claimsStateW == 2) {
-						$new_happiness = $new_happiness + 1;
-					
-					// if claim is contested and player is involved
-					} else if ($claimsStateW == 3) {
-						$new_happiness = $new_happiness + 2;
-					
-					// if claim is contested and player is not involved
-					} else if ($claimsStateW == 4) {
-					
-					// default to enemy claim
-					} else {
-						// bad
-						$new_happiness = $new_happiness + 1;
-					} // else
-					
-					// terrain production modifiers
-					
-					$_SESSION["scriptOutput"] .= "Terrain production modifiers...<br />";
-																		
-					$terrainInfoW = array("productionModifier"=>0);
-					if ($stmt = $getPage_connection2->prepare("SELECT productionModifier FROM terrain WHERE id=? LIMIT 1")) {
-						$stmt->bind_param("i", $tileInfoW["terrain"]);
-						$stmt->execute();
-						$stmt->bind_result($r_productionModifier);
-						$stmt->fetch();
-						$terrainInfoW["productionModifier"] = $r_productionModifier;
-						$stmt->close();
-					} else {
-					} // else
-					
-					if ($terrainInfoW["productionModifier"] >= 1) {
-						$mod = 0.01;
-						$new_production = $new_production + (($terrainInfoW["productionModifier"]*$mod)*2.0);
-					} else {
-						$new_production = $new_production + 2;
-					} // else
-				} // if
-	
-				if ($stmt = $getPage_connection2->prepare("SELECT id FROM tilesmap WHERE id = (SELECT MIN(id) FROM tilesmap WHERE id > ?) ORDER BY id LIMIT 1")) {
-					$stmt->bind_param("i", $next_tiles);
-					$stmt->execute();
-					$stmt->bind_result($r_result);
-					$stmt->fetch();
-					$next_tiles = $r_result;
-					$stmt->close();
-				} else {
-					$next_tiles = 0;
-				} // else
-			} // while
+						
+						// trade
+						$_SESSION["scriptOutput"] .= "Trade Count adjust...<br />";
+						
+						for ($ss=0; $ss < count ($tileInfoW["improvements"]); $ss++) {
+							$improvementInfoF = getImprovementInfo($getPage_connection2,$tileInfoW["improvements"][$ss]);
+							if ($improvementInfoF["type"] == 1 || $improvementInfoF["type"] == 2) {
+								for ($cc=0; $cc < count($improvementInfoF["owners"]); $cc++) {
+									if ($improvementInfoF["owners"] == $next_nations) {
+										if ($improvementInfoF["type"] == 1) {
+											$tradeCount++;
+										} else if ($improvementInfoF["type"] == 2) {
+											$tradeCount = $tradeCount + 2;
+										} // else if
+									} // if
+								} // for
+							} // if
+						} // for
+						
+						// claims for happiness
+						$_SESSION["scriptOutput"] .= "Happiness+Claims adjust...<br />";
+						
+						$claimsStateW = checkClaimsState($getPage_connection2, $tileInfoW, $next_nations);				
+						
+						// set happiness addition dependent on claim to tile
+						
+						// if current nation claims successfully
+						if ($claimsStateW == 1) {
+							$new_happiness = $new_happiness + 5;
+						
+						// if enemy nation claims successfully
+						} else if ($claimsStateW == 2) {
+							$new_happiness = $new_happiness + 1;
+						
+						// if claim is contested and player is involved
+						} else if ($claimsStateW == 3) {
+							$new_happiness = $new_happiness + 2;
+						
+						// if claim is contested and player is not involved
+						} else if ($claimsStateW == 4) {
+						
+						// default to enemy claim
+						} else {
+							// bad
+							$new_happiness = $new_happiness + 1;
+						} // else
+						
+						// terrain production modifiers
+						
+						$_SESSION["scriptOutput"] .= "Terrain production modifiers...<br />";
+																			
+						$terrainInfoW = array("productionModifier"=>0);
+						if ($stmt = $getPage_connection2->prepare("SELECT productionModifier FROM terrain WHERE id=? LIMIT 1")) {
+							$stmt->bind_param("i", $tileInfoW["terrain"]);
+							$stmt->execute();
+							$stmt->bind_result($r_productionModifier);
+							$stmt->fetch();
+							$terrainInfoW["productionModifier"] = $r_productionModifier;
+							$stmt->close();
+						} else {
+						} // else
+						
+						if ($terrainInfoW["productionModifier"] >= 1) {
+							$mod = 0.01;
+							$new_production = $new_production + (($terrainInfoW["productionModifier"]*$mod)*2.0);
+						} else {
+							$new_production = $new_production + 2;
+						} // else
+					} // if
+				} // while
+				$stmt2->close();
+			} else {
+			} // else
 			
 			// add to nation variables based on tile number
 			$new_money = $new_money + (2*$limit_allTilesOwned);
@@ -742,122 +731,111 @@ function updateNations($getPage_connection2) {
 			//  get improvements
 			$_SESSION["scriptOutput"] .= "Get improvements info for production, money, population mods...<br />";
 			
-			if ($stmt = $getPage_connection2->prepare("SELECT id FROM improvementsmap ORDER BY id ASC LIMIT 1")) {
-				$stmt->execute();
-				$stmt->bind_result($r_result);
-				$stmt->fetch();
-				$next_improvements = $r_result;
-				$stmt->close();
-			} else {
-				$next_improvements = 0;
-			} // else
-			while ($next_improvements > 0) {
-				$improvementInfoW = getImprovementInfo($getPage_connection2,$next_improvements);
-			
-				for ($z=0; $z < count($improvementInfoW["owners"]); $z++) {
-					if ($improvementInfoW["owners"][$z] == $next_nations) {
-						// capital
-						if ($improvementInfoW["type"] == 1) {
-							$new_money = $new_money + ((60.0*(0.25*$improvementInfoW["level"])) / count($improvementInfoW["owners"]));
-							$new_production = $new_production + ((20.0*(0.25*$improvementInfoW["level"])) / count($improvementInfoW["owners"]));					
-							
-							$tileInfoG = getTileInfo($getPage_connection2, $improvementInfoW["continent"], $improvementInfoW["xpos"], $improvementInfoW["ypos"]);				
-							$generate_population = mt_rand(200.0*(0.25*$improvementInfoW["level"]), 800.0*(0.25*$improvementInfoW["level"]));
-							$new_tile_population = $tileInfoG["population"] + ($generate_population / count($improvementInfoW["owners"]));						
-							setTileInfo($getPage_connection2, $tileInfoG["id"], $tileInfoG["continent"], $tileInfoG["xpos"], $tileInfoG["ypos"], $tileInfoG["terrain"], $tileInfoG["resources"], $tileInfoG["improvements"], $tileInfoG["owner"], $tileInfoG["claims"], $new_tile_population);
-							
-						// town
-						} else if ($improvementInfoW["type"] == 2) {
-							$new_money = $new_money + ((30.0*(0.25*$improvementInfoW["level"])) / count($improvementInfoW["owners"]));
-							
-							$tileInfoG = getTileInfo($getPage_connection2, $improvementInfoW["continent"], $improvementInfoW["xpos"], $improvementInfoW["ypos"]);
-							$generate_population = mt_rand(200.0*(0.25*$improvementInfoW["level"]), 400.0*(0.25*$improvementInfoW["level"]));
-							$new_tile_population = $tileInfoG["population"] + ($generate_population / count($improvementInfoW["owners"]));
-							setTileInfo($getPage_connection2, $tileInfoG["id"], $tileInfoG["continent"], $tileInfoG["xpos"], $tileInfoG["ypos"], $tileInfoG["terrain"], $tileInfoG["resources"], $tileInfoG["improvements"], $tileInfoG["owner"], $tileInfoG["claims"], $new_tile_population);
-						
-						// industry
-						} else if ($improvementInfoW["type"] == 3) {
-							$new_production = $new_production + ((20.0*(0.25*$improvementInfoW["level"])) / count($improvementInfoW["owners"]));
-						
-						// farm
-						} else if ($improvementInfoW["type"] == 4) {
-							$generate_food = mt_rand(1000.0*(0.25*$improvementInfoW["level"]), 6000.0*(0.25*$improvementInfoW["level"]));
-							$new_food = $new_food + ($generate_food / count($improvementInfoW["owners"]));
-						
-						// depot
-						} else if ($improvementInfoW["type"] == 5) {
-						
-						// mill
-						} else if ($improvementInfoW["type"] == 6) {
-							for ($d=0; $d < count($improvementInfoW["usingResources"]); $d++) {
-								$resourceInfoW = getResourceInfo($getPage_connection2,$improvementInfoW["usingResources"][$d]);
-								if ($resourceInfoW["type"] == 1 && $resourceInfoW["capacity"] >= 5) {
-									$initialExtract = 0.02*$resourceInfoW["capacity"];
-									$extractAmount = (($initialExtract*(0.25*$improvementInfoW["level"])) / count($improvementInfoW["owners"]));
-									$new_resources[0] = $new_resources[0] + $extractAmount;
-									$new_capacity = $resourceInfoW["capacity"] - $extractAmount;
-									setResourceInfo($getPage_connection2,$resourceInfoW["id"],$resourceInfoW["type"],$new_capacity);
-									break;
-								} // if
-							} // for
-						
-						// reserve
-						} else if ($improvementInfoW["type"] == 7) {
-							$new_happiness = $new_happiness + (0.01 / count($improvementInfoW["owners"]));
-						
-						// mine
-						} else if ($improvementInfoW["type"] == 8) {
-							for ($d=0; $d < count($improvementInfoW["usingResources"]); $d++) {
-								$resourceInfoW = getResourceInfo($getPage_connection2,$improvementInfoW["usingResources"][$d]);
-								if ($resourceInfoW["type"] == 2 && $resourceInfoW["capacity"] >= 5) {
-									$initialExtract = 0.02*$resourceInfoW["capacity"];
-									$extractAmount = (($initialExtract*(0.25*$improvementInfoW["level"])) / count($improvementInfoW["owners"]));								
-									$new_resources[1] = $new_resources[1] + $extractAmount;
-									$new_capacity = $resourceInfoW["capacity"] - $extractAmount;
-									setResourceInfo($getPage_connection2,$resourceInfoW["id"],$resourceInfoW["type"],$new_capacity);
-									break;
-								} // if
-							} // for
-						
-						// well
-						} else if ($improvementInfoW["type"] == 9) {
-							for ($d=0; $d < count($improvementInfoW["usingResources"]); $d++) {
-								$resourceInfoW = getResourceInfo($getPage_connection2,$improvementInfoW["usingResources"][$d]);
-								if ($resourceInfoW["type"] == 3 && $resourceInfoW["capacity"] >= 5) {
-									$initialExtract = 0.02*$resourceInfoW["capacity"];
-									$extractAmount = (($initialExtract*(0.25*$improvementInfoW["level"])) / count($improvementInfoW["owners"]));
-									$new_resources[2] = $new_resources[2] + $extractAmount;
-									$new_capacity = $resourceInfoW["capacity"] - $extractAmount;
-									setResourceInfo($getPage_connection2,$resourceInfoW["id"],$resourceInfoW["type"],$new_capacity);
-									break;
-								} // if
-							} // for
-						
-						// dam
-						} else if ($improvementInfoW["type"] == 10) {
-							for ($d=0; $d < count($improvementInfoW["usingResources"]); $d++) {
-								$resourceInfoW = getResourceInfo($getPage_connection2,$improvementInfoW["usingResources"][$d]);
-								if ($resourceInfoW["type"] == 4 && $resourceInfoW["capacity"] >= 5) {
-									$new_production = $new_production + ((22.0*(0.25*$improvementInfoW["level"])) / count($improvementInfoW["owners"]));
-									setResourceInfo($getPage_connection2,$resourceInfoW["id"],$resourceInfoW["type"],$new_capacity);
-									break;
-								} // if
-							} // for					
-						} // else if
-					} // if
-				} // for
-			
-				if ($stmt = $getPage_connection2->prepare("SELECT id FROM improvementsmap WHERE id = (SELECT MIN(id) FROM improvementsmap WHERE id > ?) ORDER BY id LIMIT 1")) {
-					$stmt->bind_param("i", $next_improvements);
-					$stmt->execute();
-					$stmt->bind_result($r_result);
-					$stmt->fetch();
+			if ($stmt2 = $getPage_connection2->prepare("SELECT id FROM improvementsmap ORDER BY id ASC")) {
+				$stmt2->execute();
+				$stmt2->bind_result($r_result);
+				$stmt2->store_result();
+
+				while ($stmt2->fetch()) {
 					$next_improvements = $r_result;
-					$stmt->close();
-				} else {
-					$next_improvements = 0;
-				} // else
-			} // while
+					$improvementInfoW = getImprovementInfo($getPage_connection2,$next_improvements);
+				
+					for ($z=0; $z < count($improvementInfoW["owners"]); $z++) {
+						if ($improvementInfoW["owners"][$z] == $next_nations) {
+							// capital
+							if ($improvementInfoW["type"] == 1) {
+								$new_money = $new_money + ((60.0*(0.25*$improvementInfoW["level"])) / count($improvementInfoW["owners"]));
+								$new_production = $new_production + ((20.0*(0.25*$improvementInfoW["level"])) / count($improvementInfoW["owners"]));					
+								
+								$tileInfoG = getTileInfo($getPage_connection2, $improvementInfoW["continent"], $improvementInfoW["xpos"], $improvementInfoW["ypos"]);				
+								$generate_population = mt_rand(200.0*(0.25*$improvementInfoW["level"]), 800.0*(0.25*$improvementInfoW["level"]));
+								$new_tile_population = $tileInfoG["population"] + ($generate_population / count($improvementInfoW["owners"]));						
+								setTileInfo($getPage_connection2, $tileInfoG["id"], $tileInfoG["continent"], $tileInfoG["xpos"], $tileInfoG["ypos"], $tileInfoG["terrain"], $tileInfoG["resources"], $tileInfoG["improvements"], $tileInfoG["owner"], $tileInfoG["claims"], $new_tile_population);
+								
+							// town
+							} else if ($improvementInfoW["type"] == 2) {
+								$new_money = $new_money + ((30.0*(0.25*$improvementInfoW["level"])) / count($improvementInfoW["owners"]));
+								
+								$tileInfoG = getTileInfo($getPage_connection2, $improvementInfoW["continent"], $improvementInfoW["xpos"], $improvementInfoW["ypos"]);
+								$generate_population = mt_rand(200.0*(0.25*$improvementInfoW["level"]), 400.0*(0.25*$improvementInfoW["level"]));
+								$new_tile_population = $tileInfoG["population"] + ($generate_population / count($improvementInfoW["owners"]));
+								setTileInfo($getPage_connection2, $tileInfoG["id"], $tileInfoG["continent"], $tileInfoG["xpos"], $tileInfoG["ypos"], $tileInfoG["terrain"], $tileInfoG["resources"], $tileInfoG["improvements"], $tileInfoG["owner"], $tileInfoG["claims"], $new_tile_population);
+							
+							// industry
+							} else if ($improvementInfoW["type"] == 3) {
+								$new_production = $new_production + ((20.0*(0.25*$improvementInfoW["level"])) / count($improvementInfoW["owners"]));
+							
+							// farm
+							} else if ($improvementInfoW["type"] == 4) {
+								$generate_food = mt_rand(1000.0*(0.25*$improvementInfoW["level"]), 6000.0*(0.25*$improvementInfoW["level"]));
+								$new_food = $new_food + ($generate_food / count($improvementInfoW["owners"]));
+							
+							// depot
+							} else if ($improvementInfoW["type"] == 5) {
+							
+							// mill
+							} else if ($improvementInfoW["type"] == 6) {
+								for ($d=0; $d < count($improvementInfoW["usingResources"]); $d++) {
+									$resourceInfoW = getResourceInfo($getPage_connection2,$improvementInfoW["usingResources"][$d]);
+									if ($resourceInfoW["type"] == 1 && $resourceInfoW["capacity"] >= 5) {
+										$initialExtract = 0.02*$resourceInfoW["capacity"];
+										$extractAmount = (($initialExtract*(0.25*$improvementInfoW["level"])) / count($improvementInfoW["owners"]));
+										$new_resources[0] = $new_resources[0] + $extractAmount;
+										$new_capacity = $resourceInfoW["capacity"] - $extractAmount;
+										setResourceInfo($getPage_connection2,$resourceInfoW["id"],$resourceInfoW["type"],$new_capacity);
+										break;
+									} // if
+								} // for
+							
+							// reserve
+							} else if ($improvementInfoW["type"] == 7) {
+								$new_happiness = $new_happiness + (0.01 / count($improvementInfoW["owners"]));
+							
+							// mine
+							} else if ($improvementInfoW["type"] == 8) {
+								for ($d=0; $d < count($improvementInfoW["usingResources"]); $d++) {
+									$resourceInfoW = getResourceInfo($getPage_connection2,$improvementInfoW["usingResources"][$d]);
+									if ($resourceInfoW["type"] == 2 && $resourceInfoW["capacity"] >= 5) {
+										$initialExtract = 0.02*$resourceInfoW["capacity"];
+										$extractAmount = (($initialExtract*(0.25*$improvementInfoW["level"])) / count($improvementInfoW["owners"]));								
+										$new_resources[1] = $new_resources[1] + $extractAmount;
+										$new_capacity = $resourceInfoW["capacity"] - $extractAmount;
+										setResourceInfo($getPage_connection2,$resourceInfoW["id"],$resourceInfoW["type"],$new_capacity);
+										break;
+									} // if
+								} // for
+							
+							// well
+							} else if ($improvementInfoW["type"] == 9) {
+								for ($d=0; $d < count($improvementInfoW["usingResources"]); $d++) {
+									$resourceInfoW = getResourceInfo($getPage_connection2,$improvementInfoW["usingResources"][$d]);
+									if ($resourceInfoW["type"] == 3 && $resourceInfoW["capacity"] >= 5) {
+										$initialExtract = 0.02*$resourceInfoW["capacity"];
+										$extractAmount = (($initialExtract*(0.25*$improvementInfoW["level"])) / count($improvementInfoW["owners"]));
+										$new_resources[2] = $new_resources[2] + $extractAmount;
+										$new_capacity = $resourceInfoW["capacity"] - $extractAmount;
+										setResourceInfo($getPage_connection2,$resourceInfoW["id"],$resourceInfoW["type"],$new_capacity);
+										break;
+									} // if
+								} // for
+							
+							// dam
+							} else if ($improvementInfoW["type"] == 10) {
+								for ($d=0; $d < count($improvementInfoW["usingResources"]); $d++) {
+									$resourceInfoW = getResourceInfo($getPage_connection2,$improvementInfoW["usingResources"][$d]);
+									if ($resourceInfoW["type"] == 4 && $resourceInfoW["capacity"] >= 5) {
+										$new_production = $new_production + ((22.0*(0.25*$improvementInfoW["level"])) / count($improvementInfoW["owners"]));
+										setResourceInfo($getPage_connection2,$resourceInfoW["id"],$resourceInfoW["type"],$new_capacity);
+										break;
+									} // if
+								} // for					
+							} // else if
+						} // if
+					} // for
+				} // while
+				$stmt2->close();
+			} else {
+			} // else
 			
 			/********************************
 			 HAPPINESS EFFECTS
@@ -919,46 +897,33 @@ function updateNations($getPage_connection2) {
 			setTradeInfo($getPage_connection2,$tradeInfoW["id"],$next_nations,$new_routes,$new_limit);
 					
 			// do individual trades action if current nation involved
-			$next_offers = 1;
-			if ($stmt = $getPage_connection2->prepare("SELECT id FROM offers ORDER BY id ASC LIMIT 1")) {
-				$stmt->execute();
-				$stmt->bind_result($r_result);
-				$stmt->fetch();
-				$next_offers = $r_result;
-				$stmt->close();
-			} else {
-				$next_offers = 0;
-			} // else
-			while ($next_offers > 0) {
-				$offerInfoW = getOfferInfo($getPage_connection2,$next_offers);
-				if ($offerInfoW["fromNation"] == $next_nations) {
-					if ($offerInfoW["turns"] > $offerInfoW["counter"]) {
-						if ($offerInfoW["status"] == 1) {
-							processOffer($getPage_connection2,$offersInfoW);
-							
-							$new_offer = $offerInfoW["counter"] + 1;
-							
-							// remove if trade offer has expired
-							if ($new_counter > $offerInfoW["turns"]) {
-								deleteOfferInfo($getPage_connection2, $offerInfoW["id"]);
-							} else {
-								setOfferInfo($getPage_connection2, $offerInfoW["id"], $offerInfoW["fromNation"], $offerInfoW["toNation"], $offerInfoW["givingItems"], $offerInfoW["receivingItems"], $offerInfoW["givingQuantities"], $offerInfoW["receivingQuantities"], $offerInfoW["givingTypes"], $offerInfoW["receivingTypes"], $offerInfoW["turns"], $new_counter, $offerInfoW["status"]);
-							} // else						
+			if ($stmt2 = $getPage_connection2->prepare("SELECT id FROM offers ORDER BY id ASC")) {
+				$stmt2->execute();
+				$stmt2->bind_result($r_result);
+				$stmt2->store_result();
+				while ($stmt2->fetch()) {
+					$next_offers = $r_result;
+					$offerInfoW = getOfferInfo($getPage_connection2,$next_offers);
+					if ($offerInfoW["fromNation"] == $next_nations) {
+						if ($offerInfoW["turns"] > $offerInfoW["counter"]) {
+							if ($offerInfoW["status"] == 1) {
+								processOffer($getPage_connection2,$offersInfoW);
+								
+								$new_offer = $offerInfoW["counter"] + 1;
+								
+								// remove if trade offer has expired
+								if ($new_counter > $offerInfoW["turns"]) {
+									deleteOfferInfo($getPage_connection2, $offerInfoW["id"]);
+								} else {
+									setOfferInfo($getPage_connection2, $offerInfoW["id"], $offerInfoW["fromNation"], $offerInfoW["toNation"], $offerInfoW["givingItems"], $offerInfoW["receivingItems"], $offerInfoW["givingQuantities"], $offerInfoW["receivingQuantities"], $offerInfoW["givingTypes"], $offerInfoW["receivingTypes"], $offerInfoW["turns"], $new_counter, $offerInfoW["status"]);
+								} // else						
+							} // if
 						} // if
 					} // if
-				} // if
-			
-				if ($stmt = $getPage_connection2->prepare("SELECT id FROM offers WHERE id = (SELECT MIN(id) FROM offers WHERE id > ?) ORDER BY id LIMIT 1")) {
-					$stmt->bind_param("i", $next_offers);
-					$stmt->execute();
-					$stmt->bind_result($r_result);
-					$stmt->fetch();
-					$next_offers = $r_result;
-					$stmt->close();
-				} else {
-					$next_offers = 0;
-				} // else
-			} // while
+				} // while
+				$stmt2->close();
+			} else {
+			} // else
 			
 			// trade agreements
 			$tradeBonus = 0.0;
@@ -1101,42 +1066,29 @@ function updateNations($getPage_connection2) {
 								$typeCount = 0;
 								// if improvements are required
 								if ($goodsInfoW["improvementTypesRequired"][$j] >= 1) {														
-									$next_improvements2 = 1;
-									if ($stmt = $getPage_connection2->prepare("SELECT id FROM improvementsmap ORDER BY id ASC LIMIT 1")) {
-										$stmt->execute();
-										$stmt->bind_result($r_result);
-										$stmt->fetch();
-										$next_improvements2 = $r_result;
-										$stmt->close();
-									} else {
-										$next_improvements2 = 0;
-									} // else
-									while ($next_improvements2 > 0) {
-										$improvementInfoY = getImprovementInfo($getPage_connection2,$next_improvements2);
-										if ($improvementInfoY["type"] == $goodsInfoW["improvementTypesRequired"][$j]) {
-											for ($f=0; $f < count($improvementInfoY["owners"]); $f++) {
-												if ($improvementInfoY["owners"][$f] == $next_nations) {
-													$typeCount++;
-												} // if
-											} // for
-										} // if	
-	
-										if ($typeCount >= $goodsInfoW["improvementQuantitiesRequired"][$j]) {
-											$canProduce = true;
-											break;
-										} // if
-									
-										if ($stmt = $getPage_connection2->prepare("SELECT id FROM improvementsmap WHERE id = (SELECT MIN(id) FROM improvementsmap WHERE id > ?) ORDER BY id LIMIT 1")) {
-											$stmt->bind_param("i", $next_improvements2);
-											$stmt->execute();
-											$stmt->bind_result($r_result);
-											$stmt->fetch();
+									if ($stmt2 = $getPage_connection2->prepare("SELECT id FROM improvementsmap ORDER BY id ASC")) {
+										$stmt2->execute();
+										$stmt2->bind_result($r_result);
+										$stmt2->store_result();
+										while ($stmt2->fetch()) {
 											$next_improvements2 = $r_result;
-											$stmt->close();
-										} else {
-											$next_improvements2 = 0;
-										} // else
-									} // while	
+											$improvementInfoY = getImprovementInfo($getPage_connection2,$next_improvements2);
+											if ($improvementInfoY["type"] == $goodsInfoW["improvementTypesRequired"][$j]) {
+												for ($f=0; $f < count($improvementInfoY["owners"]); $f++) {
+													if ($improvementInfoY["owners"][$f] == $next_nations) {
+														$typeCount++;
+													} // if
+												} // for
+											} // if	
+		
+											if ($typeCount >= $goodsInfoW["improvementQuantitiesRequired"][$j]) {
+												$canProduce = true;
+												break;
+											} // if
+										} // while
+										$stmt2->close();
+									} else {
+									} // else
 	
 									if ($typeCount < $goodsInfoW["improvementQuantitiesRequired"][$j]) {
 										$canProduce = false;
@@ -1188,154 +1140,117 @@ function updateNations($getPage_connection2) {
 			$_SESSION["scriptOutput"] .= "Unit upkeep...<br />";
 			
 			// unit upkeep
-			$next_units = 1;
-			if ($stmt = $getPage_connection2->prepare("SELECT id FROM unitsmap ORDER BY id ASC LIMIT 1")) {
-				$stmt->execute();
-				$stmt->bind_result($r_result);
-				$stmt->fetch();
-				$next_units = $r_result;
-				$stmt->close();
-			} else {
-				$next_units = 0;
-			} // else
-			while ($next_units > 0) {
-				$unitInfoW = getUnitInfoByID($getPage_connection2,$next_units);
-			
-				if ($unitInfoW["owner"] == $next_nations) {
-					$unitTypeInfoW = getUnitTypeInfo($getPage_connection2,$unitInfoW["type"]);
-			
-					$tileInfoW = getTileInfo($getPage_connection2,$unitInfoW["continent"],$unitInfoW["xpos"],$unitInfoW["ypos"]);
-					$terrainInfoW = getTerrainInfo($getPage_connection2,$tileInfoW["terrain"]);
-					
-					// figure out nearest supply depot for supply line distance
-						
-					$next_improvements1 = 1;
-					$best_difference = 9999;
-					$best_continent = 0;
-					if ($stmt = $getPage_connection2->prepare("SELECT id FROM improvementsmap ORDER BY id ASC LIMIT 1")) {
-						$stmt->execute();
-						$stmt->bind_result($r_result);
-						$stmt->fetch();
-						$next_improvements1 = $r_result;
-						$stmt->close();
-					} else {
-						$next_improvements1 = 0;
-					} // else
-					while ($next_improvements1 > 0) {
-						$improvementInfoWA = getImprovementInfo($getPage_connection2, $next_improvements1);
-						
-						if ($improvementInfoWA["id"] >= 1) {						
-							for ($v=0; $v < count($improvementInfoWA["owners"]); $v++) {		
-								if ($improvementInfoWA["owners"][$v] == $next_nations) {	
-									if ($improvementInfoWA["type"] == 5) {		
-										$current_difference = 0;
-										if ($improvementInfoWA["continent"] == $unitInfoW["continent"]) {
-											$best_difference = 0;
-											$best_continent = $improvementInfoWA["continent"];
-											break;
-										} else if ($improvementInfoWA["continent"] > $unitInfoW["continent"]) {
-											$current_difference = $improvementInfoWA["continent"] - $unitInfoW["continent"];
-										} else if ($improvementInfoWA["continent"] < $unitInfoW["continent"]) {
-											$current_difference = $unitInfoW["continent"] - $improvementInfoWA["continent"];
-										} // else if
-												
-										if ($current_difference < $best_difference) {
-											$best_difference = $current_difference;
-											$best_continent = $improvementInfoWA["continent"];
-										} // if
-									} // if
-								} // if
-							} // for
-						} // if
-							
-						if ($stmt = $getPage_connection2->prepare("SELECT id FROM improvementsmap WHERE id = (SELECT MIN(id) FROM improvementsmap WHERE id > ?) ORDER BY id LIMIT 1")) {
-							$stmt->bind_param("i", $next_improvements1);
-							$stmt->execute();
-							$stmt->bind_result($r_result);
-							$stmt->fetch();
-							$next_improvements1 = $r_result;
-							$stmt->close();
-						} else {
-							$next_improvements1 = 0;
-						} // else
-					} // while
-					
-					$distance = $best_difference;
-					
-					$distanceModifier = 5*$distance;
-					
-					if ($terrainInfoW["upkeepModifier"] >= 1) {
-						$mod = 0.01;
-						$food_upkeep = $food_upkeep + ($unitTypeInfoW["foodRequired"] /4) + (($unitTypeInfoW["foodRequired"] /4)*(($terrainInfoW["upkeepModifier"] + $distanceModifier)*$mod));
-						$money_upkeep = $money_upkeep + ($unitTypeInfoW["baseCost"] /4) + (($unitTypeInfoW["baseCost"] /4)*(($terrainInfoW["upkeepModifier"] + $distanceModifier)*$mod));
-					} else {
-						$food_upkeep = $food_upkeep + ($unitTypeInfoW["foodRequired"]/4);
-						$money_upkeep = $money_upkeep + ($unitTypeInfoW["baseCost"]/4);
-					} // else
-				} // if
-			
-				if ($stmt = $getPage_connection2->prepare("SELECT id FROM unitsmap WHERE id = (SELECT MIN(id) FROM unitsmap WHERE id > ?) ORDER BY id LIMIT 1")) {
-					$stmt->bind_param("i", $next_units);
-					$stmt->execute();
-					$stmt->bind_result($r_result);
-					$stmt->fetch();
+			if ($stmt2 = $getPage_connection2->prepare("SELECT id FROM unitsmap ORDER BY id ASC")) {
+				$stmt2->execute();
+				$stmt2->bind_result($r_result);
+				$stmt2->store_result();
+		
+				while ($stmt2->fetch()) {
 					$next_units = $r_result;
-					$stmt->close();
-				} else {
-					$next_units = 0;
-				} // else
-			} // while
+					$unitInfoW = getUnitInfoByID($getPage_connection2,$next_units);
+				
+					if ($unitInfoW["owner"] == $next_nations) {
+						$unitTypeInfoW = getUnitTypeInfo($getPage_connection2,$unitInfoW["type"]);
+				
+						$tileInfoW = getTileInfo($getPage_connection2,$unitInfoW["continent"],$unitInfoW["xpos"],$unitInfoW["ypos"]);
+						$terrainInfoW = getTerrainInfo($getPage_connection2,$tileInfoW["terrain"]);
+						
+						// figure out nearest supply depot for supply line distance
+							
+						$best_difference = 9999;
+						$best_continent = 0;
+						if ($stmt3 = $getPage_connection2->prepare("SELECT id FROM improvementsmap ORDER BY id ASC")) {
+							$stmt3->execute();
+							$stmt3->bind_result($r_result);
+
+							while ($stmt3->fetch()) {
+								$next_improvements1 = $r_result;
+								$improvementInfoWA = getImprovementInfo($getPage_connection2, $next_improvements1);
+								
+								if ($improvementInfoWA["id"] >= 1) {						
+									for ($v=0; $v < count($improvementInfoWA["owners"]); $v++) {		
+										if ($improvementInfoWA["owners"][$v] == $next_nations) {	
+											if ($improvementInfoWA["type"] == 5) {		
+												$current_difference = 0;
+												if ($improvementInfoWA["continent"] == $unitInfoW["continent"]) {
+													$best_difference = 0;
+													$best_continent = $improvementInfoWA["continent"];
+													break;
+												} else if ($improvementInfoWA["continent"] > $unitInfoW["continent"]) {
+													$current_difference = $improvementInfoWA["continent"] - $unitInfoW["continent"];
+												} else if ($improvementInfoWA["continent"] < $unitInfoW["continent"]) {
+													$current_difference = $unitInfoW["continent"] - $improvementInfoWA["continent"];
+												} // else if
+														
+												if ($current_difference < $best_difference) {
+													$best_difference = $current_difference;
+													$best_continent = $improvementInfoWA["continent"];
+												} // if
+											} // if
+										} // if
+									} // for
+								} // if			
+							} // while
+							$stmt3->close();
+						} else {
+						} // else
+						
+						$distance = $best_difference;
+						
+						$distanceModifier = 5*$distance;
+						
+						if ($terrainInfoW["upkeepModifier"] >= 1) {
+							$mod = 0.01;
+							$food_upkeep = $food_upkeep + ($unitTypeInfoW["foodRequired"] /4) + (($unitTypeInfoW["foodRequired"] /4)*(($terrainInfoW["upkeepModifier"] + $distanceModifier)*$mod));
+							$money_upkeep = $money_upkeep + ($unitTypeInfoW["baseCost"] /4) + (($unitTypeInfoW["baseCost"] /4)*(($terrainInfoW["upkeepModifier"] + $distanceModifier)*$mod));
+						} else {
+							$food_upkeep = $food_upkeep + ($unitTypeInfoW["foodRequired"]/4);
+							$money_upkeep = $money_upkeep + ($unitTypeInfoW["baseCost"]/4);
+						} // else
+					} // if
+				} // while
+				$stmt2->close();
+			} else {
+			} // else
 			
 			$_SESSION["scriptOutput"] .= "Improvement upkeep...<br />";
 			
 			// improvement upkeep and nation's population update
-			$next_tiles = 1;
-			if ($stmt = $getPage_connection2->prepare("SELECT id FROM tilesmap ORDER BY id ASC LIMIT 1")) {
-				$stmt->execute();
-				$stmt->bind_result($r_result);
-				$stmt->fetch();
-				$next_tiles = $r_result;
-				$stmt->close();
-			} else {
-				$next_tiles = 0;
-			} // else
-			while ($next_tiles > 0) {
-				$tileInfoW = getTileInfoByID($getPage_connection2,$next_tiles);
-				$terrainInfoW = getTerrainInfo($getPage_connection2,$tileInfoW["terrain"]);
-			
-				for ($y=0; $y < count($tileInfoW["improvements"]); $y++) {
-					$improvementInfoW = getImprovementInfo($getPage_connection2,$tileInfoW["improvements"][$y]);
-					$improvementTypeInfoW = getImprovementTypeInfo($getPage_connection2, $improvementInfoW["type"]);
-					for ($z=0; $z < count($improvementInfoW["owners"]); $z++) {
-						if ($improvementInfoW["owners"][$z] == $next_nations) {
-							// figure out distance costs
-							if ($nationInfoW["home"] > $tileInfoW["continent"]) {
-								$distanceModifier = $nationInfoW["home"] - $tileInfoW["continent"];
-							} else {
-								$distanceModifier = $tileInfoW["continent"] - $nationInfoW["home"];
-							}
-	
-							$mod = 0.01;
-							$money_upkeep = $money_upkeep + ($improvementTypeInfoW["baseCost"] / count($improvementInfoW["owners"])) + (($improvementTypeInfoW["baseCost"] / count($improvementInfoW["owners"])) *( ($distanceModifier + $terrainInfoW["upkeepModifier"])*$mod));
-						} // if
-					} // for
-				} // for
-				
-				if ($tileInfoW["owner"] == $next_nations) {
-					$new_population = $new_population + $tileInfoW["population"];			
-				} // if
-			
-				if ($stmt = $getPage_connection2->prepare("SELECT id FROM tilesmap WHERE id = (SELECT MIN(id) FROM tilesmap WHERE id > ?) ORDER BY id LIMIT 1")) {
-					$stmt->bind_param("i", $next_tiles);
-					$stmt->execute();
-					$stmt->bind_result($r_result);
-					$stmt->fetch();
+			if ($stmt2 = $getPage_connection2->prepare("SELECT id FROM tilesmap ORDER BY id ASC")) {
+				$stmt2->execute();
+				$stmt2->bind_result($r_result);
+				$stmt2->store_result();
+
+				while ($stmt2->fetch()) {
 					$next_tiles = $r_result;
-					$stmt->close();
-				} else {
-					$next_tiles = 0;
-				} // else
-			} // while
+					$tileInfoW = getTileInfoByID($getPage_connection2,$next_tiles);
+					$terrainInfoW = getTerrainInfo($getPage_connection2,$tileInfoW["terrain"]);
+				
+					for ($y=0; $y < count($tileInfoW["improvements"]); $y++) {
+						$improvementInfoW = getImprovementInfo($getPage_connection2,$tileInfoW["improvements"][$y]);
+						$improvementTypeInfoW = getImprovementTypeInfo($getPage_connection2, $improvementInfoW["type"]);
+						for ($z=0; $z < count($improvementInfoW["owners"]); $z++) {
+							if ($improvementInfoW["owners"][$z] == $next_nations) {
+								// figure out distance costs
+								if ($nationInfoW["home"] > $tileInfoW["continent"]) {
+									$distanceModifier = $nationInfoW["home"] - $tileInfoW["continent"];
+								} else {
+									$distanceModifier = $tileInfoW["continent"] - $nationInfoW["home"];
+								}
+		
+								$mod = 0.01;
+								$money_upkeep = $money_upkeep + ($improvementTypeInfoW["baseCost"] / count($improvementInfoW["owners"])) + (($improvementTypeInfoW["baseCost"] / count($improvementInfoW["owners"])) *( ($distanceModifier + $terrainInfoW["upkeepModifier"])*$mod));
+							} // if
+						} // for
+					} // for
+					
+					if ($tileInfoW["owner"] == $next_nations) {
+						$new_population = $new_population + $tileInfoW["population"];			
+					} // if
+				} // while
+				$stmt2->close();
+			} else {
+			} // else
 			
 			/********************************
 			FOOD
@@ -1361,37 +1276,27 @@ function updateNations($getPage_connection2) {
 				$new_population = 0; // reset population to assign new value based on pop changes
 				
 				$next_tiles = 1;
-				if ($stmt = $getPage_connection2->prepare("SELECT id FROM tilesmap ORDER BY id ASC LIMIT 1")) {
-					$stmt->execute();
-					$stmt->bind_result($r_result);
-					$stmt->fetch();
-					$next_tiles = $r_result;
-					$stmt->close();
+				if ($stmt2 = $getPage_connection2->prepare("SELECT id FROM tilesmap ORDER BY id ASC")) {
+					$stmt2->execute();
+					$stmt2->bind_result($r_result);
+					$stmt2->store_result();
+					
+					while ($stmt2->fetch()) {	
+						$next_tiles = $r_result;
+						$tileInfoD = getTileInfoByID($getPage_connection2, $next_tiles);
+						
+						$new_tile_population = 0;
+						
+						if ($tileInfoD["owner"] == $next_nations) {
+							$new_tile_population = $tileInfoD["population"] + $popGrowthInt;
+							setTileInfo($getPage_connection2, $tileInfoD["id"], $tileInfoD["continent"], $tileInfoD["xpos"], $tileInfoD["ypos"], $tileInfoD["terrain"], $tileInfoD["resources"], $tileInfoD["improvements"], $tileInfoD["owner"], $tileInfoD["claims"], $new_tile_population);			
+							$new_population = $new_population + $new_tile_population;
+						} // if
+					} // while	
+					$stmt2->close();
 				} else {
 					$next_tiles = 0;
 				} // else
-				while ($next_tiles > 0) {				
-					$tileInfoD = getTileInfoByID($getPage_connection2, $next_tiles);
-					
-					$new_tile_population = 0;
-					
-					if ($tileInfoD["owner"] == $next_nations) {
-						$new_tile_population = $tileInfoD["population"] + $popGrowthInt;
-						setTileInfo($getPage_connection2, $tileInfoD["id"], $tileInfoD["continent"], $tileInfoD["xpos"], $tileInfoD["ypos"], $tileInfoD["terrain"], $tileInfoD["resources"], $tileInfoD["improvements"], $tileInfoD["owner"], $tileInfoD["claims"], $new_tile_population);			
-						$new_population = $new_population + $new_tile_population;
-					} // if
-					
-					if ($stmt = $getPage_connection2->prepare("SELECT id FROM tilesmap WHERE id = (SELECT MIN(id) FROM tilesmap WHERE id > ?) ORDER BY id LIMIT 1")) {
-						$stmt->bind_param("i", $next_tiles);
-						$stmt->execute();
-						$stmt->bind_result($r_result);
-						$stmt->fetch();
-						$next_tiles = $r_result;
-						$stmt->close();
-					} else {
-						$next_tiles = 0;
-					} // else
-				} // while					
 				
 			// if food cannot even sustain the population, it shrinks
 			} else if ($new_food < $new_population) {			
@@ -1404,41 +1309,29 @@ function updateNations($getPage_connection2) {
 					
 					$new_population = 0; // reset population to assign new value based on pop changes
 						
-					$next_tiles = 1;
-					if ($stmt = $getPage_connection2->prepare("SELECT id FROM tilesmap ORDER BY id ASC LIMIT 1")) {
-						$stmt->execute();
-						$stmt->bind_result($r_result);
-						$stmt->fetch();
-						$next_tiles = $r_result;
-						$stmt->close();
-					} else {
-						$next_tiles = 0;
-					} // else
-					while ($next_tiles > 0) {
-						$tileInfoD = getTileInfoByID($getPage_connection2, $next_tiles);
-					
-						$new_tile_population = 0;
-					
-						if ($tileInfoD["owner"] == $next_nations) {
-							$new_tile_population = $tileInfoD["population"] - $popShrinkInt;
-							if ($new_tile_population < 0) {
-								$new_tile_population = 0;
-							} // if
-							setTileInfo($getPage_connection2, $tileInfoD["id"], $tileInfoD["continent"], $tileInfoD["xpos"], $tileInfoD["ypos"], $tileInfoD["terrain"], $tileInfoD["resources"], $tileInfoD["improvements"], $tileInfoD["owner"], $tileInfoD["claims"], $new_tile_population);
-							$new_population = $new_population + $new_tile_population;
-						} // if
-					
-						if ($stmt = $getPage_connection2->prepare("SELECT id FROM tilesmap WHERE id = (SELECT MIN(id) FROM tilesmap WHERE id > ?) ORDER BY id LIMIT 1")) {
-							$stmt->bind_param("i", $next_tiles);
-							$stmt->execute();
-							$stmt->bind_result($r_result);
-							$stmt->fetch();
+					if ($stmt2 = $getPage_connection2->prepare("SELECT id FROM tilesmap ORDER BY id ASC")) {
+						$stmt2->execute();
+						$stmt2->bind_result($r_result);
+						$stmt2->fetch();
+						
+						while ($stmt2->fetch()) {	
 							$next_tiles = $r_result;
-							$stmt->close();
-						} else {
-							$next_tiles = 0;
-						} // else
-					} // while
+							$tileInfoD = getTileInfoByID($getPage_connection2, $next_tiles);
+						
+							$new_tile_population = 0;
+						
+							if ($tileInfoD["owner"] == $next_nations) {
+								$new_tile_population = $tileInfoD["population"] - $popShrinkInt;
+								if ($new_tile_population < 0) {
+									$new_tile_population = 0;
+								} // if
+								setTileInfo($getPage_connection2, $tileInfoD["id"], $tileInfoD["continent"], $tileInfoD["xpos"], $tileInfoD["ypos"], $tileInfoD["terrain"], $tileInfoD["resources"], $tileInfoD["improvements"], $tileInfoD["owner"], $tileInfoD["claims"], $new_tile_population);
+								$new_population = $new_population + $new_tile_population;
+							} // if
+						} // while
+						$stmt2->close();
+					} else {
+					} // else
 				
 				// otherwise just use difference between population and food and random number to be deficit
 				} else {
@@ -1449,41 +1342,29 @@ function updateNations($getPage_connection2) {
 					
 					$new_population = 0; // reset population to assign new value based on pop changes
 						
-					$next_tiles = 1;
-					if ($stmt = $getPage_connection2->prepare("SELECT id FROM tilesmap ORDER BY id ASC LIMIT 1")) {
-						$stmt->execute();
-						$stmt->bind_result($r_result);
-						$stmt->fetch();
-						$next_tiles = $r_result;
-						$stmt->close();
-					} else {
-						$next_tiles = 0;
-					} // else
-					while ($next_tiles > 0) {
-						$tileInfoD = getTileInfoByID($getPage_connection2, $next_tiles);
-					
-						$new_tile_population = 0;
-					
-						if ($tileInfoD["owner"] == $next_nations) {
-							$new_tile_population = $tileInfoD["population"] - $popShrinkInt;						
-							if ($new_tile_population < 0) {
-								$new_tile_population = 0;
-							} // if
-							setTileInfo($getPage_connection2, $tileInfoD["id"], $tileInfoD["continent"], $tileInfoD["xpos"], $tileInfoD["ypos"], $tileInfoD["terrain"], $tileInfoD["resources"], $tileInfoD["improvements"], $tileInfoD["owner"], $tileInfoD["claims"], $new_tile_population);
-							$new_population = $new_population + $new_tile_population;
-						} // if
-					
-						if ($stmt = $getPage_connection2->prepare("SELECT id FROM tilesmap WHERE id = (SELECT MIN(id) FROM tilesmap WHERE id > ?) ORDER BY id LIMIT 1")) {
-							$stmt->bind_param("i", $next_tiles);
-							$stmt->execute();
-							$stmt->bind_result($r_result);
-							$stmt->fetch();
+					if ($stmt2 = $getPage_connection2->prepare("SELECT id FROM tilesmap ORDER BY id ASC")) {
+						$stmt2->execute();
+						$stmt2->bind_result($r_result);
+						$stmt2->fetch();
+						
+						while ($stmt2->fetch()) {	
 							$next_tiles = $r_result;
-							$stmt->close();
-						} else {
-							$next_tiles = 0;
-						} // else
-					} // while
+							$tileInfoD = getTileInfoByID($getPage_connection2, $next_tiles);
+						
+							$new_tile_population = 0;
+						
+							if ($tileInfoD["owner"] == $next_nations) {
+								$new_tile_population = $tileInfoD["population"] - $popShrinkInt;						
+								if ($new_tile_population < 0) {
+									$new_tile_population = 0;
+								} // if
+								setTileInfo($getPage_connection2, $tileInfoD["id"], $tileInfoD["continent"], $tileInfoD["xpos"], $tileInfoD["ypos"], $tileInfoD["terrain"], $tileInfoD["resources"], $tileInfoD["improvements"], $tileInfoD["owner"], $tileInfoD["claims"], $new_tile_population);
+								$new_population = $new_population + $new_tile_population;
+							} // if
+						} // while
+						$stmt2->close();
+					} else {
+					} // else
 				} // else
 			} // else if	
 			
