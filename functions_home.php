@@ -254,17 +254,7 @@ function registerUser($getPage_connection2) {
 							} // while						
 							$stmt->close();
 						} else {
-						} // else
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
+						} // else				
 						
 						// get available tiles from newly created continent if no continent is available
 						if ($availableContinent < 1) {
