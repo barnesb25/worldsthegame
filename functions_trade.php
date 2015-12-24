@@ -258,48 +258,37 @@ function showTradeInfo($getPage_connection2) {
 	echo "              <div class=\"col-md-8 col-center\">\n";
 	
 	$agreementsExist = false;
-	$next_agreements = 1;
-	if ($stmt = $getPage_connection2->prepare("SELECT id FROM agreements ORDER BY id ASC LIMIT 1")) {
+	if ($stmt = $getPage_connection2->prepare("SELECT id FROM agreements ORDER BY id ASC")) {
 		$stmt->execute();
 		$stmt->bind_result($r_result);
-		$stmt->fetch();
-		$next_agreements = $r_result;
+		$stmt->store_result();
+
+		while ($stmt->fetch()) {
+			$next_agreements = $r_result;
+			$agreementInfo1 = getAgreementInfo($getPage_connection2,$next_agreements);
+		
+			if (($agreementInfo1["toNation"] == $_SESSION["nation_id"] || $agreementInfo1["fromNation"] == $_SESSION["nation_id"]) && $agreementInfo1["status"] == 0) {
+				$agreementsExist = true;
+				$toNationInfo = getNationInfo($getPage_connection2,$agreementInfo1["toNation"]);
+				$fromNationInfo = getNationInfo($getPage_connection2,$agreementInfo1["fromNation"]);
+				echo "                To: <a href=\"index.php?page=info&amp;section=nations&amp;info_id=".$toNationInfo["id"]."\">".$toNationInfo["name"]."</a>, From: <a href=\"index.php?page=info&amp;section=nations&amp;info_id=".$fromNationInfo["id"]."\">".$fromNationInfo["name"]."</a>\n                <br />\n";
+				echo "                Agreement Policy: ".$agreementInfo1["policy"]."\n                <br />\n";
+				echo "                ".$agreementInfo1["turns"]." turns \n";
+				echo "                <br />\n";
+				echo "                <form action=\"index.php?page=trade#collapsePendingAgreements\" method=\"post\">\n";
+				echo "                  <div class=\"form-group form-group-xs\">\n";
+				echo "                    <input type=\"hidden\" name=\"page\" value=\"trade\" />\n";
+				echo "                    <input type=\"hidden\" name=\"actionid\" value=\"".$agreementInfo1["id"]."\" />\n";
+				echo "                    <button name=\"action\" value=\"accept_agreement\" id=\"accept_agreement-".$agreementInfo1["id"]."\" type=\"submit\" class=\"btn btn-sm btn-success\">Accept</button>\n";
+				echo "                    <button name=\"action\" value=\"decline_agreement\" id=\"decline_agreement-".$agreementInfo1["id"]."\" type=\"submit\" class=\"btn btn-sm btn-danger\">Decline</button>\n";
+				echo "                  </div>\n";
+				echo "                </form\">\n";
+				echo "                ----\n                <br />\n";
+			} // if
+		} // while
 		$stmt->close();
 	} else {
-		$next_agreements = 0;
 	} // else
-	while ($next_agreements > 0) {
-		$agreementInfo1 = getAgreementInfo($getPage_connection2,$next_agreements);
-	
-		if (($agreementInfo1["toNation"] == $_SESSION["nation_id"] || $agreementInfo1["fromNation"] == $_SESSION["nation_id"]) && $agreementInfo1["status"] == 0) {
-			$agreementsExist = true;
-			$toNationInfo = getNationInfo($getPage_connection2,$agreementInfo1["toNation"]);
-			$fromNationInfo = getNationInfo($getPage_connection2,$agreementInfo1["fromNation"]);
-			echo "                To: <a href=\"index.php?page=info&amp;section=nations&amp;info_id=".$toNationInfo["id"]."\">".$toNationInfo["name"]."</a>, From: <a href=\"index.php?page=info&amp;section=nations&amp;info_id=".$fromNationInfo["id"]."\">".$fromNationInfo["name"]."</a>\n                <br />\n";
-			echo "                Agreement Policy: ".$agreementInfo1["policy"]."\n                <br />\n";
-			echo "                ".$agreementInfo1["turns"]." turns \n";
-			echo "                <br />\n";
-			echo "                <form action=\"index.php?page=trade#collapsePendingAgreements\" method=\"post\">\n";
-			echo "                  <div class=\"form-group form-group-xs\">\n";
-			echo "                    <input type=\"hidden\" name=\"page\" value=\"trade\" />\n";
-			echo "                    <input type=\"hidden\" name=\"actionid\" value=\"".$agreementInfo1["id"]."\" />\n";
-			echo "                    <button name=\"action\" value=\"accept_agreement\" id=\"accept_agreement-".$agreementInfo1["id"]."\" type=\"submit\" class=\"btn btn-sm btn-success\">Accept</button>\n";
-			echo "                    <button name=\"action\" value=\"decline_agreement\" id=\"decline_agreement-".$agreementInfo1["id"]."\" type=\"submit\" class=\"btn btn-sm btn-danger\">Decline</button>\n";
-			echo "                  </div>\n";
-			echo "                </form\">\n";
-			echo "                ----\n                <br />\n";
-		} // if
-		if ($stmt = $getPage_connection2->prepare("SELECT id FROM agreements WHERE id = (SELECT MIN(id) FROM agreements WHERE id > ?) ORDER BY id LIMIT 1")) {
-			$stmt->bind_param("i", $next_agreements);
-			$stmt->execute();
-			$stmt->bind_result($r_result);
-			$stmt->fetch();
-			$next_agreements = $r_result;
-			$stmt->close();
-		} else {
-			$next_agreements = 0;
-		} // else
-	} // while
 	
 	if ($agreementsExist === false) {
 		echo "                 No agreements established.\n";
@@ -316,87 +305,76 @@ function showTradeInfo($getPage_connection2) {
 	echo "              <div class=\"col-md-8 col-center\">\n";
 	
 	$offersExist = false;
-	$next_offers = 1;
-	if ($stmt = $getPage_connection2->prepare("SELECT id FROM offers ORDER BY id ASC LIMIT 1")) {
+	if ($stmt = $getPage_connection2->prepare("SELECT id FROM offers ORDER BY id ASC")) {
 		$stmt->execute();
 		$stmt->bind_result($r_result);
-		$stmt->fetch();
-		$next_offers = $r_result;
+		$stmt->store_result();
+
+		while ($stmt->fetch()) {
+			$next_offers = $r_result;
+			$offerInfo1 = getOfferInfo($getPage_connection2,$next_offers);
+		
+			if ($offerInfo1["toNation"] == $_SESSION["nation_id"] && $offerInfo1["status"] == 0) {
+				if ($offerInfo1["givingItems"][0] > 0 || $offerInfo1["receivingItems"][0] > 0) {
+					$offersExist = true;
+					$toNationInfo = getNationInfo($getPage_connection2,$offerInfo1["toNation"]);
+					$fromNationInfo = getNationInfo($getPage_connection2,$offerInfo1["fromNation"]);
+					echo "                To: <a href=\"index.php?page=info&amp;section=nations&amp;info_id=".$toNationInfo["id"]."\">".$toNationInfo["name"]."</a>, From: <a href=\"index.php?page=info&amp;section=nations&amp;info_id=".$fromNationInfo["id"]."\">".$fromNationInfo["name"]."</a>\n                <br />\n";
+					if ($offerInfo1["givingItems"][0] > 0) {
+						echo "                Giving:\n                <br />\n";
+						for ($z=0; $z < count($offerInfo1["givingItems"]); $z++) {
+							if ($offerInfo1["givingQuantities"][$z] > 0) {
+								if ($offerInfo1["givingTypes"][$z] == "goods") {
+									$itemInfo1 = getGoodsInfo($getPage_connection2,$offerInfo1["givingItems"][$z]);
+									$name1 = $itemInfo1["name"];
+								} else if ($offerInfo1["givingTypes"][$z] == "resources") {
+									$itemInfo1 = getResourceTypesInfo($getPage_connection2,$offerInfo1["givingItems"][$z]);
+									$name1 = $itemInfo1["name"];
+								} else {
+									$name1 = "money";
+								} // else
+								echo "                ".$offerInfo1["givingQuantities"][$z]." ".$name1."\n                <br />\n";
+							} // if
+						} // for
+					} else {
+						echo "                Giving:\n                <br />\n                Nothing.\n";
+					} // else
+					if ($offerInfo1["receivingItems"][0] > 0) {
+						echo "                Receiving:\n                <br />\n";
+						for ($z=0; $z < count($offerInfo1["receivingItems"]); $z++) {
+							if ($offerInfo1["receivingQuantities"][$z] > 0) {
+								if ($offerInfo1["receivingTypes"][$z] == "goods") {
+									$itemInfo1 = getGoodsInfo($getPage_connection2,$offerInfo1["receivingItems"][$z]);
+									$name1 = $itemInfo1["name"];
+								} else if ($offerInfo1["receivingTypes"][$z] == "resources") {
+									$itemInfo1 = getResourceTypesInfo($getPage_connection2,$offerInfo1["receivingItems"][$z]);
+									$name1 = $itemInfo1["name"];
+								} else {
+									$name1 = "money";
+								} // else
+								echo "                ".$offerInfo1["receivingQuantities"][$z]." ".$name1."\n                <br />\n";
+							} // if
+						} // for
+					} else {
+						echo "                Receiving:\n                <br />\n                Nothing.\n                <br />\n";
+					} // else					
+					echo "                ".$offerInfo1["turns"]." turns \n";
+					echo "                <br />\n";
+					echo "                <form action=\"index.php?page=trade#collapsePendingOffers\" method=\"post\">\n";
+					echo "                  <div class=\"form-group form-group-xs\">\n";
+					echo "                    <input type=\"hidden\" name=\"page\" value=\"trade\" />\n";
+					echo "                    <input type=\"hidden\" name=\"actionid\" value=\"".$offerInfo1["id"]."\" />\n";
+					echo "                    <button name=\"action\" value=\"accept_offer\" id=\"accept_offer-".$offerInfo1["id"]."\" type=\"submit\" class=\"btn btn-sm btn-success\">Accept</button>\n";
+					echo "                    <button name=\"action\" value=\"decline_offer\" id=\"decline_offer-".$offerInfo1["id"]."\" type=\"submit\" class=\"btn btn-sm btn-danger\">Decline</button>\n";
+					echo "                  </div>\n";
+					echo "                </form\">\n";
+					echo "                ----\n                <br />\n";
+				} // if
+			} // if
+		} // while
 		$stmt->close();
 	} else {
-		$next_offers = 0;
 	} // else
-	while ($next_offers > 0) {
-		$offerInfo1 = getOfferInfo($getPage_connection2,$next_offers);
-	
-		if ($offerInfo1["toNation"] == $_SESSION["nation_id"] && $offerInfo1["status"] == 0) {
-			if ($offerInfo1["givingItems"][0] > 0 || $offerInfo1["receivingItems"][0] > 0) {
-				$offersExist = true;
-				$toNationInfo = getNationInfo($getPage_connection2,$offerInfo1["toNation"]);
-				$fromNationInfo = getNationInfo($getPage_connection2,$offerInfo1["fromNation"]);
-				echo "                To: <a href=\"index.php?page=info&amp;section=nations&amp;info_id=".$toNationInfo["id"]."\">".$toNationInfo["name"]."</a>, From: <a href=\"index.php?page=info&amp;section=nations&amp;info_id=".$fromNationInfo["id"]."\">".$fromNationInfo["name"]."</a>\n                <br />\n";
-				if ($offerInfo1["givingItems"][0] > 0) {
-					echo "                Giving:\n                <br />\n";
-					for ($z=0; $z < count($offerInfo1["givingItems"]); $z++) {
-						if ($offerInfo1["givingQuantities"][$z] > 0) {
-							if ($offerInfo1["givingTypes"][$z] == "goods") {
-								$itemInfo1 = getGoodsInfo($getPage_connection2,$offerInfo1["givingItems"][$z]);
-								$name1 = $itemInfo1["name"];
-							} else if ($offerInfo1["givingTypes"][$z] == "resources") {
-								$itemInfo1 = getResourceTypesInfo($getPage_connection2,$offerInfo1["givingItems"][$z]);
-								$name1 = $itemInfo1["name"];
-							} else {
-								$name1 = "money";
-							} // else
-							echo "                ".$offerInfo1["givingQuantities"][$z]." ".$name1."\n                <br />\n";
-						} // if
-					} // for
-				} else {
-					echo "                Giving:\n                <br />\n                Nothing.\n";
-				} // else
-				if ($offerInfo1["receivingItems"][0] > 0) {
-					echo "                Receiving:\n                <br />\n";
-					for ($z=0; $z < count($offerInfo1["receivingItems"]); $z++) {
-						if ($offerInfo1["receivingQuantities"][$z] > 0) {
-							if ($offerInfo1["receivingTypes"][$z] == "goods") {
-								$itemInfo1 = getGoodsInfo($getPage_connection2,$offerInfo1["receivingItems"][$z]);
-								$name1 = $itemInfo1["name"];
-							} else if ($offerInfo1["receivingTypes"][$z] == "resources") {
-								$itemInfo1 = getResourceTypesInfo($getPage_connection2,$offerInfo1["receivingItems"][$z]);
-								$name1 = $itemInfo1["name"];
-							} else {
-								$name1 = "money";
-							} // else
-							echo "                ".$offerInfo1["receivingQuantities"][$z]." ".$name1."\n                <br />\n";
-						} // if
-					} // for
-				} else {
-					echo "                Receiving:\n                <br />\n                Nothing.\n                <br />\n";
-				} // else					
-				echo "                ".$offerInfo1["turns"]." turns \n";
-				echo "                <br />\n";
-				echo "                <form action=\"index.php?page=trade#collapsePendingOffers\" method=\"post\">\n";
-				echo "                  <div class=\"form-group form-group-xs\">\n";
-				echo "                    <input type=\"hidden\" name=\"page\" value=\"trade\" />\n";
-				echo "                    <input type=\"hidden\" name=\"actionid\" value=\"".$offerInfo1["id"]."\" />\n";
-				echo "                    <button name=\"action\" value=\"accept_offer\" id=\"accept_offer-".$offerInfo1["id"]."\" type=\"submit\" class=\"btn btn-sm btn-success\">Accept</button>\n";
-				echo "                    <button name=\"action\" value=\"decline_offer\" id=\"decline_offer-".$offerInfo1["id"]."\" type=\"submit\" class=\"btn btn-sm btn-danger\">Decline</button>\n";
-				echo "                  </div>\n";
-				echo "                </form\">\n";
-				echo "                ----\n                <br />\n";
-			} // if
-		} // if
-		if ($stmt = $getPage_connection2->prepare("SELECT id FROM offers WHERE id = (SELECT MIN(id) FROM offers WHERE id > ?) ORDER BY id LIMIT 1")) {
-			$stmt->bind_param("i", $next_offers);
-			$stmt->execute();
-			$stmt->bind_result($r_result);
-			$stmt->fetch();
-			$next_offers = $r_result;
-			$stmt->close();
-		} else {
-			$next_offers = 0;
-		} // else
-	} // while
 	
 	if ($offersExist === false) {
 		echo "                No offers established.\n";
@@ -457,62 +435,40 @@ function showTradeInfo($getPage_connection2) {
 			echo "                        <input type=\"hidden\" name=\"offers[".$ff."]\" value=\"1\" />\n";
 			echo "                        Offer <input type=\"text\" name=\"offersQuantities[".$ff."]\" class=\"form-control input-sm\" placeholder=\"Quantity\" value=\"".$_SESSION["offersQuantities"][$ff]."\" />\n";
 			echo "                        <select name=\"offersItems[".$ff."]\" class=\"form-control input-sm\">\n";
-			$next_resources = 1;
-			if ($stmt = $getPage_connection2->prepare("SELECT id FROM resourcesmap ORDER BY id ASC LIMIT 1")) {
+			if ($stmt = $getPage_connection2->prepare("SELECT id FROM resourcesmap ORDER BY id ASC")) {
 				$stmt->execute();
 				$stmt->bind_result($r_result);
-				$stmt->fetch();
-				$next_resources = $r_result;
-				$stmt->close();
-			} else {
-				$next_resources = 0;
-			} // else
-			while ($next_resources > 0) {
-				$resourceTypeInfo1 = getResourceTypeInfo($getPage_connection2,$next_resources);
-				if ($_SESSION["offersItems"][$ff] == $resourceTypeInfo1["id"] && $_SESSION["offersTypes"][$ff] == "resources") {
-					echo "                          <option selected value=\"resources.".strtolower($resourceTypeInfo1["name"])."\">".$resourceTypeInfo1["name"]."</option>\n";
-				} else {
-					echo "                          <option value=\"resources.".strtolower($resourceTypeInfo1["name"])."\">".$resourceTypeInfo1["name"]."</option>\n";
-				} // else
-				if ($stmt = $getPage_connection2->prepare("SELECT id FROM resources WHERE id = (SELECT MIN(id) FROM resources WHERE id > ?) ORDER BY id LIMIT 1")) {
-					$stmt->bind_param("i", $next_resources);
-					$stmt->execute();
-					$stmt->bind_result($r_result);
-					$stmt->fetch();
+				$stmt->store_result();
+
+				while ($stmt->fetch()) {
 					$next_resources = $r_result;
-					$stmt->close();
-				} else {
-					$next_resources = 0;
-				} // else
-			} // while
-			$next_goods = 1;
-			if ($stmt = $getPage_connection2->prepare("SELECT id FROM goods ORDER BY id ASC LIMIT 1")) {
-				$stmt->execute();
-				$stmt->bind_result($r_result);
-				$stmt->fetch();
-				$next_goods = $r_result;
+					$resourceTypeInfo1 = getResourceTypeInfo($getPage_connection2,$next_resources);
+					if ($_SESSION["offersItems"][$ff] == $resourceTypeInfo1["id"] && $_SESSION["offersTypes"][$ff] == "resources") {
+						echo "                          <option selected value=\"resources.".strtolower($resourceTypeInfo1["name"])."\">".$resourceTypeInfo1["name"]."</option>\n";
+					} else {
+						echo "                          <option value=\"resources.".strtolower($resourceTypeInfo1["name"])."\">".$resourceTypeInfo1["name"]."</option>\n";
+					} // else
+				} // while
 				$stmt->close();
 			} else {
-				$next_goods = 0;
 			} // else
-			while ($next_goods > 0) {
-				$goodsInfo1 = getGoodsInfo($getPage_connection2,$next_goods);
-				if ($_SESSION["offersItems"][$ff] == $goodsInfo1["id"] && $_SESSION["offersTypes"][$ff] == "goods") {
-					echo "                          <option selected value=\"goods.".strtolower($goodsInfo1["name"])."\">".$goodsInfo1["name"]."</option>\n";
-				} else {
-					echo "                          <option value=\"goods.".strtolower($goodsInfo1["name"])."\">".$goodsInfo1["name"]."</option>\n";
-				} // else
-				if ($stmt = $getPage_connection2->prepare("SELECT id FROM goods WHERE id = (SELECT MIN(id) FROM goods WHERE id > ?) ORDER BY id LIMIT 1")) {
-					$stmt->bind_param("i", $next_goods);
-					$stmt->execute();
-					$stmt->bind_result($r_result);
-					$stmt->fetch();
+			if ($stmt = $getPage_connection2->prepare("SELECT id FROM goods ORDER BY id ASC")) {
+				$stmt->execute();
+				$stmt->bind_result($r_result);
+				$stmt->store_result();
+
+				while ($stmt->fetch()) {
 					$next_goods = $r_result;
-					$stmt->close();
-				} else {
-					$next_goods = 0;
-				} // else
-			} // while
+					$goodsInfo1 = getGoodsInfo($getPage_connection2,$next_goods);
+					if ($_SESSION["offersItems"][$ff] == $goodsInfo1["id"] && $_SESSION["offersTypes"][$ff] == "goods") {
+						echo "                          <option selected value=\"goods.".strtolower($goodsInfo1["name"])."\">".$goodsInfo1["name"]."</option>\n";
+					} else {
+						echo "                          <option value=\"goods.".strtolower($goodsInfo1["name"])."\">".$goodsInfo1["name"]."</option>\n";
+					} // else
+				} // while
+				$stmt->close();
+			} else {
+			} // else
 			if ($_SESSION["offersTypes"][$ff] == "money") {
 				echo "                          <option selected value=\"money.money\">Money</option>\n";
 			} else {
@@ -529,54 +485,31 @@ function showTradeInfo($getPage_connection2) {
 			echo "                        <input type=\"hidden\" name=\"offers[".$ff."]\" value=\"1\" />\n";
 			echo "                        Offer <input type=\"text\" name=\"offersQuantities[".$ff."]\" class=\"form-control input-sm\" placeholder=\"Quantity\" value=\"0\" />\n";
 			echo "                        <select name=\"offersItems[".$ff."]\" class=\"form-control input-sm\">\n";
-			$next_resources = 1;
-			if ($stmt = $getPage_connection2->prepare("SELECT id FROM resourcesmap ORDER BY id ASC LIMIT 1")) {
+			if ($stmt = $getPage_connection2->prepare("SELECT id FROM resourcesmap ORDER BY id ASC")) {
 				$stmt->execute();
 				$stmt->bind_result($r_result);
-				$stmt->fetch();
-				$next_resources = $r_result;
-				$stmt->close();
-			} else {
-				$next_resources = 0;
-			} // else
-			while ($next_resources > 0) {
-				$resourceTypeInfo1 = getResourceTypeInfo($getPage_connection2,$next_resources);
-				echo "                          <option value=\"resources.".strtolower($resourceTypeInfo1["name"])."\">".$resourceTypeInfo1["name"]."</option>\n";
-				if ($stmt = $getPage_connection2->prepare("SELECT id FROM resources WHERE id = (SELECT MIN(id) FROM resources WHERE id > ?) ORDER BY id LIMIT 1")) {
-					$stmt->bind_param("i", $next_resources);
-					$stmt->execute();
-					$stmt->bind_result($r_result);
-					$stmt->fetch();
+				$stmt->store_result();
+				while ($stmt->fetch()) {
 					$next_resources = $r_result;
-					$stmt->close();
-				} else {
-					$next_resources = 0;
-				} // else
-			} // while
-			$next_goods = 1;
-			if ($stmt = $getPage_connection2->prepare("SELECT id FROM goods ORDER BY id ASC LIMIT 1")) {
-				$stmt->execute();
-				$stmt->bind_result($r_result);
-				$stmt->fetch();
-				$next_goods = $r_result;
+					$resourceTypeInfo1 = getResourceTypeInfo($getPage_connection2,$next_resources);
+					echo "                          <option value=\"resources.".strtolower($resourceTypeInfo1["name"])."\">".$resourceTypeInfo1["name"]."</option>\n";
+				} // while
 				$stmt->close();
 			} else {
-				$next_goods = 0;
 			} // else
-			while ($next_goods > 0) {
-				$goodsInfo1 = getGoodsInfo($getPage_connection2,$next_goods);
-				echo "                          <option value=\"goods.".strtolower($goodsInfo1["name"])."\">".$goodsInfo1["name"]."</option>\n";
-				if ($stmt = $getPage_connection2->prepare("SELECT id FROM goods WHERE id = (SELECT MIN(id) FROM goods WHERE id > ?) ORDER BY id LIMIT 1")) {
-					$stmt->bind_param("i", $next_goods);
-					$stmt->execute();
-					$stmt->bind_result($r_result);
-					$stmt->fetch();
+			if ($stmt = $getPage_connection2->prepare("SELECT id FROM goods ORDER BY id ASC")) {
+				$stmt->execute();
+				$stmt->bind_result($r_result);
+				$stmt->store_result();
+				
+				while ($stmt->fetch()) {
 					$next_goods = $r_result;
-					$stmt->close();
-				} else {
-					$next_goods = 0;
-				} // else
-			} // while
+					$goodsInfo1 = getGoodsInfo($getPage_connection2,$next_goods);
+					echo "                          <option value=\"goods.".strtolower($goodsInfo1["name"])."\">".$goodsInfo1["name"]."</option>\n";
+				} // while
+				$stmt->close();
+			} else {
+			} // else
 	
 			echo "                          <option value=\"money.money\">Money</option>\n";
 			echo "                          <option value=\"food.food\">Food</option>\n";
@@ -600,62 +533,40 @@ function showTradeInfo($getPage_connection2) {
 			echo "                        <input type=\"hidden\" name=\"demands[".$ff."]\" value=\"1\" />\n";
 			echo "                        Demand <input type=\"text\" name=\"demandsQuantities[".$ff."]\" class=\"form-control input-sm\" placeholder=\"Quantity\" value=\"".$_SESSION["demandsQuantities"][$ff]."\" />\n";
 			echo "                        <select name=\"demandsItems[".$ff."]\" class=\"form-control input-sm\">\n";
-			$next_resources = 1;
-			if ($stmt = $getPage_connection2->prepare("SELECT id FROM resourcesmap ORDER BY id ASC LIMIT 1")) {
+			if ($stmt = $getPage_connection2->prepare("SELECT id FROM resourcesmap ORDER BY id ASC")) {
 				$stmt->execute();
 				$stmt->bind_result($r_result);
-				$stmt->fetch();
-				$next_resources = $r_result;
-				$stmt->close();
-			} else {
-				$next_resources = 0;
-			} // else
-			while ($next_resources > 0) {
-				$resourceTypeInfo1 = getResourceTypeInfo($getPage_connection2,$next_resources);
-				if ($_SESSION["demandsItems"][$ff] == $resourceTypeInfo1["id"] && $_SESSION["demandsTypes"][$ff] == "resources") {
-					echo "                          <option selected value=\"resources.".strtolower($resourceTypeInfo1["name"])."\">".$resourceTypeInfo1["name"]."</option>\n";
-				} else {
-					echo "                          <option value=\"resources.".strtolower($resourceTypeInfo1["name"])."\">".$resourceTypeInfo1["name"]."</option>\n";
-				} // else
-				if ($stmt = $getPage_connection2->prepare("SELECT id FROM resources WHERE id = (SELECT MIN(id) FROM resources WHERE id > ?) ORDER BY id LIMIT 1")) {
-					$stmt->bind_param("i", $next_resources);
-					$stmt->execute();
-					$stmt->bind_result($r_result);
-					$stmt->fetch();
+				$stmt->store_result();
+				
+				while ($stmt->fetch()) {
 					$next_resources = $r_result;
-					$stmt->close();
-				} else {
-					$next_resources = 0;
-				} // else
-			} // while
-			$next_goods = 1;
-			if ($stmt = $getPage_connection2->prepare("SELECT id FROM goods ORDER BY id ASC LIMIT 1")) {
-				$stmt->execute();
-				$stmt->bind_result($r_result);
-				$stmt->fetch();
-				$next_goods = $r_result;
+					$resourceTypeInfo1 = getResourceTypeInfo($getPage_connection2,$next_resources);
+					if ($_SESSION["demandsItems"][$ff] == $resourceTypeInfo1["id"] && $_SESSION["demandsTypes"][$ff] == "resources") {
+						echo "                          <option selected value=\"resources.".strtolower($resourceTypeInfo1["name"])."\">".$resourceTypeInfo1["name"]."</option>\n";
+					} else {
+						echo "                          <option value=\"resources.".strtolower($resourceTypeInfo1["name"])."\">".$resourceTypeInfo1["name"]."</option>\n";
+					} // else
+				} // while
 				$stmt->close();
 			} else {
-				$next_goods = 0;
 			} // else
-			while ($next_goods > 0) {
-				$goodsInfo1 = getGoodsInfo($getPage_connection2,$next_goods);
-				if ($_SESSION["demandsItems"][$ff] == $goodsInfo1["id"] && $_SESSION["demandsTypes"][$ff] == "goods") {
-					echo "                          <option selected value=\"goods.".strtolower($goodsInfo1["name"])."\">".$goodsInfo1["name"]."</option>\n";
-				} else {
-					echo "                          <option value=\"goods.".strtolower($goodsInfo1["name"])."\">".$goodsInfo1["name"]."</option>\n";
-				} // else
-				if ($stmt = $getPage_connection2->prepare("SELECT id FROM goods WHERE id = (SELECT MIN(id) FROM goods WHERE id > ?) ORDER BY id LIMIT 1")) {
-					$stmt->bind_param("i", $next_goods);
-					$stmt->execute();
-					$stmt->bind_result($r_result);
-					$stmt->fetch();
+			if ($stmt = $getPage_connection2->prepare("SELECT id FROM goods ORDER BY id ASC")) {
+				$stmt->execute();
+				$stmt->bind_result($r_result);
+				$stmt->store_result();
+				
+				while ($stmt->fetch()) {
 					$next_goods = $r_result;
-					$stmt->close();
-				} else {
-					$next_goods = 0;
-				} // else
-			} // while
+					$goodsInfo1 = getGoodsInfo($getPage_connection2,$next_goods);
+					if ($_SESSION["demandsItems"][$ff] == $goodsInfo1["id"] && $_SESSION["demandsTypes"][$ff] == "goods") {
+						echo "                          <option selected value=\"goods.".strtolower($goodsInfo1["name"])."\">".$goodsInfo1["name"]."</option>\n";
+					} else {
+						echo "                          <option value=\"goods.".strtolower($goodsInfo1["name"])."\">".$goodsInfo1["name"]."</option>\n";
+					} // else
+				} // while
+				$stmt->close();
+			} else {
+			} // else
 			if ($_SESSION["demandsTypes"][$ff] == "money") {
 				echo "                          <option selected value=\"money.money\">Money</option>\n";
 			} else {
@@ -672,54 +583,32 @@ function showTradeInfo($getPage_connection2) {
 			echo "                        <input type=\"hidden\" name=\"demands[".$ff."]\" value=\"1\" />\n";
 			echo "                        Demand <input type=\"text\" name=\"demandsQuantities[".$ff."]\" class=\"form-control input-sm\" placeholder=\"Quantity\" value=\"0\" />\n";
 			echo "                        <select name=\"demandsItems[".$ff."]\" class=\"form-control input-sm\">\n";
-			$next_resources = 1;
-			if ($stmt = $getPage_connection2->prepare("SELECT id FROM resourcesmap ORDER BY id ASC LIMIT 1")) {
+			if ($stmt = $getPage_connection2->prepare("SELECT id FROM resourcesmap ORDER BY id ASC")) {
 				$stmt->execute();
 				$stmt->bind_result($r_result);
-				$stmt->fetch();
-				$next_resources = $r_result;
-				$stmt->close();
-			} else {
-				$next_resources = 0;
-			} // else
-			while ($next_resources > 0) {
-				$resourceTypeInfo1 = getResourceTypeInfo($getPage_connection2,$next_resources);
-				echo "                          <option value=\"resources.".strtolower($resourceTypeInfo1["name"])."\">".$resourceTypeInfo1["name"]."</option>\n";
-				if ($stmt = $getPage_connection2->prepare("SELECT id FROM resources WHERE id = (SELECT MIN(id) FROM resources WHERE id > ?) ORDER BY id LIMIT 1")) {
-					$stmt->bind_param("i", $next_resources);
-					$stmt->execute();
-					$stmt->bind_result($r_result);
-					$stmt->fetch();
+				$stmt->store_result();
+
+				while ($stmt->fetch()) {
 					$next_resources = $r_result;
-					$stmt->close();
-				} else {
-					$next_resources = 0;
-				} // else
-			} // while
-			$next_goods = 1;
-			if ($stmt = $getPage_connection2->prepare("SELECT id FROM goods ORDER BY id ASC LIMIT 1")) {
-				$stmt->execute();
-				$stmt->bind_result($r_result);
-				$stmt->fetch();
-				$next_goods = $r_result;
+					$resourceTypeInfo1 = getResourceTypeInfo($getPage_connection2,$next_resources);
+					echo "                          <option value=\"resources.".strtolower($resourceTypeInfo1["name"])."\">".$resourceTypeInfo1["name"]."</option>\n";
+				} // while
 				$stmt->close();
 			} else {
-				$next_goods = 0;
 			} // else
-			while ($next_goods > 0) {
-				$goodsInfo1 = getGoodsInfo($getPage_connection2,$next_goods);
-				echo "                          <option value=\"goods.".strtolower($goodsInfo1["name"])."\">".$goodsInfo1["name"]."</option>\n";
-				if ($stmt = $getPage_connection2->prepare("SELECT id FROM goods WHERE id = (SELECT MIN(id) FROM goods WHERE id > ?) ORDER BY id LIMIT 1")) {
-					$stmt->bind_param("i", $next_goods);
-					$stmt->execute();
-					$stmt->bind_result($r_result);
-					$stmt->fetch();
+			if ($stmt = $getPage_connection2->prepare("SELECT id FROM goods ORDER BY id ASC")) {
+				$stmt->execute();
+				$stmt->bind_result($r_result);
+				$stmt->store_result();
+				
+				while ($stmt->fetch()) {
 					$next_goods = $r_result;
-					$stmt->close();
-				} else {
-					$next_goods = 0;
-				} // else
-			} // while
+					$goodsInfo1 = getGoodsInfo($getPage_connection2,$next_goods);
+					echo "                          <option value=\"goods.".strtolower($goodsInfo1["name"])."\">".$goodsInfo1["name"]."</option>\n";
+				} // while
+				$stmt->close();
+			} else {
+			} // else
 	
 			echo "                          <option value=\"money.money\">Money</option>\n";
 			echo "                          <option value=\"food.food\">Food</option>\n";
@@ -754,31 +643,20 @@ function showTradeInfo($getPage_connection2) {
 	echo "            <div id=\"collapseMarket\" class=\"panel-body collapse in\">\n";
 	echo "              <div class=\"col-md-8 col-center\">\n";
 	
-	$next_market = 1;
-	if ($stmt = $getPage_connection2->prepare("SELECT id FROM market ORDER BY id ASC LIMIT 1")) {
+	if ($stmt = $getPage_connection2->prepare("SELECT id FROM market ORDER BY id ASC")) {
 		$stmt->execute();
 		$stmt->bind_result($r_result);
-		$stmt->fetch();
-		$next_market = $r_result;
+		$stmt->store_result();
+		
+		while ($stmt->fetch()) {
+			$next_market = $r_result;
+			$marketInfo1 = getMarketInfo($getPage_connection2,$next_market);
+		
+			echo "                ".$marketInfo1["name"].": ".$marketInfo1["rate"]."% value\n                <br />\n";
+		} // while
 		$stmt->close();
 	} else {
-		$next_market = 0;
 	} // else
-	while ($next_market > 0) {
-		$marketInfo1 = getMarketInfo($getPage_connection2,$next_market);
-	
-		echo "                ".$marketInfo1["name"].": ".$marketInfo1["rate"]."% value\n                <br />\n";
-		if ($stmt = $getPage_connection2->prepare("SELECT id FROM market WHERE id = (SELECT MIN(id) FROM market WHERE id > ?) ORDER BY id LIMIT 1")) {
-			$stmt->bind_param("i", $next_market);
-			$stmt->execute();
-			$stmt->bind_result($r_result);
-			$stmt->fetch();
-			$next_market = $r_result;
-			$stmt->close();
-		} else {
-			$next_market = 0;
-		} // else
-	} // while
 	echo "              </div>\n";
 	echo "            </div>\n";
 	echo "          </div>\n";
@@ -791,40 +669,29 @@ function showTradeInfo($getPage_connection2) {
 	echo "              <div class=\"col-md-8 col-center\">\n";
 	
 	$agreementsExist = false;
-	$next_agreements = 1;
-	if ($stmt = $getPage_connection2->prepare("SELECT id FROM agreements ORDER BY id ASC LIMIT 1")) {
+	if ($stmt = $getPage_connection2->prepare("SELECT id FROM agreements ORDER BY id ASC")) {
 		$stmt->execute();
 		$stmt->bind_result($r_result);
-		$stmt->fetch();
-		$next_agreements = $r_result;
+		$stmt->store_result();
+		
+		while ($stmt->fetch()) {
+			$next_agreements = $r_result;
+			$agreementInfo1 = getAgreementInfo($getPage_connection2,$next_agreements);
+		
+			if (($agreementInfo1["toNation"] == $_SESSION["nation_id"] || $agreementInfo1["fromNation"] == $_SESSION["nation_id"]) && $agreementInfo1["status"] == 1) {
+				$agreementsExist = true;
+				$toNationInfo = getNationInfo($getPage_connection2,$agreementInfo1["toNation"]);
+				$fromNationInfo = getNationInfo($getPage_connection2,$agreementInfo1["fromNation"]);
+				echo "                To: <a href=\"index.php?page=info&amp;section=nations&amp;info_id=".$toNationInfo["id"]."\">".$toNationInfo["name"]."</a>, From: <a href=\"index.php?page=info&amp;section=nations&amp;info_id=".$fromNationInfo["id"]."\">".$fromNationInfo["name"]."</a>\n                <br />\n";
+				echo "                Agreement Policy: ".$agreementInfo1["policy"]."\n                <br />\n";
+				echo "                ".$agreementInfo1["counter"]." / ".$agreementInfo1["turns"]." turns \n";
+				echo "                <br />\n";
+				echo "                ----\n                <br />\n";
+			} // if
+		} // while
 		$stmt->close();
 	} else {
-		$next_agreements = 0;
 	} // else
-	while ($next_agreements > 0) {
-		$agreementInfo1 = getAgreementInfo($getPage_connection2,$next_agreements);
-	
-		if (($agreementInfo1["toNation"] == $_SESSION["nation_id"] || $agreementInfo1["fromNation"] == $_SESSION["nation_id"]) && $agreementInfo1["status"] == 1) {
-			$agreementsExist = true;
-			$toNationInfo = getNationInfo($getPage_connection2,$agreementInfo1["toNation"]);
-			$fromNationInfo = getNationInfo($getPage_connection2,$agreementInfo1["fromNation"]);
-			echo "                To: <a href=\"index.php?page=info&amp;section=nations&amp;info_id=".$toNationInfo["id"]."\">".$toNationInfo["name"]."</a>, From: <a href=\"index.php?page=info&amp;section=nations&amp;info_id=".$fromNationInfo["id"]."\">".$fromNationInfo["name"]."</a>\n                <br />\n";
-			echo "                Agreement Policy: ".$agreementInfo1["policy"]."\n                <br />\n";
-			echo "                ".$agreementInfo1["counter"]." / ".$agreementInfo1["turns"]." turns \n";
-			echo "                <br />\n";
-			echo "                ----\n                <br />\n";
-		} // if
-		if ($stmt = $getPage_connection2->prepare("SELECT id FROM agreements WHERE id = (SELECT MIN(id) FROM agreements WHERE id > ?) ORDER BY id LIMIT 1")) {
-			$stmt->bind_param("i", $next_agreements);
-			$stmt->execute();
-			$stmt->bind_result($r_result);
-			$stmt->fetch();
-			$next_agreements = $r_result;
-			$stmt->close();
-		} else {
-			$next_agreements = 0;
-		} // else
-	} // while
 	
 	if ($agreementsExist === false) {
 		echo "                No agreements established.\n";
@@ -841,80 +708,69 @@ function showTradeInfo($getPage_connection2) {
 	echo "              <div class=\"col-md-8 col-center\">\n";
 
 	$offersExist = false;
-	$next_offers = 1;
-	if ($stmt = $getPage_connection2->prepare("SELECT id FROM offers ORDER BY id ASC LIMIT 1")) {
+	if ($stmt = $getPage_connection2->prepare("SELECT id FROM offers ORDER BY id ASC")) {
 		$stmt->execute();
 		$stmt->bind_result($r_result);
-		$stmt->fetch();
-		$next_offers = $r_result;
+		$stmt->store_result();
+		
+		while ($stmt->fetch()) {
+			$next_offers = $r_result;
+			$offerInfo1 = getOfferInfo($getPage_connection2,$next_offers);
+	
+			if (($offerInfo1["toNation"] == $_SESSION["nation_id"] || $offerInfo1["fromNation"] == $_SESSION["nation_id"]) && $offerInfo1["status"] == 1) {
+				if ($offerInfo1["givingItems"][0] > 0 || $offerInfo1["receivingItems"][0] > 0) {
+					$offersExist = true;
+					$toNationInfo = getNationInfo($getPage_connection2,$offerInfo1["toNation"]);
+					$fromNationInfo = getNationInfo($getPage_connection2,$offerInfo1["fromNation"]);
+					echo "                To: <a href=\"index.php?page=info&amp;section=nations&amp;info_id=".$toNationInfo["id"]."\">".$toNationInfo["name"]."</a>, From: <a href=\"index.php?page=info&amp;section=nations&amp;info_id=".$fromNationInfo["id"]."\">".$fromNationInfo["name"]."</a>\n                <br />\n";
+					if ($offerInfo1["givingItems"][0] > 0) {
+						echo "                Giving:\n                <br />\n";
+						for ($z=0; $z < count($offerInfo1["givingItems"]); $z++) {
+							if ($offerInfo1["givingQuantities"][$z] > 0) {
+								if ($offerInfo1["givingTypes"][$z] == "goods") {
+									$itemInfo1 = getGoodsInfo($getPage_connection2,$offerInfo1["givingItems"][$z]);
+									$name1 = $itemInfo1["name"];
+								} else if ($offerInfo1["givingTypes"][$z] == "resources") {
+									$itemInfo1 = getResourceTypesInfo($getPage_connection2,$offerInfo1["givingItems"][$z]);
+									$name1 = $itemInfo1["name"];
+								} else {
+									$name1 = "money";
+								} // else
+								echo "                ".$offerInfo1["givingQuantities"][$z]." ".$name1."\n                <br />\n";
+							} // if
+						} // for
+					} else {
+						echo "                Giving:\n                <br />\n                Nothing.\n";
+					} // else
+					if ($offerInfo1["receivingItems"][0] > 0) {
+						echo "                Receiving:\n                <br />\n";
+						for ($z=0; $z < count($offerInfo1["receivingItems"]); $z++) {
+							if ($offerInfo1["receivingQuantities"][$z] > 0) {
+								if ($offerInfo1["receivingTypes"][$z] == "goods") {
+									$itemInfo1 = getGoodsInfo($getPage_connection2,$offerInfo1["receivingItems"][$z]);
+									$name1 = $itemInfo1["name"];
+								} else if ($offerInfo1["receivingTypes"][$z] == "resources") {
+									$itemInfo1 = getResourceTypesInfo($getPage_connection2,$offerInfo1["receivingItems"][$z]);
+									$name1 = $itemInfo1["name"];
+								} else {
+									$name1 = "money";
+								} // else
+								echo "                ".$offerInfo1["receivingQuantities"][$z]." ".$name1."\n                <br />\n";
+							} // if
+						} // for
+					} else {
+						echo "                Receiving:\n                <br />\n                Nothing.\n";
+					} // else
+					echo "                <br />\n";
+					echo "                ".$offerInfo1["counter"]." / ".$offerInfo1["turns"]." turns \n";
+					echo "                <br />\n";
+					echo "                ----\n                <br />\n";
+				} // if
+			} // if
+		} // while
 		$stmt->close();
 	} else {
-		$next_offers = 0;
 	} // else
-	while ($next_offers > 0) {
-		$offerInfo1 = getOfferInfo($getPage_connection2,$next_offers);
-
-		if (($offerInfo1["toNation"] == $_SESSION["nation_id"] || $offerInfo1["fromNation"] == $_SESSION["nation_id"]) && $offerInfo1["status"] == 1) {
-			if ($offerInfo1["givingItems"][0] > 0 || $offerInfo1["receivingItems"][0] > 0) {
-				$offersExist = true;
-				$toNationInfo = getNationInfo($getPage_connection2,$offerInfo1["toNation"]);
-				$fromNationInfo = getNationInfo($getPage_connection2,$offerInfo1["fromNation"]);
-				echo "                To: <a href=\"index.php?page=info&amp;section=nations&amp;info_id=".$toNationInfo["id"]."\">".$toNationInfo["name"]."</a>, From: <a href=\"index.php?page=info&amp;section=nations&amp;info_id=".$fromNationInfo["id"]."\">".$fromNationInfo["name"]."</a>\n                <br />\n";
-				if ($offerInfo1["givingItems"][0] > 0) {
-					echo "                Giving:\n                <br />\n";
-					for ($z=0; $z < count($offerInfo1["givingItems"]); $z++) {
-						if ($offerInfo1["givingQuantities"][$z] > 0) {
-							if ($offerInfo1["givingTypes"][$z] == "goods") {
-								$itemInfo1 = getGoodsInfo($getPage_connection2,$offerInfo1["givingItems"][$z]);
-								$name1 = $itemInfo1["name"];
-							} else if ($offerInfo1["givingTypes"][$z] == "resources") {
-								$itemInfo1 = getResourceTypesInfo($getPage_connection2,$offerInfo1["givingItems"][$z]);
-								$name1 = $itemInfo1["name"];
-							} else {
-								$name1 = "money";
-							} // else
-							echo "                ".$offerInfo1["givingQuantities"][$z]." ".$name1."\n                <br />\n";
-						} // if
-					} // for
-				} else {
-					echo "                Giving:\n                <br />\n                Nothing.\n";
-				} // else
-				if ($offerInfo1["receivingItems"][0] > 0) {
-					echo "                Receiving:\n                <br />\n";
-					for ($z=0; $z < count($offerInfo1["receivingItems"]); $z++) {
-						if ($offerInfo1["receivingQuantities"][$z] > 0) {
-							if ($offerInfo1["receivingTypes"][$z] == "goods") {
-								$itemInfo1 = getGoodsInfo($getPage_connection2,$offerInfo1["receivingItems"][$z]);
-								$name1 = $itemInfo1["name"];
-							} else if ($offerInfo1["receivingTypes"][$z] == "resources") {
-								$itemInfo1 = getResourceTypesInfo($getPage_connection2,$offerInfo1["receivingItems"][$z]);
-								$name1 = $itemInfo1["name"];
-							} else {
-								$name1 = "money";
-							} // else
-							echo "                ".$offerInfo1["receivingQuantities"][$z]." ".$name1."\n                <br />\n";
-						} // if
-					} // for
-				} else {
-					echo "                Receiving:\n                <br />\n                Nothing.\n";
-				} // else
-				echo "                <br />\n";
-				echo "                ".$offerInfo1["counter"]." / ".$offerInfo1["turns"]." turns \n";
-				echo "                <br />\n";
-				echo "                ----\n                <br />\n";
-			} // if
-		} // if
-		if ($stmt = $getPage_connection2->prepare("SELECT id FROM offers WHERE id = (SELECT MIN(id) FROM offers WHERE id > ?) ORDER BY id LIMIT 1")) {
-			$stmt->bind_param("i", $next_offers);
-			$stmt->execute();
-			$stmt->bind_result($r_result);
-			$stmt->fetch();
-			$next_offers = $r_result;
-			$stmt->close();
-		} else {
-			$next_offers = 0;
-		} // else
-	} // while
 
 	if ($offersExist === false) {
 		echo "                No offers established.\n";
@@ -931,41 +787,30 @@ function showTradeInfo($getPage_connection2) {
 	echo "              <div class=\"col-md-8 col-center\">\n";
 	
 	$agreementsExist = false;
-	$next_agreements = 1;
-	if ($stmt = $getPage_connection2->prepare("SELECT id FROM agreements ORDER BY id ASC LIMIT 1")) {
+	if ($stmt = $getPage_connection2->prepare("SELECT id FROM agreements ORDER BY id ASC")) {
 		$stmt->execute();
 		$stmt->bind_result($r_result);
-		$stmt->fetch();
-		$next_agreements = $r_result;
+		$stmt->store_result();
+		
+		while ($stmt->fetch()) {
+			$next_agreements = $r_result;
+			$agreementInfo1 = getAgreementInfo($getPage_connection2,$next_agreements);
+		
+			if (($agreementInfo1["toNation"] == $_SESSION["nation_id"] || $agreementInfo1["fromNation"] == $_SESSION["nation_id"]) && $agreementInfo1["status"] == 2) {
+				$agreementsExist = true;
+				$toNationInfo = getNationInfo($getPage_connection2,$agreementInfo1["toNation"]);
+				$fromNationInfo = getNationInfo($getPage_connection2,$agreementInfo1["fromNation"]);
+				echo "                To: <a href=\"index.php?page=info&amp;section=nations&amp;info_id=".$toNationInfo["id"]."\">".$toNationInfo["name"]."</a>, From: <a href=\"index.php?page=info&amp;section=nations&amp;info_id=".$fromNationInfo["id"]."\">".$fromNationInfo["name"]."</a>\n                <br />\n";
+				echo "                Agreement Policy: ".$agreementInfo1["policy"]."\n                <br />\n";
+				echo "                <br />\n";
+				echo "                ".$agreementInfo1["counter"]." / ".$agreementInfo1["turns"]." turns \n";
+				echo "                <br />\n";
+				echo "                ----\n                <br />\n";
+			} // if
+		} // while
 		$stmt->close();
 	} else {
-		$next_agreements = 0;
 	} // else
-	while ($next_agreements > 0) {
-		$agreementInfo1 = getAgreementInfo($getPage_connection2,$next_agreements);
-	
-		if (($agreementInfo1["toNation"] == $_SESSION["nation_id"] || $agreementInfo1["fromNation"] == $_SESSION["nation_id"]) && $agreementInfo1["status"] == 2) {
-			$agreementsExist = true;
-			$toNationInfo = getNationInfo($getPage_connection2,$agreementInfo1["toNation"]);
-			$fromNationInfo = getNationInfo($getPage_connection2,$agreementInfo1["fromNation"]);
-			echo "                To: <a href=\"index.php?page=info&amp;section=nations&amp;info_id=".$toNationInfo["id"]."\">".$toNationInfo["name"]."</a>, From: <a href=\"index.php?page=info&amp;section=nations&amp;info_id=".$fromNationInfo["id"]."\">".$fromNationInfo["name"]."</a>\n                <br />\n";
-			echo "                Agreement Policy: ".$agreementInfo1["policy"]."\n                <br />\n";
-			echo "                <br />\n";
-			echo "                ".$agreementInfo1["counter"]." / ".$agreementInfo1["turns"]." turns \n";
-			echo "                <br />\n";
-			echo "                ----\n                <br />\n";
-		} // if
-		if ($stmt = $getPage_connection2->prepare("SELECT id FROM agreements WHERE id = (SELECT MIN(id) FROM agreements WHERE id > ?) ORDER BY id LIMIT 1")) {
-			$stmt->bind_param("i", $next_agreements);
-			$stmt->execute();
-			$stmt->bind_result($r_result);
-			$stmt->fetch();
-			$next_agreements = $r_result;
-			$stmt->close();
-		} else {
-			$next_agreements = 0;
-		} // else
-	} // while
 	
 	if ($agreementsExist === false) {
 		echo "                 No declined agreements exist so far.\n";
@@ -982,80 +827,69 @@ function showTradeInfo($getPage_connection2) {
 	echo "              <div class=\"col-md-8 col-center\">\n";
 
 	$offersExist = false;
-	$next_offers = 1;
-	if ($stmt = $getPage_connection2->prepare("SELECT id FROM offers ORDER BY id ASC LIMIT 1")) {
+	if ($stmt = $getPage_connection2->prepare("SELECT id FROM offers ORDER BY id ASC")) {
 		$stmt->execute();
 		$stmt->bind_result($r_result);
-		$stmt->fetch();
-		$next_offers = $r_result;
+		$stmt->store_result();
+
+		while ($stmt->fetch()) {
+			$next_offers = $r_result;
+			$offerInfo1 = getOfferInfo($getPage_connection2,$next_offers);
+	
+			if (($offerInfo1["toNation"] == $_SESSION["nation_id"] || $offerInfo1["fromNation"] == $_SESSION["nation_id"]) && $offerInfo1["status"] == 2) {
+				if ($offerInfo1["givingItems"][0] > 0 || $offerInfo1["receivingItems"][0] > 0) {
+					$offersExist = true;
+					$toNationInfo = getNationInfo($getPage_connection2,$offerInfo1["toNation"]);
+					$fromNationInfo = getNationInfo($getPage_connection2,$offerInfo1["fromNation"]);
+					echo "                To: <a href=\"index.php?page=info&amp;section=nations&amp;info_id=".$toNationInfo["id"]."\">".$toNationInfo["name"]."</a>, From: <a href=\"index.php?page=info&amp;section=nations&amp;info_id=".$fromNationInfo["id"]."\">".$fromNationInfo["name"]."</a>\n                <br />\n";
+					if ($offerInfo1["givingItems"][0] > 0) {
+						echo "                Giving:\n                <br />\n";
+						for ($z=0; $z < count($offerInfo1["givingItems"]); $z++) {
+							if ($offerInfo1["givingQuantities"][$z] > 0) {
+								if ($offerInfo1["givingTypes"][$z] == "goods") {
+									$itemInfo1 = getGoodsInfo($getPage_connection2,$offerInfo1["givingItems"][$z]);
+									$name1 = $itemInfo1["name"];
+								} else if ($offerInfo1["givingTypes"][$z] == "resources") {
+									$itemInfo1 = getResourceTypesInfo($getPage_connection2,$offerInfo1["givingItems"][$z]);
+									$name1 = $itemInfo1["name"];
+								} else {
+									$name1 = "money";
+								} // else
+								echo "                ".$offerInfo1["givingQuantities"][$z]." ".$name1."\n                <br />\n";
+							} // if
+						} // for
+					} else {
+						echo "                Giving:\n                <br />\n                Nothing.\n";
+					} // else
+					if ($offerInfo1["receivingItems"][0] > 0) {
+						echo "                Receiving:\n                <br />\n";
+						for ($z=0; $z < count($offerInfo1["receivingItems"]); $z++) {
+							if ($offerInfo1["receivingQuantities"][$z] > 0) {
+								if ($offerInfo1["receivingTypes"][$z] == "goods") {
+									$itemInfo1 = getGoodsInfo($getPage_connection2,$offerInfo1["receivingItems"][$z]);
+									$name1 = $itemInfo1["name"];
+								} else if ($offerInfo1["receivingTypes"][$z] == "resources") {
+									$itemInfo1 = getResourceTypesInfo($getPage_connection2,$offerInfo1["receivingItems"][$z]);
+									$name1 = $itemInfo1["name"];
+								} else {
+									$name1 = "money";
+								} // else
+								echo "                ".$offerInfo1["receivingQuantities"][$z]." ".$name1."\n                <br />\n";
+							} // if
+						} // for
+					} else {
+						echo "                Receiving:\n                <br />\n                Nothing.\n";
+					} // else
+					echo "                <br />\n";
+					echo "                ".$offerInfo1["counter"]." / ".$offerInfo1["turns"]." turns \n";
+					echo "                <br />\n";
+					echo "                ----\n                <br />\n";
+				} // if
+			} // if
+		} // while
 		$stmt->close();
 	} else {
-		$next_offers = 0;
 	} // else
-	while ($next_offers > 0) {
-		$offerInfo1 = getOfferInfo($getPage_connection2,$next_offers);
-
-		if (($offerInfo1["toNation"] == $_SESSION["nation_id"] || $offerInfo1["fromNation"] == $_SESSION["nation_id"]) && $offerInfo1["status"] == 2) {
-			if ($offerInfo1["givingItems"][0] > 0 || $offerInfo1["receivingItems"][0] > 0) {
-				$offersExist = true;
-				$toNationInfo = getNationInfo($getPage_connection2,$offerInfo1["toNation"]);
-				$fromNationInfo = getNationInfo($getPage_connection2,$offerInfo1["fromNation"]);
-				echo "                To: <a href=\"index.php?page=info&amp;section=nations&amp;info_id=".$toNationInfo["id"]."\">".$toNationInfo["name"]."</a>, From: <a href=\"index.php?page=info&amp;section=nations&amp;info_id=".$fromNationInfo["id"]."\">".$fromNationInfo["name"]."</a>\n                <br />\n";
-				if ($offerInfo1["givingItems"][0] > 0) {
-					echo "                Giving:\n                <br />\n";
-					for ($z=0; $z < count($offerInfo1["givingItems"]); $z++) {
-						if ($offerInfo1["givingQuantities"][$z] > 0) {
-							if ($offerInfo1["givingTypes"][$z] == "goods") {
-								$itemInfo1 = getGoodsInfo($getPage_connection2,$offerInfo1["givingItems"][$z]);
-								$name1 = $itemInfo1["name"];
-							} else if ($offerInfo1["givingTypes"][$z] == "resources") {
-								$itemInfo1 = getResourceTypesInfo($getPage_connection2,$offerInfo1["givingItems"][$z]);
-								$name1 = $itemInfo1["name"];
-							} else {
-								$name1 = "money";
-							} // else
-							echo "                ".$offerInfo1["givingQuantities"][$z]." ".$name1."\n                <br />\n";
-						} // if
-					} // for
-				} else {
-					echo "                Giving:\n                <br />\n                Nothing.\n";
-				} // else
-				if ($offerInfo1["receivingItems"][0] > 0) {
-					echo "                Receiving:\n                <br />\n";
-					for ($z=0; $z < count($offerInfo1["receivingItems"]); $z++) {
-						if ($offerInfo1["receivingQuantities"][$z] > 0) {
-							if ($offerInfo1["receivingTypes"][$z] == "goods") {
-								$itemInfo1 = getGoodsInfo($getPage_connection2,$offerInfo1["receivingItems"][$z]);
-								$name1 = $itemInfo1["name"];
-							} else if ($offerInfo1["receivingTypes"][$z] == "resources") {
-								$itemInfo1 = getResourceTypesInfo($getPage_connection2,$offerInfo1["receivingItems"][$z]);
-								$name1 = $itemInfo1["name"];
-							} else {
-								$name1 = "money";
-							} // else
-							echo "                ".$offerInfo1["receivingQuantities"][$z]." ".$name1."\n                <br />\n";
-						} // if
-					} // for
-				} else {
-					echo "                Receiving:\n                <br />\n                Nothing.\n";
-				} // else
-				echo "                <br />\n";
-				echo "                ".$offerInfo1["counter"]." / ".$offerInfo1["turns"]." turns \n";
-				echo "                <br />\n";
-				echo "                ----\n                <br />\n";
-			} // if
-		} // if
-		if ($stmt = $getPage_connection2->prepare("SELECT id FROM offers WHERE id = (SELECT MIN(id) FROM offers WHERE id > ?) ORDER BY id LIMIT 1")) {
-			$stmt->bind_param("i", $next_offers);
-			$stmt->execute();
-			$stmt->bind_result($r_result);
-			$stmt->fetch();
-			$next_offers = $r_result;
-			$stmt->close();
-		} else {
-			$next_offers = 0;
-		} // else
-	} // while
 
 	if ($offersExist === false) {
 		echo "                No declined offers exist so far.\n";
