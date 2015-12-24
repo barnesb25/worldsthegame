@@ -1127,78 +1127,69 @@ function showMapInfo($getPage_connection2) {
 					echo "                      </div>\n";
 					$nationInfoZ = getNationInfo($getPage_connection2,$_SESSION["nation_id"]);
 
-					$next_unitTypes = 1;
 					$wrapCounter = 0;
-					if ($stmt = $getPage_connection2->prepare("SELECT id FROM units ORDER BY id ASC LIMIT 1")) {
+					if ($stmt = $getPage_connection2->prepare("SELECT id FROM units ORDER BY id ASC")) {
 						$stmt->execute();
 						$stmt->bind_result($r_result);
-						$stmt->fetch();
-						$next_unitTypes = $r_result;
-						$stmt->close();
-					} else {
-						$next_unitTypes = 0;
-					} // else
-					while ($next_unitTypes > 0) {
-						$unitTypeInfo = getUnitTypeInfo($getPage_connection2,$next_unitTypes);
+						$stmt->store_result();
 
-						if ($unitTypeInfo["water"] == 1) {
-							$coastBool = isItCoast($getPage_connection2,$_SESSION["tileInfo"]);
-							if ($coastBool === true) {
-								$coastCheck = true;
+						while ($stmt->fetch()) {
+							$next_unitTypes = $r_result;
+							$unitTypeInfo = getUnitTypeInfo($getPage_connection2,$next_unitTypes);
+	
+							if ($unitTypeInfo["water"] == 1) {
+								$coastBool = isItCoast($getPage_connection2,$_SESSION["tileInfo"]);
+								if ($coastBool === true) {
+									$coastCheck = true;
+								} else {
+									$coastCheck = false;
+								} // else
 							} else {
-								$coastCheck = false;
+								$coastCheck = true;
 							} // else
-						} else {
-							$coastCheck = true;
-						} // else
-
-						if ($coastCheck === true) {
-							if ($unitTypeInfo["baseCost"] <= $nationInfoZ["money"]) {
-								$notEnough = false;
-								for ($zz=0; $zz < count($unitTypeInfo["goodsRequired"]); $zz++) {
-									if ($unitTypeInfo["goodsRequired"][$zz] > $nationInfoZ["goods"][$zz]) {
-										$notEnough = true;
-										break;
-									} // if
-								} // for
-								if ($notEnough === false) {
-									$wrapCounter++;
-									if ($wrapCounter == 1) {
-										echo "                        <div class=\"row\">\n";
-									} // if
-									echo "                          <div class=\"col-xs-3\">\n";
-									echo "                            <form action=\"index.php?page=map&amp;overlay=units\" method=\"post\">\n";
-									echo "                              <input type=\"hidden\" name=\"continent\" value=\"".$_SESSION["continent_id"]."\" />\n";
-									echo "                              <input type=\"hidden\" name=\"xpos\" value=\"".$_SESSION["xpos"]."\" />\n";
-									echo "                              <input type=\"hidden\" name=\"ypos\" value=\"".$_SESSION["ypos"]."\" />\n";
-									echo "                              <input type=\"hidden\" name=\"actionid\" value=\"".$unitTypeInfo["id"]."\" />\n";
-									echo "                              <input type=\"hidden\" name=\"action\" value=\"unit-build\" />\n";
-									echo "                              <input type=\"hidden\" name=\"overlay\" value=\"units\" />\n";
-									echo "                              <button value=\"map\" name=\"page\" type=\"submit\" class=\"btn btn-primary btn-sm\"><img src=\"".$unitTypeInfo["image"]."\" alt=\"Train ".$unitTypeInfo["name"]."\" /></button>\n";
-									echo "                            </form>\n";
-									echo "                          </div>\n";
-									if ($wrapCounter == 3) {
-										$wrapCounter = 0;
-										echo "                        </div>\n";
+	
+							if ($coastCheck === true) {
+								if ($unitTypeInfo["baseCost"] <= $nationInfoZ["money"]) {
+									$notEnough = false;
+									for ($zz=0; $zz < count($unitTypeInfo["goodsRequired"]); $zz++) {
+										if ($unitTypeInfo["goodsRequired"][$zz] > $nationInfoZ["goods"][$zz]) {
+											$notEnough = true;
+											break;
+										} // if
+									} // for
+									if ($notEnough === false) {
+										$wrapCounter++;
+										if ($wrapCounter == 1) {
+											echo "                        <div class=\"row\">\n";
+										} // if
+										echo "                          <div class=\"col-xs-3\">\n";
+										echo "                            <form action=\"index.php?page=map&amp;overlay=units\" method=\"post\">\n";
+										echo "                              <input type=\"hidden\" name=\"continent\" value=\"".$_SESSION["continent_id"]."\" />\n";
+										echo "                              <input type=\"hidden\" name=\"xpos\" value=\"".$_SESSION["xpos"]."\" />\n";
+										echo "                              <input type=\"hidden\" name=\"ypos\" value=\"".$_SESSION["ypos"]."\" />\n";
+										echo "                              <input type=\"hidden\" name=\"actionid\" value=\"".$unitTypeInfo["id"]."\" />\n";
+										echo "                              <input type=\"hidden\" name=\"action\" value=\"unit-build\" />\n";
+										echo "                              <input type=\"hidden\" name=\"overlay\" value=\"units\" />\n";
+										echo "                              <button value=\"map\" name=\"page\" type=\"submit\" class=\"btn btn-primary btn-sm\"><img src=\"".$unitTypeInfo["image"]."\" alt=\"Train ".$unitTypeInfo["name"]."\" /></button>\n";
+										echo "                            </form>\n";
+										echo "                          </div>\n";
+										if ($wrapCounter == 3) {
+											$wrapCounter = 0;
+											echo "                        </div>\n";
+										} // if
 									} // if
 								} // if
 							} // if
-						} // if
-						if ($stmt = $getPage_connection2->prepare("SELECT id FROM units WHERE id = (SELECT MIN(id) FROM units WHERE id > ?) ORDER BY id LIMIT 1")) {
-							$stmt->bind_param("i", $next_unitTypes);
-							$stmt->execute();
-							$stmt->bind_result($r_result);
-							$stmt->fetch();
-							$next_unitTypes = $r_result;
-							$stmt->close();
-						} else {
-							$next_unitTypes = 0;
-						} // else
+	
+							if ($next_unitTypes < 1 && $wrapCounter != 0) {
+								echo "                      </div>\n";
+							} // if
+						} // while
 
-						if ($next_unitTypes < 1 && $wrapCounter != 0) {
-							echo "                      </div>\n";
-						} // if
-					} // while
+						$stmt->close();
+					} else {
+					} // else
+						
 					echo "                      </li>\n";
 				} // if
 			} // if
@@ -1253,39 +1244,57 @@ function showMapInfo($getPage_connection2) {
 
 		$next_improvementTypes = 1;
 		$wrapCounter = 0;
-		if ($stmt = $getPage_connection2->prepare("SELECT id FROM improvements ORDER BY id ASC LIMIT 1")) {
+		if ($stmt = $getPage_connection2->prepare("SELECT id FROM improvements ORDER BY id ASC")) {
 			$stmt->execute();
 			$stmt->bind_result($r_result);
-			$stmt->fetch();
-			$next_improvementTypes = $r_result;
-			$stmt->close();
-		} else {
-			$next_improvementTypes = 0;
-		} // else
-		while ($next_improvementTypes > 0) {
-			$improvementTypeInfo1 = getImprovementTypeInfo($getPage_connection2,$next_improvementTypes);
-			$addToCounter = false;
-			$terrainIsValid = false;
-			// loop terrain requirements
-			for ($b = 0; $b < count($improvementTypeInfo1["terrainTypeRequired"]); $b++) {
-				// if tile terrain type is valid, check
-				if ($improvementTypeInfo1["terrainTypeRequired"][$b] == $_SESSION["tileInfo"]["terrain"]) {
-					$terrainIsValid = true;
-					break;
-				} else {
-					$terrainIsValid = false;
-				} // else
-			} // for
+			$stmt->store_result();
 
-			// if terrain is valid, check for resource requirements
-			if ($terrainIsValid === true) {
-				// if no requirements just post it, otherwise proceed to loop
-				if ($improvementTypeInfo1["resourcesRequired"][0] == 0) {
-					if (count($_SESSION["tileInfo"]["improvements"]) < 5) {
-						// capital: only 1 can be built, check for home continent, if one is set then capital exists
-						if ($improvementTypeInfo1["id"] == 1) {
-							$nationInfoC = getNationInfo($getPage_connection2,$_SESSION["nation_id"]);
-							if ($nationInfoC["home"] == 0) {
+			while ($stmt->fetch()) {
+				$next_improvementTypes = $r_result;
+				$improvementTypeInfo1 = getImprovementTypeInfo($getPage_connection2,$next_improvementTypes);
+				$addToCounter = false;
+				$terrainIsValid = false;
+				// loop terrain requirements
+				for ($b = 0; $b < count($improvementTypeInfo1["terrainTypeRequired"]); $b++) {
+					// if tile terrain type is valid, check
+					if ($improvementTypeInfo1["terrainTypeRequired"][$b] == $_SESSION["tileInfo"]["terrain"]) {
+						$terrainIsValid = true;
+						break;
+					} else {
+						$terrainIsValid = false;
+					} // else
+				} // for
+	
+				// if terrain is valid, check for resource requirements
+				if ($terrainIsValid === true) {
+					// if no requirements just post it, otherwise proceed to loop
+					if ($improvementTypeInfo1["resourcesRequired"][0] == 0) {
+						if (count($_SESSION["tileInfo"]["improvements"]) < 5) {
+							// capital: only 1 can be built, check for home continent, if one is set then capital exists
+							if ($improvementTypeInfo1["id"] == 1) {
+								$nationInfoC = getNationInfo($getPage_connection2,$_SESSION["nation_id"]);
+								if ($nationInfoC["home"] == 0) {
+									$wrapCounter++;
+									if ($wrapCounter == 1) {
+										echo "                        <div class=\"row\">\n";
+									} // if
+									echo "                          <div class=\"col-xs-3\">\n";
+									echo "                            <form action=\"index.php?page=map&amp;overlay=units\" method=\"post\">\n";
+									echo "                              <input type=\"hidden\" name=\"continent\" value=\"".$_SESSION["continent_id"]."\" />\n";
+									echo "                              <input type=\"hidden\" name=\"xpos\" value=\"".$_SESSION["xpos"]."\" />\n";
+									echo "                              <input type=\"hidden\" name=\"ypos\" value=\"".$_SESSION["ypos"]."\" />\n";
+									echo "                              <input type=\"hidden\" name=\"actionid\" value=\"".$next_improvementTypes."\" />\n";
+									echo "                              <input type=\"hidden\" name=\"action\" value=\"improvement-build\" />\n";
+									echo "                              <input type=\"hidden\" name=\"overlay\" value=\"units\" />\n";
+									echo "                              <button value=\"map\" name=\"page\" type=\"submit\" class=\"btn btn-primary btn-sm\"><img src=\"".$improvementTypeInfo1["image"]."\" alt=\"Build ".$improvementTypeInfo1["name"]."\" /></button>\n";
+									echo "                            </form>\n";
+									echo "                          </div>\n";
+									if ($wrapCounter == 3) {
+										$wrapCounter = 0;
+										echo "                        </div>\n";
+									} // if									
+								} // if															
+							} else {
 								$wrapCounter++;
 								if ($wrapCounter == 1) {
 									echo "                        <div class=\"row\">\n";
@@ -1304,98 +1313,70 @@ function showMapInfo($getPage_connection2) {
 								if ($wrapCounter == 3) {
 									$wrapCounter = 0;
 									echo "                        </div>\n";
-								} // if									
-							} // if															
-						} else {
-							$wrapCounter++;
-							if ($wrapCounter == 1) {
-								echo "                        <div class=\"row\">\n";
-							} // if
-							echo "                          <div class=\"col-xs-3\">\n";
-							echo "                            <form action=\"index.php?page=map&amp;overlay=units\" method=\"post\">\n";
-							echo "                              <input type=\"hidden\" name=\"continent\" value=\"".$_SESSION["continent_id"]."\" />\n";
-							echo "                              <input type=\"hidden\" name=\"xpos\" value=\"".$_SESSION["xpos"]."\" />\n";
-							echo "                              <input type=\"hidden\" name=\"ypos\" value=\"".$_SESSION["ypos"]."\" />\n";
-							echo "                              <input type=\"hidden\" name=\"actionid\" value=\"".$next_improvementTypes."\" />\n";
-							echo "                              <input type=\"hidden\" name=\"action\" value=\"improvement-build\" />\n";
-							echo "                              <input type=\"hidden\" name=\"overlay\" value=\"units\" />\n";
-							echo "                              <button value=\"map\" name=\"page\" type=\"submit\" class=\"btn btn-primary btn-sm\"><img src=\"".$improvementTypeInfo1["image"]."\" alt=\"Build ".$improvementTypeInfo1["name"]."\" /></button>\n";
-							echo "                            </form>\n";
-							echo "                          </div>\n";
-							if ($wrapCounter == 3) {
-								$wrapCounter = 0;
-								echo "                        </div>\n";
-							} // if
-						} // else
-					} // if
-				} else {
-					$checkResource = array(0=>false);
-					// loop resource requirements
-					for ($t = 0; $t < count($improvementTypeInfo1["resourcesRequired"]); $t++) {
-						// loop available resources
-						for ($z = 0; $z < count($availableResources); $z++) {
-							// if tile terrain type is valid, check
-							if ($improvementTypeInfo1["resourcesRequired"][$t] == $availableResources[$z]["type"]) {
-								$checkResource[$t] = true;
-								break;
-							} else {
+								} // if
 							} // else
+						} // if
+					} else {
+						$checkResource = array(0=>false);
+						// loop resource requirements
+						for ($t = 0; $t < count($improvementTypeInfo1["resourcesRequired"]); $t++) {
+							// loop available resources
+							for ($z = 0; $z < count($availableResources); $z++) {
+								// if tile terrain type is valid, check
+								if ($improvementTypeInfo1["resourcesRequired"][$t] == $availableResources[$z]["type"]) {
+									$checkResource[$t] = true;
+									break;
+								} else {
+								} // else
+							} // for
 						} // for
-					} // for
-
-					$illegal = false;
-					for ($a=0; $a < count($improvementTypeInfo1["resourcesRequired"]); $a++) {
-						if (isset($checkResource[$a])) {
-							if ($checkResource[$a] === false) {
+	
+						$illegal = false;
+						for ($a=0; $a < count($improvementTypeInfo1["resourcesRequired"]); $a++) {
+							if (isset($checkResource[$a])) {
+								if ($checkResource[$a] === false) {
+									$illegal = true;
+									break;
+								} // if
+							} else {
 								$illegal = true;
 								break;
-							} // if
-						} else {
-							$illegal = true;
-							break;
-						} // else
-					} // for
-
-					if ($illegal === false) {
-						if (count($_SESSION["tileInfo"]["improvements"]) < 5) {
-							$wrapCounter++;
-							if ($wrapCounter == 1) {
-								echo "                        <div class=\"row\">\n";
-							} // if
-							echo "                          <div class=\"col-xs-3\">\n";
-							echo "                            <form action=\"index.php?page=map&amp;overlay=units\" method=\"post\">\n";
-							echo "                              <input type=\"hidden\" name=\"continent\" value=\"".$_SESSION["continent_id"]."\" />\n";
-							echo "                              <input type=\"hidden\" name=\"xpos\" value=\"".$_SESSION["xpos"]."\" />\n";
-							echo "                              <input type=\"hidden\" name=\"ypos\" value=\"".$_SESSION["ypos"]."\" />\n";
-							echo "                              <input type=\"hidden\" name=\"actionid\" value=\"".$next_improvementTypes."\" />\n";
-							echo "                              <input type=\"hidden\" name=\"action\" value=\"improvement-build\" />\n";
-							echo "                              <input type=\"hidden\" name=\"overlay\" value=\"units\" />\n";
-							echo "                              <button value=\"map\" name=\"page\" type=\"submit\" class=\"btn btn-primary btn-sm\"><img src=\"".$improvementTypeInfo1["image"]."\" alt=\"Build ".$improvementTypeInfo1["name"]."\" /></button>\n";
-							echo "                            </form>\n";
-							echo "                          </div>\n";
-							if ($wrapCounter == 3) {
-								$wrapCounter = 0;
-								echo "                        </div>\n";
+							} // else
+						} // for
+	
+						if ($illegal === false) {
+							if (count($_SESSION["tileInfo"]["improvements"]) < 5) {
+								$wrapCounter++;
+								if ($wrapCounter == 1) {
+									echo "                        <div class=\"row\">\n";
+								} // if
+								echo "                          <div class=\"col-xs-3\">\n";
+								echo "                            <form action=\"index.php?page=map&amp;overlay=units\" method=\"post\">\n";
+								echo "                              <input type=\"hidden\" name=\"continent\" value=\"".$_SESSION["continent_id"]."\" />\n";
+								echo "                              <input type=\"hidden\" name=\"xpos\" value=\"".$_SESSION["xpos"]."\" />\n";
+								echo "                              <input type=\"hidden\" name=\"ypos\" value=\"".$_SESSION["ypos"]."\" />\n";
+								echo "                              <input type=\"hidden\" name=\"actionid\" value=\"".$next_improvementTypes."\" />\n";
+								echo "                              <input type=\"hidden\" name=\"action\" value=\"improvement-build\" />\n";
+								echo "                              <input type=\"hidden\" name=\"overlay\" value=\"units\" />\n";
+								echo "                              <button value=\"map\" name=\"page\" type=\"submit\" class=\"btn btn-primary btn-sm\"><img src=\"".$improvementTypeInfo1["image"]."\" alt=\"Build ".$improvementTypeInfo1["name"]."\" /></button>\n";
+								echo "                            </form>\n";
+								echo "                          </div>\n";
+								if ($wrapCounter == 3) {
+									$wrapCounter = 0;
+									echo "                        </div>\n";
+								} // if
 							} // if
 						} // if
-					} // if
-				} // else
-			} // if
-			if ($stmt = $getPage_connection2->prepare("SELECT id FROM improvements WHERE id = (SELECT MIN(id) FROM improvements WHERE id > ?) ORDER BY id LIMIT 1")) {
-				$stmt->bind_param("i", $next_improvementTypes);
-				$stmt->execute();
-				$stmt->bind_result($r_result);
-				$stmt->fetch();
-				$next_improvementTypes = $r_result;
-				$stmt->close();
-			} else {
-				$next_improvementTypes = 0;
-			} // else
-
-			if ($next_improvementTypes < 1 && $wrapCounter != 0) {
-				echo "                        </div>\n";
-			} // if
-		} // while
+					} // else
+				} // if
+	
+				if ($next_improvementTypes < 1 && $wrapCounter != 0) {
+					echo "                        </div>\n";
+				} // if
+			} // while
+			$stmt->close();
+		} else {
+		} // else
 		echo "                      </li>\n";
 		echo "                    </ul>\n";
 	} // if
