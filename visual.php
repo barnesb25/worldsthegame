@@ -340,20 +340,22 @@ function showOverlayOptions($getPage_connection2) {
 	if ($stmt = $getPage_connection2->prepare("SELECT id,name FROM overlays ORDER BY id ASC")) {
 		$stmt->execute();
 		$stmt->bind_result($r_id,$r_name);
+		$stmt->store_result();
 		
-		while ($stmt->fetch()) {			
+		while ($stmt->fetch()) {		
+			$overlayInfo1 = array("id"=>$r_id,"name"=>$_name);	
+			
 			if (isset($_SESSION["overlay"])) {
-				if ($_SESSION["overlay"] == strtolower($r_name)) {
-					echo "            <option class=\"option1\" selected=\"selected\" value=\"".strtolower($r_name)."\">".$r_name."</option>\n";
+				if ($_SESSION["overlay"] == strtolower($overlayInfo1["name"])) {
+					echo "            <option class=\"option1\" selected=\"selected\" value=\"".strtolower($overlayInfo1["name"])."\">".$overlayInfo1["name"]."</option>\n";
 				} else {
-					echo "            <option class=\"option1\" value=\"".strtolower($r_name)."\">".$r_name."</option>\n";
+					echo "            <option class=\"option1\" value=\"".strtolower($overlayInfo1["name"])."\">".$overlayInfo1["name"]."</option>\n";
 				} // else
 			} else {
-				echo "            <option class=\"option1\" value=\"".strtolower($r_name)."\">".$r_name."</option>\n";
+				echo "            <option class=\"option1\" value=\"".strtolower($overlayInfo1["name"])."\">".$overlayInfo1["name"]."</option>\n";
 			} // else
 		} // while
-		
-		//$next_overlays = $r_result;
+
 		$stmt->close();
 	} else {
 	} // else
