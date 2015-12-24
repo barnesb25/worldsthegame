@@ -272,6 +272,7 @@ function registerUser($getPage_connection2) {
 								$stmt->execute();
 								$stmt->bind_result($r_id);
 								$stmt->store_result();
+								
 								while ($stmt->fetch()) {
 									$next_tiles = $r_id;
 									$tileInfoD = getTileInfoByID($getPage_connection2,$next_tiles);
