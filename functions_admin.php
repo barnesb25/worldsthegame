@@ -211,7 +211,21 @@ function resetWorld($getPage_connection3) {
 					$stmt->execute();
 					$stmt->close();
 				} else {
-				} // else					
+				} // else	
+
+				if ($stmt = $getPage_connection3->prepare("SELECT id FROM market ORDER BY id ASC")) {
+					$stmt->execute();
+					$stmt->bind_result($r_id);
+					$stmt->store_result();
+				
+					while ($stmt->fetch()) {
+						$next_markets = $r_id;							
+						$marketInfo1 = getMarketInfo($getPage_connection3, $next_markets);
+						setMarketInfo($getPage_connection3, $next_markets, $marketInfo1["name"], 100);						
+					} // while
+					$stmt->close();
+				} else {					
+				} // else
 				
 				resetSession(false);			
 					
