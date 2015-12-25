@@ -47,12 +47,12 @@ function showForumInfo($getPage_connection2) {
 	echo "          <div class=\"well info_well\">\n";
 	echo "            Click on the below link to enter the forum.\n";
 	echo "            <br />\n";
-	echo "            Please note that the forum is an external entity and abides by all policies set forth by the forum host.\n";
-	echo "            <br />\n";
+	//echo "            Please note that the forum is an external entity and abides by all policies set forth by the forum host.\n";
+	//echo "            <br />\n";
 	echo "            Follow the rules.\n";
 	echo "            <br />\n";
 	echo "            <br />\n";
-	echo "            <h2><a href=\"something.html\" target=\"_blank\">ENTER</a></h2>\n";
+	echo "            <h2><a href=\"worldsthegame.com/phpBB3\" target=\"_blank\">ENTER</a></h2>\n";
 	echo "          </div>\n";
 	echo "        </div>\n";
 } // showForumInfo
