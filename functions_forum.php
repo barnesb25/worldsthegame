@@ -52,7 +52,7 @@ function showForumInfo($getPage_connection2) {
 	echo "            Follow the rules.\n";
 	echo "            <br />\n";
 	echo "            <br />\n";
-	echo "            <h2><a href=\"worldsthegame.com/phpBB3\" target=\"_blank\">ENTER</a></h2>\n";
+	echo "            <h2><a href=\"http://worldsthegame.com/phpBB3\" target=\"_blank\">ENTER</a></h2>\n";
 	echo "          </div>\n";
 	echo "        </div>\n";
 } // showForumInfo
