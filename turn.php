@@ -76,11 +76,11 @@ function preliminaryUpdates($getPage_connection2) {
 			while ($stmt->fetch()) {	
 				$next_offers = $r_result;
 				$offerInfo1 = array("id"=>0,"fromNation"=>0,"toNation"=>0,"givingItems"=>"","receivingItems"=>"","turns"=>0,"counter"=>0,"status"=>0);
-				if ($stmt = $getPage_connection2->prepare("SELECT id,fromNation,toNation,givingItems,receivingItems,turns,counter,status FROM offers WHERE id=? LIMIT 1")) {
-					$stmt->bind_param("i", $next_offers);
-					$stmt->execute();
-					$stmt->bind_result($r_id, $r_fromNation, $r_toNation, $r_givingItems, $r_receivingItems, $r_turns, $r_counter, $r_status);
-					$stmt->fetch();
+				if ($stmt10 = $getPage_connection2->prepare("SELECT id,fromNation,toNation,givingItems,receivingItems,turns,counter,status FROM offers WHERE id=? LIMIT 1")) {
+					$stmt10->bind_param("i", $next_offers);
+					$stmt10->execute();
+					$stmt10->bind_result($r_id, $r_fromNation, $r_toNation, $r_givingItems, $r_receivingItems, $r_turns, $r_counter, $r_status);
+					$stmt10->fetch();
 					$offerInfo1["id"] = $r_id;
 					$offerInfo1["fromNation"] = $r_fromNation;
 					$offerInfo1["toNation"] = $r_toNation;
@@ -97,7 +97,7 @@ function preliminaryUpdates($getPage_connection2) {
 					$offerInfo1["turns"] = $r_turns;
 					$offerInfo1["counter"] = $r_counter;
 					$offerInfo1["status"] = $r_status;
-					$stmt->close();
+					$stmt10->close();
 				} else {
 				}
 	
@@ -621,12 +621,12 @@ function updateNations($getPage_connection2) {
 	
 			// get tiles info for production/claims/bonus addition
 			$_SESSION["scriptOutput"] .= "Get tiles info for production/claims/bonus addition...<br />";
-			if ($stmt2 = $getPage_connection2->prepare("SELECT id FROM tilesmap ORDER BY id ASC")) {
-				$stmt2->execute();
-				$stmt2->bind_result($r_result);
-				$stmt2->store_result();
+			if ($stmt1 = $getPage_connection2->prepare("SELECT id FROM tilesmap ORDER BY id ASC")) {
+				$stmt1->execute();
+				$stmt1->bind_result($r_result);
+				$stmt1->store_result();
 
-				while ($stmt2->fetch()) {
+				while ($stmt1->fetch()) {
 					$next_tiles = $r_result;
 					$tileInfoW = getTileInfoByID($getPage_connection2, $next_tiles);				
 							
@@ -703,13 +703,13 @@ function updateNations($getPage_connection2) {
 						$_SESSION["scriptOutput"] .= "Terrain production modifiers...<br />";
 																			
 						$terrainInfoW = array("productionModifier"=>0);
-						if ($stmt = $getPage_connection2->prepare("SELECT productionModifier FROM terrain WHERE id=? LIMIT 1")) {
-							$stmt->bind_param("i", $tileInfoW["terrain"]);
-							$stmt->execute();
-							$stmt->bind_result($r_productionModifier);
-							$stmt->fetch();
+						if ($stmt100 = $getPage_connection2->prepare("SELECT productionModifier FROM terrain WHERE id=? LIMIT 1")) {
+							$stmt100->bind_param("i", $tileInfoW["terrain"]);
+							$stmt100->execute();
+							$stmt100->bind_result($r_productionModifier);
+							$stmt100->fetch();
 							$terrainInfoW["productionModifier"] = $r_productionModifier;
-							$stmt->close();
+							$stmt100->close();
 						} else {
 						} // else
 						
@@ -721,7 +721,7 @@ function updateNations($getPage_connection2) {
 						} // else
 					} // if
 				} // while
-				$stmt2->close();
+				$stmt1->close();
 			} else {
 			} // else
 			
@@ -731,12 +731,12 @@ function updateNations($getPage_connection2) {
 			//  get improvements
 			$_SESSION["scriptOutput"] .= "Get improvements info for production, money, population mods...<br />";
 			
-			if ($stmt2 = $getPage_connection2->prepare("SELECT id FROM improvementsmap ORDER BY id ASC")) {
-				$stmt2->execute();
-				$stmt2->bind_result($r_result);
-				$stmt2->store_result();
+			if ($stmt1 = $getPage_connection2->prepare("SELECT id FROM improvementsmap ORDER BY id ASC")) {
+				$stmt1->execute();
+				$stmt1->bind_result($r_result);
+				$stmt1->store_result();
 
-				while ($stmt2->fetch()) {
+				while ($stmt1->fetch()) {
 					$next_improvements = $r_result;
 					$improvementInfoW = getImprovementInfo($getPage_connection2,$next_improvements);
 				
@@ -833,7 +833,7 @@ function updateNations($getPage_connection2) {
 						} // if
 					} // for
 				} // while
-				$stmt2->close();
+				$stmt1->close();
 			} else {
 			} // else
 			
@@ -897,11 +897,11 @@ function updateNations($getPage_connection2) {
 			setTradeInfo($getPage_connection2,$tradeInfoW["id"],$next_nations,$new_routes,$new_limit);
 					
 			// do individual trades action if current nation involved
-			if ($stmt2 = $getPage_connection2->prepare("SELECT id FROM offers ORDER BY id ASC")) {
-				$stmt2->execute();
-				$stmt2->bind_result($r_result);
-				$stmt2->store_result();
-				while ($stmt2->fetch()) {
+			if ($stmt1 = $getPage_connection2->prepare("SELECT id FROM offers ORDER BY id ASC")) {
+				$stmt1->execute();
+				$stmt1->bind_result($r_result);
+				$stmt1->store_result();
+				while ($stmt1->fetch()) {
 					$next_offers = $r_result;
 					$offerInfoW = getOfferInfo($getPage_connection2,$next_offers);
 					if ($offerInfoW["fromNation"] == $next_nations) {
@@ -921,7 +921,7 @@ function updateNations($getPage_connection2) {
 						} // if
 					} // if
 				} // while
-				$stmt2->close();
+				$stmt1->close();
 			} else {
 			} // else
 			
@@ -1140,12 +1140,12 @@ function updateNations($getPage_connection2) {
 			$_SESSION["scriptOutput"] .= "Unit upkeep...<br />";
 			
 			// unit upkeep
-			if ($stmt2 = $getPage_connection2->prepare("SELECT id FROM unitsmap ORDER BY id ASC")) {
-				$stmt2->execute();
-				$stmt2->bind_result($r_result);
-				$stmt2->store_result();
+			if ($stmt1 = $getPage_connection2->prepare("SELECT id FROM unitsmap ORDER BY id ASC")) {
+				$stmt1->execute();
+				$stmt1->bind_result($r_result);
+				$stmt1->store_result();
 		
-				while ($stmt2->fetch()) {
+				while ($stmt1->fetch()) {
 					$next_units = $r_result;
 					$unitInfoW = getUnitInfoByID($getPage_connection2,$next_units);
 				
@@ -1159,11 +1159,11 @@ function updateNations($getPage_connection2) {
 							
 						$best_difference = 9999;
 						$best_continent = 0;
-						if ($stmt3 = $getPage_connection2->prepare("SELECT id FROM improvementsmap ORDER BY id ASC")) {
-							$stmt3->execute();
-							$stmt3->bind_result($r_result);
+						if ($stmt2 = $getPage_connection2->prepare("SELECT id FROM improvementsmap ORDER BY id ASC")) {
+							$stmt2->execute();
+							$stmt2->bind_result($r_result);
 
-							while ($stmt3->fetch()) {
+							while ($stmt2->fetch()) {
 								$next_improvements1 = $r_result;
 								$improvementInfoWA = getImprovementInfo($getPage_connection2, $next_improvements1);
 								
@@ -1191,7 +1191,7 @@ function updateNations($getPage_connection2) {
 									} // for
 								} // if			
 							} // while
-							$stmt3->close();
+							$stmt2->close();
 						} else {
 						} // else
 						
@@ -1209,7 +1209,7 @@ function updateNations($getPage_connection2) {
 						} // else
 					} // if
 				} // while
-				$stmt2->close();
+				$stmt1->close();
 			} else {
 			} // else
 			
@@ -1599,96 +1599,96 @@ function updateGlobe($getPage_connection2) {
 			
 			// production
 			
-			if ($stmt = $getPage_connection2->prepare("SELECT id FROM nations ORDER BY production DESC LIMIT 1 OFFSET ?")) {
-				$stmt->bind_param("i", $offset);
-				$stmt->execute();
-				$stmt->bind_result($r_result);
-				$stmt->fetch();
+			if ($stmt11 = $getPage_connection2->prepare("SELECT id FROM nations ORDER BY production DESC LIMIT 1 OFFSET ?")) {
+				$stmt11->bind_param("i", $offset);
+				$stmt11->execute();
+				$stmt11->bind_result($r_result);
+				$stmt11->fetch();
 				$next_production_nation = $r_result;
-				$stmt->close();
+				$stmt11->close();
 			} else {
 			} // else
 				
-			if ($stmt = $getPage_connection2->prepare("UPDATE rankings SET production=? WHERE nation=?")) {
-				$stmt->bind_param("ii", $rank, $next_production_nation);
-				$stmt->execute();
-				$stmt->close();
+			if ($stmt11 = $getPage_connection2->prepare("UPDATE rankings SET production=? WHERE nation=?")) {
+				$stmt11->bind_param("ii", $rank, $next_production_nation);
+				$stmt11->execute();
+				$stmt11->close();
 			} else {
 			} // else
 	
 			// money
 				
-			if ($stmt = $getPage_connection2->prepare("SELECT id FROM nations ORDER BY money DESC LIMIT 1 OFFSET ?")) {
-				$stmt->bind_param("i", $offset);
-				$stmt->execute();
-				$stmt->bind_result($r_result);
-				$stmt->fetch();
+			if ($stmt11 = $getPage_connection2->prepare("SELECT id FROM nations ORDER BY money DESC LIMIT 1 OFFSET ?")) {
+				$stmt11->bind_param("i", $offset);
+				$stmt11->execute();
+				$stmt11->bind_result($r_result);
+				$stmt11->fetch();
 				$next_money_nation = $r_result;
-				$stmt->close();
+				$stmt11->close();
 			} else {
 			} // else
 				
-			if ($stmt = $getPage_connection2->prepare("UPDATE rankings SET money=? WHERE nation=?")) {
-				$stmt->bind_param("ii", $rank, $next_money_nation);
-				$stmt->execute();
-				$stmt->close();
+			if ($stmt11 = $getPage_connection2->prepare("UPDATE rankings SET money=? WHERE nation=?")) {
+				$stmt11->bind_param("ii", $rank, $next_money_nation);
+				$stmt11->execute();
+				$stmt11->close();
 			} else {
 			} // else
 	
 			// happiness
 				
-			if ($stmt = $getPage_connection2->prepare("SELECT id FROM nations ORDER BY happiness DESC LIMIT 1 OFFSET ?")) {
-				$stmt->bind_param("i", $offset);
-				$stmt->execute();
-				$stmt->bind_result($r_result);
-				$stmt->fetch();
+			if ($stmt11 = $getPage_connection2->prepare("SELECT id FROM nations ORDER BY happiness DESC LIMIT 1 OFFSET ?")) {
+				$stmt11->bind_param("i", $offset);
+				$stmt11->execute();
+				$stmt11->bind_result($r_result);
+				$stmt11->fetch();
 				$next_happiness_nation = $r_result;
-				$stmt->close();
+				$stmt11->close();
 			} else {
 			} // else
 				
-			if ($stmt = $getPage_connection2->prepare("UPDATE rankings SET happiness=? WHERE nation=?")) {
-				$stmt->bind_param("ii", $rank, $next_happiness_nation);
-				$stmt->execute();
-				$stmt->close();
+			if ($stmt11 = $getPage_connection2->prepare("UPDATE rankings SET happiness=? WHERE nation=?")) {
+				$stmt11->bind_param("ii", $rank, $next_happiness_nation);
+				$stmt11->execute();
+				$stmt11->close();
 			} else {
 			} // else
 				
 			// food
 				
-			if ($stmt = $getPage_connection2->prepare("SELECT id FROM nations ORDER BY food DESC LIMIT 1 OFFSET ?")) {
-				$stmt->bind_param("i", $offset);
-				$stmt->execute();
-				$stmt->bind_result($r_result);
-				$stmt->fetch();
+			if ($stmt11 = $getPage_connection2->prepare("SELECT id FROM nations ORDER BY food DESC LIMIT 1 OFFSET ?")) {
+				$stmt11->bind_param("i", $offset);
+				$stmt11->execute();
+				$stmt11->bind_result($r_result);
+				$stmt11->fetch();
 				$next_food_nation = $r_result;
-				$stmt->close();
+				$stmt11->close();
 			} else {
 			} // else
 				
-			if ($stmt = $getPage_connection2->prepare("UPDATE rankings SET food=? WHERE nation=?")) {
-				$stmt->bind_param("ii", $rank, $next_food_nation);
-				$stmt->execute();
-				$stmt->close();
+			if ($stmt11 = $getPage_connection2->prepare("UPDATE rankings SET food=? WHERE nation=?")) {
+				$stmt11->bind_param("ii", $rank, $next_food_nation);
+				$stmt11->execute();
+				$stmt11->close();
 			} else {
 			} // else
 				
 			// population
 				
-			if ($stmt = $getPage_connection2->prepare("SELECT id FROM nations ORDER BY population DESC LIMIT 1 OFFSET ?")) {
-				$stmt->bind_param("i", $offset);
-				$stmt->execute();
-				$stmt->bind_result($r_result);
-				$stmt->fetch();
+			if ($stmt11 = $getPage_connection2->prepare("SELECT id FROM nations ORDER BY population DESC LIMIT 1 OFFSET ?")) {
+				$stmt11->bind_param("i", $offset);
+				$stmt11->execute();
+				$stmt11->bind_result($r_result);
+				$stmt11->fetch();
 				$next_population_nation = $r_result;
-				$stmt->close();
+				$stmt11->close();
 			} else {
 			} // else
 				
-			if ($stmt = $getPage_connection2->prepare("UPDATE rankings SET population=? WHERE nation=?")) {
-				$stmt->bind_param("ii", $rank, $next_population_nation);
-				$stmt->execute();
-				$stmt->close();
+			if ($stmt11 = $getPage_connection2->prepare("UPDATE rankings SET population=? WHERE nation=?")) {
+				$stmt11->bind_param("ii", $rank, $next_population_nation);
+				$stmt11->execute();
+				$stmt11->close();
 			} else {
 			} // else
 		
@@ -1713,12 +1713,12 @@ function checkContinents ($getPage_connection2) {
 	
 			$next_tiles = 1;
 			$counter1 = 0;
-			if ($stmt = $getPage_connection2->prepare("SELECT id FROM tilesmap ORDER BY id ASC LIMIT 1")) {
-				$stmt->execute();
-				$stmt->bind_result($r_result);
-				$stmt->fetch();
+			if ($stmt12 = $getPage_connection2->prepare("SELECT id FROM tilesmap ORDER BY id ASC LIMIT 1")) {
+				$stmt12->execute();
+				$stmt12->bind_result($r_result);
+				$stmt12->fetch();
 				$next_tiles = $r_result;
-				$stmt->close();
+				$stmt12->close();
 			} else {
 				$next_tiles = 0;
 			} // else
@@ -1735,13 +1735,13 @@ function checkContinents ($getPage_connection2) {
 					break 2;
 				} // if
 			
-				if ($stmt = $getPage_connection2->prepare("SELECT id FROM tilesmap WHERE id = (SELECT MIN(id) FROM tilesmap WHERE id > ?) ORDER BY id LIMIT 1")) {
-					$stmt->bind_param("i", $next_tiles);
-					$stmt->execute();
-					$stmt->bind_result($r_result);
-					$stmt->fetch();
+				if ($stmt12 = $getPage_connection2->prepare("SELECT id FROM tilesmap WHERE id = (SELECT MIN(id) FROM tilesmap WHERE id > ?) ORDER BY id LIMIT 1")) {
+					$stmt12->bind_param("i", $next_tiles);
+					$stmt12->execute();
+					$stmt12->bind_result($r_result);
+					$stmt12->fetch();
 					$next_tiles = $r_result;
-					$stmt->close();
+					$stmt12->close();
 				} else {
 					$next_tiles = 0;
 				} // else
