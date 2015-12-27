@@ -360,6 +360,7 @@ function showMap($getPage_connection2) {
 							} else {
 								echo "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."_friendly\" src=\"".$unitTypeInfo1["image"]."\" alt=\"".$unitTypeInfo1["name"]."\" />";								
 							} // else
+						} else {
 							if ($tileInfo1["xpos"] == $_SESSION["xpos"] && $tileInfo1["ypos"] == $_SESSION["ypos"]) {
 								echo "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."_enemy\" src=\"".$unitTypeInfo1["selected"]."\" alt=\"".$unitTypeInfo1["name"]."\" />";
 							} else {
