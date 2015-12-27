@@ -127,9 +127,9 @@ function checkLoginStatus($getPage_connection2) {
 				$_SESSION["continent_id"] = $nationInfoLogin["home"];
 				$_SESSION["xpos"] = 1;
 				$_SESSION["ypos"] = 1;
-				$_POST["overlay"] = "control";
-				$_GET["overlay"] = "control";
-				$_SESSION["overlay"] = "control";
+				$_POST["overlay"] = "nations";
+				$_GET["overlay"] = "nations";
+				$_SESSION["overlay"] = "nations";
 			} else {
 				$_SESSION["login"] = 0;
 				$loginArray["status"] = false;
@@ -688,19 +688,71 @@ function combat($getPage_connection2,$continent,$xpos,$ypos,$attacker,$defender,
 
 		$unitTypeInfoAttacker = getUnitTypeInfo($getPage_connection2,$attacker["type"]);
 		$unitTypeInfoDefender = getUnitTypeInfo($getPage_connection2,$defender["type"]);
-
-		$attackerA = $unitTypeInfoAttacker["attack"] + (($attacker["level"] * 0.25) + ($attacker["exp"] * 0.05));
-		$attackerD = $unitTypeInfoAttacker["defense"] + (($attacker["level"] * 0.25) + ($attacker["exp"] * 0.05));
-		$defenderA = $unitTypeInfoDefender["attack"] + (($defender["level"] * 0.25) + ($defender["exp"] * 0.05));
-		$defenderD = $unitTypeInfoDefender["defense"] + (($defender["level"] * 0.25) + ($defender["exp"] * 0.05));
-
+		
+		$attackerReconLevel = array(0=>0);
+		$defenderReconLevel = array(0=>0);
+		$attackerReconExp = array(0=>0);
+		$defenderReconExp = array(0=>0);
+		$attackerReconBonus = 0;
+		$defenderReconBonus = 0;
+		
 		$attackerArtilleryLevel = array(0=>0);
 		$defenderArtilleryLevel = array(0=>0);
 		$attackerArtilleryPower = array(0=>0);
 		$defenderArtilleryPower = array(0=>0);
 		$attackerArtilleryBonus = 0;
 		$defenderArtilleryBonus = 0;
-
+		
+		// Experience Bonus from Recon
+				
+		$counter = 0;
+		// goes through -2 to +2 x and y positions looking for attacker recon to aid attacker
+		for ($x=-2; $x < 3; $x++) {
+			for ($y=-2; $y < 3; $y++) {
+				$unitInfoZ = getUnitInfo($getPage_connection2,$attacker["continent"],$attacker["xpos"] + $x,$attacker["ypos"] + $y);
+				if ($unitInfoZ["id"] >= 1) {
+					if ($unitInfoZ["type"] == 5) {
+						$unitTypeInfoZ = getUnitTypeInfo($getPage_connection2,$unitInfoZ["type"]);
+						$attackerReconLevel[$counter] = $unitInfoZ["level"];
+						$attackerReconExp[$counter] = 2;
+						$counter++;
+					} // if
+				} // if
+			} // for
+		} // for
+		
+		$counter = 0;
+		// goes through -2 to +2 x and y positions looking for defender recon to aid defender
+		for ($x=-2; $x < 3; $x++) {
+			for ($y=-2; $y < 3; $y++) {
+				$unitInfoZ = getUnitInfo($getPage_connection2,$defender["continent"],$defender["xpos"] + $x,$defender["ypos"] + $y);
+				if ($unitInfoZ["id"] >= 1) {
+					if ($unitInfoZ["type"] == 5) {
+						$unitTypeInfoZ = getUnitTypeInfo($getPage_connection2,$unitInfoZ["type"]);
+						$defenderReconLevel[$counter] = $unitInfoZ["level"];
+						$defenderReconExp[$counter] = 2;
+						$counter++;
+					} // if
+				} // if
+			} // for
+		} // for
+		if ($attackerReconLevel[0] >= 1) {
+			// add recon bonus
+			for ($e = 0; $e < count($attackerReconLevel); $e++) {
+				$attackerReconBonus += ($attackerReconLevel[$e] * 0.25) + ($attackerReconExp[$e]);
+			} // for
+		} // if
+		if ($defenderReconLevel[0] >= 1) {
+			for ($e = 0; $e < count($defenderReconLevel); $e++) {
+				$defenderReconBonus += ($defenderReconLevel[$e] * 0.25) + ($defenderReconExp[$e]);
+			} // for
+		} // if
+		
+		$attackerExp = $attacker["exp"] + $attackerReconBonus;
+		$defenderExp = $defender["exp"] + $defenderReconBonus;
+		
+		// Power Bonus from Artillery
+		
 		$counter = 0;
 		// goes through -2 to +2 x and y positions looking for attacker artillery to aid attacker
 		for ($x=-2; $x < 3; $x++) {
@@ -710,13 +762,14 @@ function combat($getPage_connection2,$continent,$xpos,$ypos,$attacker,$defender,
 					if ($unitInfoZ["type"] == 4) {
 						$unitTypeInfoZ = getUnitTypeInfo($getPage_connection2,$unitInfoZ["type"]);
 						$attackerArtilleryLevel[$counter] = $unitInfoZ["level"];
-						$attackerArtilleryPower[$counter] = $unitTypeInfoZ["attack"];
+						//$attackerArtilleryPower[$counter] = $unitTypeInfoZ["attack"];
+						$attackerArtilleryPower[$counter] = 2;
 						$counter++;
 					} // if
 				} // if
 			} // for
 		} // for
-
+		
 		$counter = 0;
 		// goes through -2 to +2 x and y positions looking for defender artillery to aid defender
 		for ($x=-2; $x < 3; $x++) {
@@ -726,7 +779,8 @@ function combat($getPage_connection2,$continent,$xpos,$ypos,$attacker,$defender,
 					if ($unitInfoZ["type"] == 4) {
 						$unitTypeInfoZ = getUnitTypeInfo($getPage_connection2,$unitInfoZ["type"]);
 						$defenderArtilleryLevel[$counter] = $unitInfoZ["level"];
-						$defenderArtilleryPower[$counter] = $unitTypeInfoZ["attack"];
+						//$defenderArtilleryPower[$counter] = $unitTypeInfoZ["attack"];
+						$defenderArtilleryPower[$counter] = 2;
 						$counter++;
 					} // if
 				} // if
@@ -743,9 +797,16 @@ function combat($getPage_connection2,$continent,$xpos,$ypos,$attacker,$defender,
 				$defenderArtilleryBonus += ($defenderArtilleryLevel[$e] * 0.25) + ($defenderArtilleryPower[$e]);
 			} // for
 		} // if
-
+		
 		$attackerA = $attackerA + $attackerArtilleryBonus;
+		$attackerD = $attackerD + $attackerArtilleryBonus;
 		$defenderA = $defenderA + $defenderArtilleryBonus;
+		$defenderD = $defenderD + $defenderArtilleryBonus;
+
+		$attackerA += $unitTypeInfoAttacker["attack"] + (($attacker["level"] * 0.25) + ($attackerExp * 0.05));
+		$attackerD += $unitTypeInfoAttacker["defense"] + (($attacker["level"] * 0.25) + ($attackerExp * 0.05));
+		$defenderA += $unitTypeInfoDefender["attack"] + (($defender["level"] * 0.25) + ($defenderExp * 0.05));
+		$defenderD += $unitTypeInfoDefender["defense"] + (($defender["level"] * 0.25) + ($defenderExp * 0.05));
 
 		$magnitude = 0;
 		$formula = 0; // 1=winning,2=tie,3=losing

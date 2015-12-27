@@ -303,7 +303,7 @@ function showPoliciesInfo($getPage_connection2) {
 	echo "                ";
 	$belongstoOrgs = false;
 	for ($z=0; $z < count($nationInfo["organizations"]); $z++) {
-		if ($z >= 1) {
+		if ($z >= 1 && $nationInfo["organizations"][0] > 0) {
 			echo ", ";
 		} // if
 		if ($nationInfo["organizations"][$z] >= 1) {
