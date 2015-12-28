@@ -328,7 +328,7 @@ function showTradeInfo($getPage_connection2) {
 									$itemInfo1 = getGoodsInfo($getPage_connection2,$offerInfo1["givingItems"][$z]);
 									$name1 = $itemInfo1["name"];
 								} else if ($offerInfo1["givingTypes"][$z] == "resources") {
-									$itemInfo1 = getResourceTypesInfo($getPage_connection2,$offerInfo1["givingItems"][$z]);
+									$itemInfo1 = getResourceTypeInfo($getPage_connection2,$offerInfo1["givingItems"][$z]);
 									$name1 = $itemInfo1["name"];
 								} else {
 									$name1 = "money";
@@ -347,7 +347,7 @@ function showTradeInfo($getPage_connection2) {
 									$itemInfo1 = getGoodsInfo($getPage_connection2,$offerInfo1["receivingItems"][$z]);
 									$name1 = $itemInfo1["name"];
 								} else if ($offerInfo1["receivingTypes"][$z] == "resources") {
-									$itemInfo1 = getResourceTypesInfo($getPage_connection2,$offerInfo1["receivingItems"][$z]);
+									$itemInfo1 = getResourceTypeInfo($getPage_connection2,$offerInfo1["receivingItems"][$z]);
 									$name1 = $itemInfo1["name"];
 								} else {
 									$name1 = "money";
@@ -731,7 +731,7 @@ function showTradeInfo($getPage_connection2) {
 									$itemInfo1 = getGoodsInfo($getPage_connection2,$offerInfo1["givingItems"][$z]);
 									$name1 = $itemInfo1["name"];
 								} else if ($offerInfo1["givingTypes"][$z] == "resources") {
-									$itemInfo1 = getResourceTypesInfo($getPage_connection2,$offerInfo1["givingItems"][$z]);
+									$itemInfo1 = getResourceTypeInfo($getPage_connection2,$offerInfo1["givingItems"][$z]);
 									$name1 = $itemInfo1["name"];
 								} else {
 									$name1 = "money";
@@ -750,7 +750,7 @@ function showTradeInfo($getPage_connection2) {
 									$itemInfo1 = getGoodsInfo($getPage_connection2,$offerInfo1["receivingItems"][$z]);
 									$name1 = $itemInfo1["name"];
 								} else if ($offerInfo1["receivingTypes"][$z] == "resources") {
-									$itemInfo1 = getResourceTypesInfo($getPage_connection2,$offerInfo1["receivingItems"][$z]);
+									$itemInfo1 = getResourceTypeInfo($getPage_connection2,$offerInfo1["receivingItems"][$z]);
 									$name1 = $itemInfo1["name"];
 								} else {
 									$name1 = "money";
@@ -850,7 +850,7 @@ function showTradeInfo($getPage_connection2) {
 									$itemInfo1 = getGoodsInfo($getPage_connection2,$offerInfo1["givingItems"][$z]);
 									$name1 = $itemInfo1["name"];
 								} else if ($offerInfo1["givingTypes"][$z] == "resources") {
-									$itemInfo1 = getResourceTypesInfo($getPage_connection2,$offerInfo1["givingItems"][$z]);
+									$itemInfo1 = getResourceTypeInfo($getPage_connection2,$offerInfo1["givingItems"][$z]);
 									$name1 = $itemInfo1["name"];
 								} else {
 									$name1 = "money";
@@ -869,7 +869,7 @@ function showTradeInfo($getPage_connection2) {
 									$itemInfo1 = getGoodsInfo($getPage_connection2,$offerInfo1["receivingItems"][$z]);
 									$name1 = $itemInfo1["name"];
 								} else if ($offerInfo1["receivingTypes"][$z] == "resources") {
-									$itemInfo1 = getResourceTypesInfo($getPage_connection2,$offerInfo1["receivingItems"][$z]);
+									$itemInfo1 = getResourceTypeInfo($getPage_connection2,$offerInfo1["receivingItems"][$z]);
 									$name1 = $itemInfo1["name"];
 								} else {
 									$name1 = "money";
