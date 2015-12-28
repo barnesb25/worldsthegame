@@ -1079,9 +1079,15 @@ function combat($getPage_connection2,$continent,$xpos,$ypos,$attacker,$defender,
 			} // if
 			// otherwise bounce!
 		} // if
-		$enteredInto = "Unit ".$newAttacker["name"]." has entered into combat with unit ".$newDefender["name"]."!  <br />";
-		$suffering = "Unit ".$newAttacker["name"]." has suffered ".$health_percent_attacker." damage.  Unit ".$newDefender["name"]." has suffered ".$health_percent_defender." damage!  <br />";
-		$_SESSION["success_message"] = $enteredInto.$suffering.$defeat;
+		$attackerNationInfo = getNationInfo($getPage_connection2, $newAttacker["owner"]);
+		$defenderNationInfo = getNationInfo($getPage_connection2, $newDefender["owner"]);
+		$br1 = "<br />";
+		$enteredInto = "Unit ".$newAttacker["name"]." of ".$attackerNationInfo["name"]." has entered into combat with unit ".$newDefender["name"]." of ".$defenderNationInfo["name"]." !";
+		$suffering = "Unit ".$newAttacker["name"]." has suffered ".$health_percent_attacker." damage.  Unit ".$newDefender["name"]." has suffered ".$health_percent_defender." damage!";
+		$_SESSION["success_message"] = $enteredInto.$br1.$suffering.$br1.$defeat;	
+		$log_message = $enteredInto."  ".$suffering."  ".$defeat;
+		$new_date = date("Y-m-d H:i:s");
+		addCombatLogInfo($getPage_connection2, $new_date, $log_message, $attackerNationInfo["id"], $defenderNationInfo["id"]);
 	} // if
 } // combat
 

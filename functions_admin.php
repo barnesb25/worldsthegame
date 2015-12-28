@@ -147,6 +147,11 @@ function resetWorld($getPage_connection3) {
 					$stmt->close();
 				} else {
 				} // else
+				if ($stmt = $getPage_connection3->prepare("TRUNCATE TABLE combatlog")) {
+					$stmt->execute();
+					$stmt->close();
+				} else {
+				} // else
 				if ($stmt = $getPage_connection3->prepare("TRUNCATE TABLE continents")) {
 					$stmt->execute();
 					$stmt->close();

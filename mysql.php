@@ -125,6 +125,44 @@ function addClaimInfo($s_connection,$s_strength,$s_owner,$s_tile) {
 	setTileInfo($s_connection, $tileInfoDD["id"], $tileInfoDD["continent"], $tileInfoDD["xpos"], $tileInfoDD["ypos"], $tileInfoDD["terrain"], $tileInfoDD["resources"], $tileInfoDD["improvements"], $tileInfoDD["owner"], $new_claims, $tileInfoDD["population"]);
 } // addClaimInfo
 
+// get combat log
+function getCombatLogInfo($s_connection,$s_id) {
+	$combatLog = array("id"=>0,"date"=>"","entry"=>"","attacker"=>0,"defender"=>0);
+	if ($stmt = $s_connection->prepare("SELECT id,date,entry,attacker,defender FROM combatlog WHERE id=? LIMIT 1")) {
+		$stmt->bind_param("i", $s_id);
+		$stmt->execute();
+		$stmt->bind_result($r_id,$r_date,$r_entry,$s_attacker,$s_defender);
+		$stmt->fetch();
+		$combatLog["id"] = $r_id;
+		$combatLog["date"] = $r_date;
+		$combatLog["entry"] = $r_entry;
+		$combatLog["attacker"] = $r_attacker;
+		$combatLog["defender"] = $r_defender;
+		$stmt->close();
+	} else {
+	} // else
+
+	return $combatLog;
+} // getCombatLogInfo
+
+function setCombatLogInfo($s_connection,$s_id,$s_date,$s_entry,$s_attacker,$s_defender) {
+	if ($stmt = $s_connection->prepare("UPDATE combatlog SET date=?,entry=?,attacker=?,defender=? WHERE id=?")) {
+		$stmt->bind_param("ssiii", $s_date, $s_entry, $s_attacker, $s_defender, $s_id);
+		$stmt->execute();
+		$stmt->close();
+	} else {
+	} // else
+} // setCombatLogInfo
+
+function addCombatLogInfo($s_connection,$s_date,$s_entry,$s_attacker,$s_defender) {
+	if ($stmt = $s_connection->prepare("INSERT INTO combatlog (date,entry,attacker,defender) VALUES (?,?,?,?)")) {
+		$stmt->bind_param("ssii", $s_date, $s_entry, $s_attacker, $s_defender);
+		$stmt->execute();
+		$stmt->close();
+	} else {
+	} // else
+} // addCombatLogInfo
+
 // continents
 function getContinentInfo($s_connection,$s_id) {
 	$continent = array("id"=>0,"name"=>"");
