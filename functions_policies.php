@@ -2,7 +2,7 @@
 /****************************************************************************
  * Name:        functions_policies.php
  * Author:      Ben Barnes
- * Date:        2015-12-25
+ * Date:        2015-12-28
  * Purpose:     Policies functions page
  *****************************************************************************/
 
@@ -186,7 +186,7 @@ function showPoliciesInfo($getPage_connection2) {
 	echo "                      <span class=\"btn btn-med btn-default btn-file\">\n";
 	echo "                        Browse <input type=\"file\" name=\"fileToUpload\" id=\"fileToUpload\" />\n";
 	echo "                      </span>\n";
-	echo "                      <button value=\"upload image\" name=\"submit\" type=\"submit\" class=\"btn btn-md btn-primary\">Change Flag</button>\n";
+	echo "                      <button value=\"flag\" name=\"action\" type=\"submit\" class=\"btn btn-md btn-primary\">Change Flag</button>\n";
 	echo "                    </div>\n";
 	echo "                  </form>\n";
 
@@ -554,7 +554,6 @@ function changeFlag($getPage_connection2) {
 				if (strlen($flagArray["path"]) >= 2 && strlen($flagArray["error"]) <= 1) {
 					$nationInfoP = getNationInfo($getPage_connection2,$_SESSION["nation_id"]);
 					$new_flag = $flagArray["path"];
-					error_log("uploaded");
 					setNationInfo($getPage_connection2,$_SESSION["nation_id"],$nationInfoP["name"],$nationInfoP["home"],$nationInfoP["formal"],$new_flag,$nationInfoP["production"],$nationInfoP["money"],$nationInfoP["debt"],$nationInfoP["happiness"],$nationInfoP["food"],$nationInfoP["authority"],$nationInfoP["authorityChanged"],$nationInfoP["economy"],$nationInfoP["economyChanged"],$nationInfoP["organizations"],$nationInfoP["invites"],$nationInfoP["goods"],$nationInfoP["resources"],$nationInfoP["population"],$nationInfoP["strike"]);
 					$_SESSION["success_message"] = "Cannot complete action: Upload was successful, flag is changed!";
 				} else {

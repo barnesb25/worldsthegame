@@ -2,7 +2,7 @@
 /****************************************************************************
 * Name:        index.php
 * Author:      Ben Barnes
-* Date:        2015-12-25
+* Date:        2015-12-28
 * Purpose:     Server-side execution of validation, html organization and display, mysql interaction.
 *****************************************************************************/
 
