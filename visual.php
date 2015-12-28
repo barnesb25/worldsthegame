@@ -369,28 +369,42 @@ function showOverlayOptions($getPage_connection2) {
  ********************************/
 function showWarning($getPage_connection2) {
 	require "section3.txt";
+	$warning = "";
+	$success = "";
+	
 	if (isset($_SESSION["warning_message"])) {
-		unset($_POST);
-		$warning = cleanString($_SESSION["warning_message"],false);
+		if (strlen($_SESSION["warning_message"]) >= 1) {
+			unset($_POST);
+			$warning = cleanString($_SESSION["warning_message"],false);
+			$_SESSION["warning_message"] = "";
+		} else {
+			$warning = "";
+		} // else
 	} else {
 		$warning = "";
 	} // else
+		
 	if (isset($_SESSION["success_message"])) {
-		unset($_POST);
-		$success = cleanString($_SESSION["success_message"],false);
+		if (strlen($_SESSION["success_message"]) >= 1) {
+			unset($_POST);
+			$success = cleanString($_SESSION["success_message"],false);
+			$_SESSION["success_message"] = "";
+		} else {
+			$success = "";
+		} // else
 	} else {
 		$success = "";
 	} // else
-	if (strlen($success) >= 1) {
-		echo "        <div class=\"alert alert-success alert-spacer\" role=\"alert\">\n";
-		echo "          <strong>Your request has been processed...</strong> <br /> ".$success."\n";
-		echo "        </div>\n";
-	} // if
+		
 	if (strlen($warning) >= 1) {
 		echo "        <div class=\"alert alert-danger alert-spacer\" role=\"alert\">\n";
 		echo "          <strong>Something went wrong with your request...</strong> <br /> ".$warning."\n";
 		echo "        </div>\n";
-	} // if
+	} else if (strlen($success) >= 1) {
+		echo "        <div class=\"alert alert-success alert-spacer\" role=\"alert\">\n";
+		echo "          <strong>Your request has been processed...</strong> <br /> ".$success."\n";
+		echo "        </div>\n";
+	} // else if
 } // showWarning
 
 /********************************

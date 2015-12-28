@@ -404,7 +404,7 @@ function addAuthority($getPage_connection2) {
 					if ($nationInfoQ["authority"] < 10) {
 						$new_authority = $nationInfoQ["authority"] + 1;
 						setNationInfo($getPage_connection2,$nationInfoQ["id"],$nationInfoQ["name"],$nationInfoQ["home"],$nationInfoQ["formal"],$nationInfoQ["flag"],$nationInfoQ["production"],$nationInfoQ["money"],$nationInfoQ["debt"],$nationInfoQ["happiness"],$nationInfoQ["food"],$new_authority,1,$nationInfoQ["economy"],$nationInfoQ["economyChanged"],$nationInfoQ["organizations"],$nationInfoQ["invites"],$nationInfoQ["goods"],$nationInfoQ["resources"],$nationInfoQ["population"],$nationInfoQ["strike"]);
-						$_SESSION["success_message"] = "Nation's authority has has been reformed successfully!";
+						$_SESSION["success_message"] = "Nation's authority has been reformed successfully!";
 					} else {
 						$_SESSION["warning_message"] = "Cannot complete action: authority cannot be increased any further.";
 					} // else
@@ -435,7 +435,7 @@ function removeAuthority($getPage_connection2) {
 					if ($nationInfoQ["authority"] > 0) {
 						$new_authority = $nationInfoQ["authority"] - 1;
 						setNationInfo($getPage_connection2,$nationInfoQ["id"],$nationInfoQ["name"],$nationInfoQ["home"],$nationInfoQ["formal"],$nationInfoQ["flag"],$nationInfoQ["production"],$nationInfoQ["money"],$nationInfoQ["debt"],$nationInfoQ["happiness"],$nationInfoQ["food"],$new_authority,1,$nationInfoQ["economy"],$nationInfoQ["economyChanged"],$nationInfoQ["organizations"],$nationInfoQ["invites"],$nationInfoQ["goods"],$nationInfoQ["resources"],$nationInfoQ["population"],$nationInfoQ["strike"]);
-						$_SESSION["success_message"] = "Nation's authority has has been reformed successfully!";
+						$_SESSION["success_message"] = "Nation's authority has been reformed successfully!";
 					} else {
 						$_SESSION["warning_message"] = "Cannot complete action: authority cannot be decreased any further.";
 					} // else
@@ -466,7 +466,7 @@ function addEconomy($getPage_connection2) {
 					if ($nationInfoQ["authority"] < 10) {
 						$new_economy = $nationInfoQ["economy"] + 1;
 						setNationInfo($getPage_connection2,$nationInfoQ["id"],$nationInfoQ["name"],$nationInfoQ["home"],$nationInfoQ["formal"],$nationInfoQ["flag"],$nationInfoQ["production"],$nationInfoQ["money"],$nationInfoQ["debt"],$nationInfoQ["happiness"],$nationInfoQ["food"],$nationInfoQ["authority"],$nationInfoQ["authorityChanged"],$new_economy,1,$nationInfoQ["organizations"],$nationInfoQ["invites"],$nationInfoQ["goods"],$nationInfoQ["resources"],$nationInfoQ["population"],$nationInfoQ["strike"]);
-						$_SESSION["success_message"] = "Nation's economy has has been reformed successfully!";
+						$_SESSION["success_message"] = "Nation's economy has been reformed successfully!";
 					} else {
 						$_SESSION["warning_message"] = "Cannot complete action: economy cannot be increased any further.";
 					} // else
@@ -497,7 +497,7 @@ function removeEconomy($getPage_connection2) {
 					if ($nationInfoQ["authority"] > 0) {
 						$new_economy = $nationInfoQ["economy"] - 1;
 						setNationInfo($getPage_connection2,$nationInfoQ["id"],$nationInfoQ["name"],$nationInfoQ["home"],$nationInfoQ["formal"],$nationInfoQ["flag"],$nationInfoQ["production"],$nationInfoQ["money"],$nationInfoQ["debt"],$nationInfoQ["happiness"],$nationInfoQ["food"],$nationInfoQ["authority"],$nationInfoQ["authorityChanged"],$new_economy,1,$nationInfoQ["organizations"],$nationInfoQ["invites"],$nationInfoQ["goods"],$nationInfoQ["resources"],$nationInfoQ["population"],$nationInfoQ["strike"]);
-						$_SESSION["success_message"] = "Nation's economy has has been reformed successfully!";
+						$_SESSION["success_message"] = "Nation's economy has been reformed successfully!";
 					} else {
 						$_SESSION["warning_message"] = "Cannot complete action: economy cannot be decreased any further.";
 					} // else
@@ -554,6 +554,7 @@ function changeFlag($getPage_connection2) {
 				if (strlen($flagArray["path"]) >= 2 && strlen($flagArray["error"]) <= 1) {
 					$nationInfoP = getNationInfo($getPage_connection2,$_SESSION["nation_id"]);
 					$new_flag = $flagArray["path"];
+					error_log("uploaded");
 					setNationInfo($getPage_connection2,$_SESSION["nation_id"],$nationInfoP["name"],$nationInfoP["home"],$nationInfoP["formal"],$new_flag,$nationInfoP["production"],$nationInfoP["money"],$nationInfoP["debt"],$nationInfoP["happiness"],$nationInfoP["food"],$nationInfoP["authority"],$nationInfoP["authorityChanged"],$nationInfoP["economy"],$nationInfoP["economyChanged"],$nationInfoP["organizations"],$nationInfoP["invites"],$nationInfoP["goods"],$nationInfoP["resources"],$nationInfoP["population"],$nationInfoP["strike"]);
 					$_SESSION["success_message"] = "Cannot complete action: Upload was successful, flag is changed!";
 				} else {
