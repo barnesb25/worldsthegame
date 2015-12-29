@@ -34,8 +34,6 @@ function getConnection($getConnection_host,$getConnection_user,$getConnection_pa
  Execute correct script files
  ********************************/
 function getPage($getPage_connection,$getPage_connection2,$getPage_connection3) {
-	$_SESSION["bf_start"] = '$2y$09$';
-	$_SESSION["bf_end"] = '$';
 	if (isset($_GET["page"])) {
 		$currentPage = cleanString($_GET["page"],true);
 	} else {
@@ -104,7 +102,7 @@ function checkLoginStatus($getPage_connection2) {
 	if ($_SESSION["login"] != 1 && $loggingIn === true) {
 		$userInfo1 = getUserInfoByName($getPage_connection2,$cleaned_username);
 		if ($userInfo1["id"] >= 1) {
-			$final_salt = $_SESSION["bf_start"].$userInfo1["salt"].$_SESSION["bf_end"];
+			$final_salt = '$2y$09$'.$userInfo1["salt"].'$';
 			$created_password = crypt($cleaned_password.$userInfo1["salt"],$final_salt);
 			$created_string = hash('sha512', $created_password.$userInfo1["token"]);
 			$actual_string = hash('sha512', $userInfo1["password"].$userInfo1["token"]);
