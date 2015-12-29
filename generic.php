@@ -34,8 +34,10 @@ function getConnection($getConnection_host,$getConnection_user,$getConnection_pa
  Execute correct script files
  ********************************/
 function getPage($getPage_connection,$getPage_connection2,$getPage_connection3) {
+	// use GET page variable to define incoming page
 	if (isset($_GET["page"])) {
 		$currentPage = cleanString($_GET["page"],true);
+	// otherwise default to home
 	} else {
 		$currentPage = "home";
 	} // else
@@ -44,36 +46,39 @@ function getPage($getPage_connection,$getPage_connection2,$getPage_connection3) 
 	// get login status
 	$loggedInArray = checkLoginStatus($getPage_connection2);
 
-	if ($_SESSION["pageTypeInfo"]["admin"] == 1) {
-		$requiresAdmin = true;
-	} // if
-
-	$_SESSION["pageType"] = "";
-
+	// if just logging in and successful logged in,
 	if ($loggedInArray["loggingIn"] === true && $loggedInArray["status"] === true) {
-		$_SESSION["pageType"] = "";
 		require "map.php";
+	// if not just logging in but succesfully logged in already,
 	} else if ($loggedInArray["loggingIn"] === false && $loggedInArray["status"] === true) {
 		// check for admin privilege
 		if ($_SESSION["pageTypeInfo"]["admin"] == 1) {
 			if ($_SESSION["admin"] == 1) {
-				$_SESSION["pageType"] = $_SESSION["pageTypeInfo"]["name"];
 				require $_SESSION["pageTypeInfo"]["layout"];
 			} else {
-				$_SESSION["pageType"] = "";
 				require "map.php";
 			} // else
+		// otherwise if admin privilege is not required,
 		} else {
-			$_SESSION["pageType"] = $_SESSION["pageTypeInfo"]["name"];
-			require $_SESSION["pageTypeInfo"]["layout"];
+			// if home page,
+			if ($_SESSION["pageTypeInfo"]["layout"] == "home.php") { 
+				// unless logging out, default to map page
+				$clean_action = cleanString($_GET["action"], true);
+				if ($clean_action == "logout") {
+					require "home.php";
+				} else {
+					require "map.php";
+				} // else
+			} else {
+				require $_SESSION["pageTypeInfo"]["layout"];
+			} // else
 		} // else
+	// default
 	} else {
-		// if page requires login access send to default
-		if ($_SESSION["pageTypeInfo"]["login"] == 1) {
-			$_SESSION["pageType"] = "";
+		// if page requires login access or admin send to default
+		if ($_SESSION["pageTypeInfo"]["login"] == 1 || $_SESSION["pageTypeInfo"]["admin"] == 1) {
 			require "home.php";
 		} else {
-			$_SESSION["pageType"] = $_SESSION["pageTypeInfo"]["name"];
 			require $_SESSION["pageTypeInfo"]["layout"];
 		} // else
 	} // else
