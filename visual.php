@@ -242,7 +242,7 @@ function compileMenu($getPage_connection2,$pageType) {
 			echo "                          </div>\n";
 			echo "                          <div class=\"col-xs-8 col-sm-9 col-md-10\">\n";
 			echo "                            <div class=\"form-group form-group-lg\">\n";
-			echo "                              <input name=\"search\" id=\"search_terms\" type=\"text\" class=\"form-control\" placeholder=\"Enter Search here...\" />\n";
+			echo "                              <input data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Search for any nation or organization here.\" name=\"search\" id=\"search_terms\" type=\"text\" class=\"form-control\" placeholder=\"Enter Search here...\" />\n";
 			echo "                            </div>\n";
 			echo "                          </div>\n";
 			echo "                          <div class=\"col-xs-1 col-sm-1 col-md-1\">\n";

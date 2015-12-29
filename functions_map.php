@@ -455,7 +455,7 @@ function showMapInfo($getPage_connection2) {
 	echo "              <div class=\"col-sm-4\">\n";
 
 	echo "                <div class=\"panel panel-danger\">\n";
-	echo "                  <div class=\"panel-heading\">\n";
+	echo "                  <div data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Command your units on the present tile.\" class=\"panel-heading\">\n";
 	echo "                    <h3 class=\"panel-title\">Command        <button type=\"button\" class=\"btn btn-default btn-md collapsed\" data-toggle=\"collapse\" data-target=\"#collapseCommand\"><span class=\"glyphicon glyphicon-plus\"></span>/<span class=\"glyphicon glyphicon-minus\"></span></button></h3>\n";
 	echo "                  </div>\n";
 	echo "                  <div id=\"collapseCommand\" class=\"panel-body standard-text collapse in\">\n";
@@ -493,7 +493,7 @@ function showMapInfo($getPage_connection2) {
 				echo "                              <input type=\"hidden\" name=\"actionid\" value=\"".$unitInfo["id"]."\" />\n";
 				echo "                              <input type=\"hidden\" name=\"action\" value=\"unit-upgrade\" />\n";
 				echo "                              <input type=\"hidden\" name=\"overlay\" value=\"units\" />\n";
-				echo "                              <button value=\"map\" name=\"page\" type=\"submit\" class=\"btn btn-primary btn-sm\"><img src=\"images/buttons/btn_upgrade.png\" alt=\"Upgrade\" /></button>\n";
+				echo "                              <button data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Upgrade unit.\" value=\"map\" name=\"page\" type=\"submit\" class=\"btn btn-primary btn-sm\"><img src=\"images/buttons/btn_upgrade.png\" alt=\"Upgrade\" /></button>\n";
 				echo "                            </form>\n";
 				echo "                          </div>\n";
 			} // if
@@ -505,7 +505,7 @@ function showMapInfo($getPage_connection2) {
 			echo "                              <input type=\"hidden\" name=\"actionid\" value=\"".$unitInfo["id"]."\" />\n";
 			echo "                              <input type=\"hidden\" name=\"action\" value=\"unit-remove\" />\n";
 			echo "                              <input type=\"hidden\" name=\"overlay\" value=\"units\" />\n";
-			echo "                              <button value=\"map\" name=\"page\" type=\"submit\" class=\"btn btn-primary btn-sm\"><img src=\"images/buttons/btn_remove.png\" alt=\"Remove\" /></button>\n";
+			echo "                              <button data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Remove unit.\" value=\"map\" name=\"page\" type=\"submit\" class=\"btn btn-primary btn-sm\"><img src=\"images/buttons/btn_remove.png\" alt=\"Remove\" /></button>\n";
 			echo "                            </form>\n";
 			echo "                          </div>\n";
 
@@ -649,7 +649,7 @@ function showMapInfo($getPage_connection2) {
 								echo "                            <input type=\"hidden\" name=\"newcontinent\" value=\"".$newcontinent."\" />\n";
 								echo "                            <input type=\"hidden\" name=\"newxpos\" value=\"".$newxpos."\" />\n";
 								echo "                            <input type=\"hidden\" name=\"newypos\" value=\"".$newypos."\" />\n";
-								echo "                            <button value=\"map\" name=\"page\" type=\"submit\" class=\"btn btn-primary btn-sm\"><img src=\"images/buttons/btn_unload_".strtolower($directionsName[$hh]).".png\" alt=\"".$directionsName[$hh]." Unload\" /></button>\n";
+								echo "                            <button data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Unload unit.\" value=\"map\" name=\"page\" type=\"submit\" class=\"btn btn-primary btn-sm\"><img src=\"images/buttons/btn_unload_".strtolower($directionsName[$hh]).".png\" alt=\"".$directionsName[$hh]." Unload\" /></button>\n";
 								echo "                          </form>\n";
 								echo "                        </div>\n";
 							} // else
@@ -863,9 +863,9 @@ function showMapInfo($getPage_connection2) {
 							echo "                            <input type=\"hidden\" name=\"newxpos\" value=\"".$newxpos."\" />\n";
 							echo "                            <input type=\"hidden\" name=\"newypos\" value=\"".$newypos."\" />\n";
 							if ($verb == "transport") {
-								echo "                            <button value=\"map\" name=\"page\" type=\"submit\" class=\"btn btn-primary btn-sm\"><img src=\"images/buttons/btn_unload_".strtolower($directionsName[$hh]).".png\" alt=\"".$directionsName[$hh]." Transport\" /></button>\n";
+								echo "                            <button data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Transport ".$directionsName[$hh].".\" value=\"map\" name=\"page\" type=\"submit\" class=\"btn btn-primary btn-sm\"><img src=\"images/buttons/btn_unload_".strtolower($directionsName[$hh]).".png\" alt=\"".$directionsName[$hh]." Transport\" /></button>\n";
 							} else {
-								echo "                            <button value=\"map\" name=\"page\" type=\"submit\" class=\"btn btn-primary btn-sm\"><img src=\"images/buttons/btn_".strtolower($directionsName[$hh]).".png\" alt=\"".$directionsName[$hh]." Move\" /></button>\n";
+								echo "                            <button data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Move ".$directionsName[$hh].".\" value=\"map\" name=\"page\" type=\"submit\" class=\"btn btn-primary btn-sm\"><img src=\"images/buttons/btn_".strtolower($directionsName[$hh]).".png\" alt=\"".$directionsName[$hh]." Move\" /></button>\n";
 							} // else
 							echo "                          </form>\n";
 							echo "                        </div>\n";
@@ -1024,7 +1024,7 @@ function showMapInfo($getPage_connection2) {
 							echo "                            <input type=\"hidden\" name=\"newcontinent\" value=\"".$newcontinent."\" />\n";
 							echo "                            <input type=\"hidden\" name=\"newxpos\" value=\"".$newxpos."\" />\n";
 							echo "                            <input type=\"hidden\" name=\"newypos\" value=\"".$newypos."\" />\n";
-							echo "                            <button value=\"map\" name=\"page\" type=\"submit\" class=\"btn btn-primary btn-sm\"><img src=\"images/buttons/btn_".strtolower($directionsName[$hh]).".png\" alt=\"".$directionsName[$hh]." Move\" /></button>\n";
+							echo "                            <button data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Move ".$directionsName[$hh].".\" value=\"map\" name=\"page\" type=\"submit\" class=\"btn btn-primary btn-sm\"><img src=\"images/buttons/btn_".strtolower($directionsName[$hh]).".png\" alt=\"".$directionsName[$hh]." Move\" /></button>\n";
 							echo "                          </form>\n";
 							echo "                        </div>\n\n";
 						} // else
@@ -1048,7 +1048,7 @@ function showMapInfo($getPage_connection2) {
 	// Improve Module
 	echo "              <div class=\"col-sm-4\">\n";
 	echo "                <div class=\"panel panel-success\">\n";
-	echo "                  <div class=\"panel-heading\">\n";
+	echo "                  <div data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Add and modify your improvements on the present tile.\" class=\"panel-heading\">\n";
 	echo "                    <h3 class=\"panel-title\">Improve        <button type=\"button\" class=\"btn btn-default btn-md collapsed\" data-toggle=\"collapse\" data-target=\"#collapseImprove\"><span class=\"glyphicon glyphicon-plus\"></span>/<span class=\"glyphicon glyphicon-minus\"></span></button></h3>\n";
 	echo "                  </div>\n";
 	echo "                  <div id=\"collapseImprove\" class=\"panel-body standard-text collapse in\">\n";
@@ -1063,17 +1063,19 @@ function showMapInfo($getPage_connection2) {
 			echo "                        <br />\n";
 			echo "                        Level ".$improvementInfo["level"]."\n";
 			echo "                        <br />\n";
-			echo "                        Using Resources: ";
-			for ($u=0; $u < count($improvementInfo["usingResources"]); $u++) {
-				if ($improvementInfo["usingResources"][$u] > 0) {
-					if ($u > 0) {
-						echo ", ";
+			if ($improvementInfo["usingResources"][0] > 0) {
+				echo "                        Using Resources: ";
+				for ($u=0; $u < count($improvementInfo["usingResources"]); $u++) {
+					if ($improvementInfo["usingResources"][$u] > 0) {
+						if ($u > 0) {
+							echo ", ";
+						} // if
+						$resourceInfoQ = getResourceInfo($getPage_connection2,$improvementInfo["usingResources"][$u]);
+						$resourceTypeInfoQ = getResourceTypeInfo($getPage_connection2, $resourceInfoQ["type"]);
+						echo $resourceTypeInfoQ["name"];
 					} // if
-					$resourceInfoQ = getResourceInfo($getPage_connection2,$improvementInfo["usingResources"][$u]);
-					$resourceTypeInfoQ = getResourceTypeInfo($getPage_connection2, $resourceInfoQ["type"]);
-					echo $resourceTypeInfoQ["name"];
-				} // if
-			} // for								
+				} // for
+			} // if								
 			echo "\n                        <br />\n";			
 			echo "                        Owned by ";
 			for ($z = 0; $z < count($improvementInfo["owners"]); $z++) {
@@ -1103,7 +1105,7 @@ function showMapInfo($getPage_connection2) {
 					echo "                              <input type=\"hidden\" name=\"actionid\" value=\"".$improvementInfo["id"]."\" />\n";
 					echo "                              <input type=\"hidden\" name=\"action\" value=\"improvement-upgrade\" />\n";
 					echo "                              <input type=\"hidden\" name=\"overlay\" value=\"control\" />\n";
-					echo "                              <button value=\"map\" name=\"page\" type=\"submit\" class=\"btn btn-primary btn-sm\"><img src=\"images/buttons/btn_upgrade.png\" alt=\"Upgrade\" /></button>\n";
+					echo "                              <button data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Upgrade improvement.\" value=\"map\" name=\"page\" type=\"submit\" class=\"btn btn-primary btn-sm\"><img src=\"images/buttons/btn_upgrade.png\" alt=\"Upgrade\" /></button>\n";
 					echo "                            </form>\n";
 					echo "                          </div>\n";
 				} // if
@@ -1115,7 +1117,7 @@ function showMapInfo($getPage_connection2) {
 				echo "                              <input type=\"hidden\" name=\"actionid\" value=\"".$improvementInfo["id"]."\" />\n";
 				echo "                              <input type=\"hidden\" name=\"action\" value=\"improvement-remove\" />\n";
 				echo "                              <input type=\"hidden\" name=\"overlay\" value=\"control\" />\n";
-				echo "                              <button value=\"map\" name=\"page\" type=\"submit\" class=\"btn btn-primary btn-sm\"><img src=\"images/buttons/btn_remove.png\" alt=\"Remove\" /></button>\n";
+				echo "                              <button data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Remove improvement.\" value=\"map\" name=\"page\" type=\"submit\" class=\"btn btn-primary btn-sm\"><img src=\"images/buttons/btn_remove.png\" alt=\"Remove\" /></button>\n";
 				echo "                            </form>\n";
 				echo "                          </div>\n";
 				echo "                        </div>\n";
@@ -1171,7 +1173,7 @@ function showMapInfo($getPage_connection2) {
 										echo "                              <input type=\"hidden\" name=\"actionid\" value=\"".$unitTypeInfo["id"]."\" />\n";
 										echo "                              <input type=\"hidden\" name=\"action\" value=\"unit-build\" />\n";
 										echo "                              <input type=\"hidden\" name=\"overlay\" value=\"units\" />\n";
-										echo "                              <button value=\"map\" name=\"page\" type=\"submit\" class=\"btn btn-primary btn-sm\"><img src=\"".$unitTypeInfo["image"]."\" alt=\"Train ".$unitTypeInfo["name"]."\" /></button>\n";
+										echo "                              <button data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Train ".$unitTypeInfo["name"].".\" value=\"map\" name=\"page\" type=\"submit\" class=\"btn btn-primary btn-sm\"><img src=\"".$unitTypeInfo["image"]."\" alt=\"Train ".$unitTypeInfo["name"]."\" /></button>\n";
 										echo "                            </form>\n";
 										echo "                          </div>\n";
 										if ($wrapCounter == 3) {
@@ -1287,7 +1289,7 @@ function showMapInfo($getPage_connection2) {
 									echo "                              <input type=\"hidden\" name=\"actionid\" value=\"".$next_improvementTypes."\" />\n";
 									echo "                              <input type=\"hidden\" name=\"action\" value=\"improvement-build\" />\n";
 									echo "                              <input type=\"hidden\" name=\"overlay\" value=\"units\" />\n";
-									echo "                              <button value=\"map\" name=\"page\" type=\"submit\" class=\"btn btn-primary btn-sm\"><img src=\"".$improvementTypeInfo1["image"]."\" alt=\"Build ".$improvementTypeInfo1["name"]."\" /></button>\n";
+									echo "                              <button data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Build ".$improvementTypeInfo1["name"].".\" value=\"map\" name=\"page\" type=\"submit\" class=\"btn btn-primary btn-sm\"><img src=\"".$improvementTypeInfo1["image"]."\" alt=\"Build ".$improvementTypeInfo1["name"]."\" /></button>\n";
 									echo "                            </form>\n";
 									echo "                          </div>\n";
 									if ($wrapCounter == 3) {
@@ -1308,7 +1310,7 @@ function showMapInfo($getPage_connection2) {
 								echo "                              <input type=\"hidden\" name=\"actionid\" value=\"".$next_improvementTypes."\" />\n";
 								echo "                              <input type=\"hidden\" name=\"action\" value=\"improvement-build\" />\n";
 								echo "                              <input type=\"hidden\" name=\"overlay\" value=\"units\" />\n";
-								echo "                              <button value=\"map\" name=\"page\" type=\"submit\" class=\"btn btn-primary btn-sm\"><img src=\"".$improvementTypeInfo1["image"]."\" alt=\"Build ".$improvementTypeInfo1["name"]."\" /></button>\n";
+								echo "                              <button data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Build ".$improvementTypeInfo1["name"].".\" value=\"map\" name=\"page\" type=\"submit\" class=\"btn btn-primary btn-sm\"><img src=\"".$improvementTypeInfo1["image"]."\" alt=\"Build ".$improvementTypeInfo1["name"]."\" /></button>\n";
 								echo "                            </form>\n";
 								echo "                          </div>\n";
 								if ($wrapCounter == 3) {
@@ -1359,7 +1361,7 @@ function showMapInfo($getPage_connection2) {
 								echo "                              <input type=\"hidden\" name=\"actionid\" value=\"".$next_improvementTypes."\" />\n";
 								echo "                              <input type=\"hidden\" name=\"action\" value=\"improvement-build\" />\n";
 								echo "                              <input type=\"hidden\" name=\"overlay\" value=\"units\" />\n";
-								echo "                              <button value=\"map\" name=\"page\" type=\"submit\" class=\"btn btn-primary btn-sm\"><img src=\"".$improvementTypeInfo1["image"]."\" alt=\"Build ".$improvementTypeInfo1["name"]."\" /></button>\n";
+								echo "                              <button data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Build ".$improvementTypeInfo1["name"].".\" value=\"map\" name=\"page\" type=\"submit\" class=\"btn btn-primary btn-sm\"><img src=\"".$improvementTypeInfo1["image"]."\" alt=\"Build ".$improvementTypeInfo1["name"]."\" /></button>\n";
 								echo "                            </form>\n";
 								echo "                          </div>\n";
 								if ($wrapCounter == 3) {
@@ -1388,7 +1390,7 @@ function showMapInfo($getPage_connection2) {
 	// Info Module
 	echo "              <div class=\"col-sm-4\">\n";
 	echo "                <div class=\"panel panel-info\">\n";
-	echo "                  <div class=\"panel-heading\">\n";
+	echo "                  <div data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Check out more information about the present tile.\" class=\"panel-heading\">\n";
 	echo "                    <h3 class=\"panel-title\">Info        <button type=\"button\" class=\"btn btn-default btn-md collapsed\" data-toggle=\"collapse\" data-target=\"#collapseInfo\"><span class=\"glyphicon glyphicon-plus\"></span>/<span class=\"glyphicon glyphicon-minus\"></span></button></h3>\n";
 	echo "                  </div>\n";
 	echo "                  <div id=\"collapseInfo\" class=\"panel-body standard-text collapse in\">\n";

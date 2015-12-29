@@ -98,7 +98,7 @@ function showSearchInfo($getPage_connection2) {
 	echo "        <div class=\"spacing-from-menu well well-lg standard-text\">\n";
 
 	echo "          <div class=\"panel panel-info\">\n";
-	echo "            <div class=\"panel-heading\">\n";
+	echo "            <div data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Search results based on query.\" class=\"panel-heading\">\n";
 	echo "              <h3 class=\"panel-title\">Search Results        <button type=\"button\" class=\"btn btn-default btn-md collapsed\" data-toggle=\"collapse\" data-target=\"#collapseSearchResults\"><span class=\"glyphicon glyphicon-plus\"></span>/<span class=\"glyphicon glyphicon-minus\"></span></button></h3>\n";
 	echo "            </div>\n";
 	echo "            <div id=\"collapseSearchResults\" class=\"panel-body collapse in\">\n";

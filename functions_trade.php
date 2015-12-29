@@ -251,7 +251,7 @@ function showTradeInfo($getPage_connection2) {
 	echo "        <div class=\"spacing-from-menu well well-lg standard-text\">\n";
 	
 	echo "          <div class=\"panel panel-info\">\n";
-	echo "            <div class=\"panel-heading\">\n";
+	echo "            <div data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"View and reply to pending trade agreements.\" class=\"panel-heading\">\n";
 	echo "              <h3 class=\"panel-title\">Pending Agreements        <button type=\"button\" class=\"btn btn-default btn-md collapsed\" data-toggle=\"collapse\" data-target=\"#collapsePendingAgreements\"><span class=\"glyphicon glyphicon-plus\"></span>/<span class=\"glyphicon glyphicon-minus\"></span></button></h3>\n";
 	echo "            </div>\n";
 	echo "            <div id=\"collapsePendingAgreements\" class=\"panel-body collapse in\">\n";
@@ -279,8 +279,8 @@ function showTradeInfo($getPage_connection2) {
 				echo "                  <div class=\"form-group form-group-xs\">\n";
 				echo "                    <input type=\"hidden\" name=\"page\" value=\"trade\" />\n";
 				echo "                    <input type=\"hidden\" name=\"actionid\" value=\"".$agreementInfo1["id"]."\" />\n";
-				echo "                    <button name=\"action\" value=\"accept_agreement\" id=\"accept_agreement-".$agreementInfo1["id"]."\" type=\"submit\" class=\"btn btn-sm btn-success\">Accept</button>\n";
-				echo "                    <button name=\"action\" value=\"decline_agreement\" id=\"decline_agreement-".$agreementInfo1["id"]."\" type=\"submit\" class=\"btn btn-sm btn-danger\">Decline</button>\n";
+				echo "                    <button data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Accept trade agreement proposal.\" name=\"action\" value=\"accept_agreement\" id=\"accept_agreement-".$agreementInfo1["id"]."\" type=\"submit\" class=\"btn btn-sm btn-success\">Accept</button>\n";
+				echo "                    <button data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Decline trade agreement proposal.\" name=\"action\" value=\"decline_agreement\" id=\"decline_agreement-".$agreementInfo1["id"]."\" type=\"submit\" class=\"btn btn-sm btn-danger\">Decline</button>\n";
 				echo "                  </div>\n";
 				echo "                </form\">\n";
 				echo "                ----\n                <br />\n";
@@ -298,7 +298,7 @@ function showTradeInfo($getPage_connection2) {
 	echo "          </div>\n";
 	
 	echo "          <div class=\"panel panel-info\">\n";
-	echo "            <div class=\"panel-heading\">\n";
+	echo "            <div data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"View and reply to pending offers.\" class=\"panel-heading\">\n";
 	echo "              <h3 class=\"panel-title\">Pending Offers        <button type=\"button\" class=\"btn btn-default btn-md collapsed\" data-toggle=\"collapse\" data-target=\"#collapsePendingOffers\"><span class=\"glyphicon glyphicon-plus\"></span>/<span class=\"glyphicon glyphicon-minus\"></span></button></h3>\n";
 	echo "            </div>\n";
 	echo "            <div id=\"collapsePendingOffers\" class=\"panel-body collapse in\">\n";
@@ -364,8 +364,8 @@ function showTradeInfo($getPage_connection2) {
 					echo "                  <div class=\"form-group form-group-xs\">\n";
 					echo "                    <input type=\"hidden\" name=\"page\" value=\"trade\" />\n";
 					echo "                    <input type=\"hidden\" name=\"actionid\" value=\"".$offerInfo1["id"]."\" />\n";
-					echo "                    <button name=\"action\" value=\"accept_offer\" id=\"accept_offer-".$offerInfo1["id"]."\" type=\"submit\" class=\"btn btn-sm btn-success\">Accept</button>\n";
-					echo "                    <button name=\"action\" value=\"decline_offer\" id=\"decline_offer-".$offerInfo1["id"]."\" type=\"submit\" class=\"btn btn-sm btn-danger\">Decline</button>\n";
+					echo "                    <button data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Accept offer.\" name=\"action\" value=\"accept_offer\" id=\"accept_offer-".$offerInfo1["id"]."\" type=\"submit\" class=\"btn btn-sm btn-success\">Accept</button>\n";
+					echo "                    <button data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Decline offer.\" name=\"action\" value=\"decline_offer\" id=\"decline_offer-".$offerInfo1["id"]."\" type=\"submit\" class=\"btn btn-sm btn-danger\">Decline</button>\n";
 					echo "                  </div>\n";
 					echo "                </form\">\n";
 					echo "                ----\n                <br />\n";
@@ -384,7 +384,7 @@ function showTradeInfo($getPage_connection2) {
 	echo "          </div>\n";
 	
 	echo "          <div class=\"panel panel-info\">\n";
-	echo "            <div class=\"panel-heading\">\n";
+	echo "            <div data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Create new trade agreement proposal.\" class=\"panel-heading\">\n";
 	echo "              <h3 class=\"panel-title\">Make Trade Agreement        <button type=\"button\" class=\"btn btn-default btn-md collapsed\" data-toggle=\"collapse\" data-target=\"#collapseMakeAgreement\"><span class=\"glyphicon glyphicon-plus\"></span>/<span class=\"glyphicon glyphicon-minus\"></span></button></h3>\n";
 	echo "            </div>\n";
 	echo "            <div id=\"collapseMakeAgreement\" class=\"panel-body collapse in\">\n";
@@ -393,16 +393,16 @@ function showTradeInfo($getPage_connection2) {
 		echo "                <form action=\"index.php?page=trade#collapseMakeAgreement\" method=\"post\">\n";
 		echo "                  <input type=\"hidden\" name=\"page\" value=\"trade\" />\n";
 		echo "                  <div class=\"form-group form-group-sm\">\n";
-		echo "                    <input name=\"send_nation\" type=\"text\" class=\"form-control input-md\" id=\"send_nation\" placeholder=\"Name of Target Nation\" />\n";
+		echo "                    <input data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Specify target nation.\" name=\"send_nation\" type=\"text\" class=\"form-control input-md\" id=\"send_nation\" placeholder=\"Name of Target Nation\" />\n";
 		echo "                    <br />\n";
 		echo "                    <label class=\"control-label\" for=\"slider-agreement\">Trade Policy:</label>\n";
-		echo "                    <input name=\"agreement\" id=\"slider-agreement\" type=\"range\" min=\"1\" max=\"10\" step=\"1\" value=\"1\" />\n";
+		echo "                    <input data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Specify trade agreement free trade policy arrangement.  A lower number means less state intervention, and a higher number means more.\" name=\"agreement\" id=\"slider-agreement\" type=\"range\" min=\"1\" max=\"10\" step=\"1\" value=\"1\" />\n";
 		echo "                    <br />\n";
 		echo "                    <label class=\"control-label\" for=\"set_turns_agreement\">Turns:</label>\n";
-		echo "                    <input type=\"text\" name=\"turns\" id=\"set_turns_agreement\" class=\"form-control input-sm\" value=\"1\" placeholder=\"e.g. 1\" />\n";
+		echo "                    <input data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Specify the duration of the deal.\" type=\"text\" name=\"turns\" id=\"set_turns_agreement\" class=\"form-control input-sm\" value=\"1\" placeholder=\"e.g. 1\" />\n";
 		echo "                    <br />\n";
-		echo "                    <button value=\"send_agreement\" name=\"action\" id=\"send_agreement\" type=\"submit\" class=\"btn btn-md btn-success info_button\">Send</button>\n";
-		echo "                    <button value=\"reset_agreement\" name=\"action\" id=\"reset_agreement\" type=\"submit\" class=\"btn btn-md btn-danger info_button\">Reset</button>\n";
+		echo "                    <button data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Send deal to nation for consideration.\" value=\"send_agreement\" name=\"action\" id=\"send_agreement\" type=\"submit\" class=\"btn btn-md btn-success info_button\">Send</button>\n";
+		echo "                    <button data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Reset deal's contents to none.\" value=\"reset_agreement\" name=\"action\" id=\"reset_agreement\" type=\"submit\" class=\"btn btn-md btn-danger info_button\">Reset</button>\n";
 		echo "                  </div>\n";
 		echo "                </form>\n";
 	} else {
@@ -413,7 +413,7 @@ function showTradeInfo($getPage_connection2) {
 	echo "          </div>\n";
 	
 	echo "          <div class=\"panel panel-info\">\n";
-	echo "            <div class=\"panel-heading\">\n";
+	echo "            <div data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Create new offer.\" class=\"panel-heading\">\n";
 	echo "              <h3 class=\"panel-title\">Make Offer        <button type=\"button\" class=\"btn btn-default btn-md collapsed\" data-toggle=\"collapse\" data-target=\"#collapseMakeOffer\"><span class=\"glyphicon glyphicon-plus\"></span>/<span class=\"glyphicon glyphicon-minus\"></span></button></h3>\n";
 	echo "            </div>\n";
 	echo "            <div id=\"collapseMakeOffer\" class=\"panel-body collapse in\">\n";
@@ -421,11 +421,11 @@ function showTradeInfo($getPage_connection2) {
 	echo "                <form action=\"index.php?page=trade#collapseMakeOffer\" method=\"post\">\n";
 	echo "                  <input type=\"hidden\" name=\"page\" value=\"trade\" />\n";
 	echo "                  <div class=\"form-group form-group-sm\">\n";
-	echo "                    <input name=\"send_nation\" type=\"text\" class=\"form-control input-md\" id=\"send_nation\" placeholder=\"Name of Target Nation\" />\n";
+	echo "                    <input data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Specify target nation.\" name=\"send_nation\" type=\"text\" class=\"form-control input-md\" id=\"send_nation\" placeholder=\"Name of Target Nation\" />\n";
 	
 	echo "                    <div class=\"col-md-6\">\n";
 	echo "                      <label for=\"add_offer\">Add Offer</label>\n";
-	echo "                      <button value=\"add_offer\" name=\"action\" id=\"add_offer\" type=\"submit\" class=\"btn btn-md btn-success\">Add</button>\n";
+	echo "                      <button data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Add another offer (something the player's nation contributes).\" value=\"add_offer\" name=\"action\" id=\"add_offer\" type=\"submit\" class=\"btn btn-md btn-success\">Add</button>\n";
 	echo "                      <br />\n";
 	
 	echo "                      <div id=\"offers\">\n";
@@ -433,9 +433,9 @@ function showTradeInfo($getPage_connection2) {
 	for ($ff=0; $ff <= count($_SESSION["offers"]); $ff++) {
 		if ($ff < count($_SESSION["offers"])) {
 			echo "                        <input type=\"hidden\" name=\"offers[".$ff."]\" value=\"1\" />\n";
-			echo "                        Offer <input type=\"text\" name=\"offersQuantities[".$ff."]\" class=\"form-control input-sm\" placeholder=\"Quantity\" value=\"".$_SESSION["offersQuantities"][$ff]."\" />\n";
-			echo "                        <select name=\"offersItems[".$ff."]\" class=\"form-control input-sm\">\n";
-			if ($stmt = $getPage_connection2->prepare("SELECT id FROM resourcesmap ORDER BY id ASC")) {
+			echo "                        Offer <input data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Specify quantity of item.\" type=\"text\" name=\"offersQuantities[".$ff."]\" class=\"form-control input-sm\" placeholder=\"Quantity\" value=\"".$_SESSION["offersQuantities"][$ff]."\" />\n";
+			echo "                        <select data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Specify item.\" name=\"offersItems[".$ff."]\" class=\"form-control input-sm\">\n";
+			if ($stmt = $getPage_connection2->prepare("SELECT id FROM resources ORDER BY id ASC")) {
 				$stmt->execute();
 				$stmt->bind_result($r_result);
 				$stmt->store_result();
@@ -483,9 +483,9 @@ function showTradeInfo($getPage_connection2) {
 			echo "                        <br />\n";
 		} else {
 			echo "                        <input type=\"hidden\" name=\"offers[".$ff."]\" value=\"1\" />\n";
-			echo "                        Offer <input type=\"text\" name=\"offersQuantities[".$ff."]\" class=\"form-control input-sm\" placeholder=\"Quantity\" value=\"0\" />\n";
-			echo "                        <select name=\"offersItems[".$ff."]\" class=\"form-control input-sm\">\n";
-			if ($stmt = $getPage_connection2->prepare("SELECT id FROM resourcesmap ORDER BY id ASC")) {
+			echo "                        Offer <input data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Specify quantity of item.\" type=\"text\" name=\"offersQuantities[".$ff."]\" class=\"form-control input-sm\" placeholder=\"Quantity\" value=\"0\" />\n";
+			echo "                        <select data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Specify item.\" name=\"offersItems[".$ff."]\" class=\"form-control input-sm\">\n";
+			if ($stmt = $getPage_connection2->prepare("SELECT id FROM resources ORDER BY id ASC")) {
 				$stmt->execute();
 				$stmt->bind_result($r_result);
 				$stmt->store_result();
@@ -523,7 +523,7 @@ function showTradeInfo($getPage_connection2) {
 	
 	echo "                    <div class=\"col-md-6\">\n";
 	echo "                      <label for=\"add_demand\">Add Demand</label>\n";
-	echo "                      <button value=\"add_demand\" name=\"action\" id=\"add_demand\" type=\"submit\" class=\"btn btn-md btn-success\">Add</button>\n";
+	echo "                      <button data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Add another demand (something the target nation contributes).\" value=\"add_demand\" name=\"action\" id=\"add_demand\" type=\"submit\" class=\"btn btn-md btn-success\">Add</button>\n";
 	echo "                      <br />\n";
 	
 	echo "                      <div id=\"demands\">\n";
@@ -531,9 +531,9 @@ function showTradeInfo($getPage_connection2) {
 	for ($ff=0; $ff <= count($_SESSION["demands"]); $ff++) {
 		if ($ff < count($_SESSION["demands"])) {
 			echo "                        <input type=\"hidden\" name=\"demands[".$ff."]\" value=\"1\" />\n";
-			echo "                        Demand <input type=\"text\" name=\"demandsQuantities[".$ff."]\" class=\"form-control input-sm\" placeholder=\"Quantity\" value=\"".$_SESSION["demandsQuantities"][$ff]."\" />\n";
-			echo "                        <select name=\"demandsItems[".$ff."]\" class=\"form-control input-sm\">\n";
-			if ($stmt = $getPage_connection2->prepare("SELECT id FROM resourcesmap ORDER BY id ASC")) {
+			echo "                        Demand <input data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Specify quantity of item.\" type=\"text\" name=\"demandsQuantities[".$ff."]\" class=\"form-control input-sm\" placeholder=\"Quantity\" value=\"".$_SESSION["demandsQuantities"][$ff]."\" />\n";
+			echo "                        <select data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Specify item.\" name=\"demandsItems[".$ff."]\" class=\"form-control input-sm\">\n";
+			if ($stmt = $getPage_connection2->prepare("SELECT id FROM resources ORDER BY id ASC")) {
 				$stmt->execute();
 				$stmt->bind_result($r_result);
 				$stmt->store_result();
@@ -581,9 +581,9 @@ function showTradeInfo($getPage_connection2) {
 			echo "                        <br />\n";
 		} else {
 			echo "                        <input type=\"hidden\" name=\"demands[".$ff."]\" value=\"1\" />\n";
-			echo "                        Demand <input type=\"text\" name=\"demandsQuantities[".$ff."]\" class=\"form-control input-sm\" placeholder=\"Quantity\" value=\"0\" />\n";
-			echo "                        <select name=\"demandsItems[".$ff."]\" class=\"form-control input-sm\">\n";
-			if ($stmt = $getPage_connection2->prepare("SELECT id FROM resourcesmap ORDER BY id ASC")) {
+			echo "                        Demand <input data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Specify quantity of item.\" type=\"text\" name=\"demandsQuantities[".$ff."]\" class=\"form-control input-sm\" placeholder=\"Quantity\" value=\"0\" />\n";
+			echo "                        <select data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Specify item.\" name=\"demandsItems[".$ff."]\" class=\"form-control input-sm\">\n";
+			if ($stmt = $getPage_connection2->prepare("SELECT id FROM resources ORDER BY id ASC")) {
 				$stmt->execute();
 				$stmt->bind_result($r_result);
 				$stmt->store_result();
@@ -623,12 +623,12 @@ function showTradeInfo($getPage_connection2) {
 	echo "                    <br />\n";
 	echo "                    <div class=\"col-md-12\">\n";
 	echo "                      <label class=\"control-label\" for=\"set_turns\">Turns:</label>\n";
-	echo "                      <input type=\"text\" name=\"turns\" id=\"set_turns\" class=\"form-control input-sm\" value=\"1\" placeholder=\"e.g. 1\" />\n";
+	echo "                      <input data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Specify the duration of the deal.\" type=\"text\" name=\"turns\" id=\"set_turns\" class=\"form-control input-sm\" value=\"1\" placeholder=\"e.g. 1\" />\n";
 	echo "                    </div>\n";
 	echo "                    <br />\n";
 	echo "                    <div class=\"col-md-12\">\n";
-	echo "                      <button value=\"send_offer\" name=\"action\" id=\"send_offer\" type=\"submit\" class=\"btn btn-md btn-success info_button\">Send</button>\n";
-	echo "                      <button value=\"reset_offer\" name=\"action\" id=\"reset_offer\" type=\"submit\" class=\"btn btn-md btn-danger info_button\">Reset</button>\n";
+	echo "                      <button data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Send deal to nation for consideration.\" value=\"send_offer\" name=\"action\" id=\"send_offer\" type=\"submit\" class=\"btn btn-md btn-success info_button\">Send</button>\n";
+	echo "                      <button data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Reset deal's contents to none.\" value=\"reset_offer\" name=\"action\" id=\"reset_offer\" type=\"submit\" class=\"btn btn-md btn-danger info_button\">Reset</button>\n";
 	echo "                    </div>\n";
 	echo "                  </div>\n";
 	echo "                </form>\n";
@@ -637,7 +637,7 @@ function showTradeInfo($getPage_connection2) {
 	echo "          </div>\n";
 	
 	echo "          <div class=\"panel panel-info\">\n";
-	echo "            <div class=\"panel-heading\">\n";
+	echo "            <div data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"View current market rates.\" class=\"panel-heading\">\n";
 	echo "              <h3 class=\"panel-title\">Current Market        <button type=\"button\" class=\"btn btn-default btn-md collapsed\" data-toggle=\"collapse\" data-target=\"#collapseMarket\"><span class=\"glyphicon glyphicon-plus\"></span>/<span class=\"glyphicon glyphicon-minus\"></span></button></h3>\n";
 	echo "            </div>\n";
 	echo "            <div id=\"collapseMarket\" class=\"panel-body collapse in\">\n";
@@ -662,7 +662,7 @@ function showTradeInfo($getPage_connection2) {
 	echo "          </div>\n";
 	
 	echo "          <div class=\"panel panel-info\">\n";
-	echo "            <div class=\"panel-heading\">\n";
+	echo "            <div data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"View previously accepted trade agreements.\" class=\"panel-heading\">\n";
 	echo "              <h3 class=\"panel-title\">Accepted Agreements        <button type=\"button\" class=\"btn btn-default btn-md collapsed\" data-toggle=\"collapse\" data-target=\"#collapseAcceptedAgreements\"><span class=\"glyphicon glyphicon-plus\"></span>/<span class=\"glyphicon glyphicon-minus\"></span></button></h3>\n";
 	echo "            </div>\n";
 	echo "            <div id=\"collapseAcceptedAgreements\" class=\"panel-body collapse in\">\n";
@@ -701,7 +701,7 @@ function showTradeInfo($getPage_connection2) {
 	echo "          </div>\n";
 
 	echo "          <div class=\"panel panel-info\">\n";
-	echo "            <div class=\"panel-heading\">\n";
+	echo "            <div data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"View previously accepted offers.\" class=\"panel-heading\">\n";
 	echo "              <h3 class=\"panel-title\">Accepted Offers        <button type=\"button\" class=\"btn btn-default btn-md collapsed\" data-toggle=\"collapse\" data-target=\"#collapseAcceptedOffers\"><span class=\"glyphicon glyphicon-plus\"></span>/<span class=\"glyphicon glyphicon-minus\"></span></button></h3>\n";
 	echo "            </div>\n";
 	echo "            <div id=\"collapseAcceptedOffers\" class=\"panel-body collapse in\">\n";
@@ -780,7 +780,7 @@ function showTradeInfo($getPage_connection2) {
 	echo "          </div>\n";
 	
 	echo "          <div class=\"panel panel-info\">\n";
-	echo "            <div class=\"panel-heading\">\n";
+	echo "            <div data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"View previously declined trade agreements.\" class=\"panel-heading\">\n";
 	echo "              <h3 class=\"panel-title\">Declined Agreements        <button type=\"button\" class=\"btn btn-default btn-md collapsed\" data-toggle=\"collapse\" data-target=\"#collapseDeclinedAgreements\"><span class=\"glyphicon glyphicon-plus\"></span>/<span class=\"glyphicon glyphicon-minus\"></span></button></h3>\n";
 	echo "            </div>\n";
 	echo "            <div id=\"collapseDeclinedAgreements\" class=\"panel-body collapse in\">\n";
@@ -820,7 +820,7 @@ function showTradeInfo($getPage_connection2) {
 	echo "          </div>\n";
 
 	echo "          <div class=\"panel panel-info\">\n";
-	echo "            <div class=\"panel-heading\">\n";
+	echo "            <div data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"View previously declined offers.\" class=\"panel-heading\">\n";
 	echo "              <h3 class=\"panel-title\">Declined Offers        <button type=\"button\" class=\"btn btn-default btn-md collapsed\" data-toggle=\"collapse\" data-target=\"#collapseDeclinedOffers\"><span class=\"glyphicon glyphicon-plus\"></span>/<span class=\"glyphicon glyphicon-minus\"></span></button></h3>\n";
 	echo "            </div>\n";
 	echo "            <div id=\"collapseDeclinedOffers\" class=\"panel-body collapse in\">\n";

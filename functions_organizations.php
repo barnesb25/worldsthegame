@@ -104,7 +104,7 @@ function showOrganizationsInfo($getPage_connection2) {
 	echo "        <div class=\"spacing-from-menu well well-lg standard-text\">\n";
 
 	echo "          <div class=\"panel panel-info\">\n";
-	echo "            <div class=\"panel-heading\">\n";
+	echo "            <div data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Top 5 Organizations, according to the previous turn's statistics.\" class=\"panel-heading\">\n";
 	echo "              <h3 class=\"panel-title\">Top Organizations        <button type=\"button\" class=\"btn btn-default btn-md collapsed\" data-toggle=\"collapse\" data-target=\"#collapseTop\"><span class=\"glyphicon glyphicon-plus\"></span>/<span class=\"glyphicon glyphicon-minus\"></span></button></h3>\n";
 	echo "            </div>\n";
 	echo "            <div id=\"collapseTop\" class=\"panel-body collapse in\">\n";
@@ -157,7 +157,7 @@ function showOrganizationsInfo($getPage_connection2) {
 	echo "            </div>\n";
 
 	echo "            <div class=\"panel panel-info\">\n";
-	echo "              <div class=\"panel-heading\">\n";
+	echo "              <div data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Create a new organization.\" class=\"panel-heading\">\n";
 	echo "                <h3 class=\"panel-title\">Create New        <button type=\"button\" class=\"btn btn-default btn-md collapsed\" data-toggle=\"collapse\" data-target=\"#collapseCreate\"><span class=\"glyphicon glyphicon-plus\"></span>/<span class=\"glyphicon glyphicon-minus\"></span></button></h3>\n";
 	echo "              </div>\n";
 	echo "              <div id=\"collapseCreate\" class=\"panel-body collapse in\">\n";
@@ -166,8 +166,8 @@ function showOrganizationsInfo($getPage_connection2) {
 	echo "                    <input type=\"hidden\" name=\"page\" value=\"organizations\" />\n";
 	echo "                    <div class=\"form-group form-group-sm\">\n";
 	echo "                      <label class=\"control-label\" for=\"orgname\">Name:</label>\n";
-	echo "                      <input name=\"orgname\" type=\"text\" class=\"form-control input-md\" id=\"orgname\" placeholder=\"Name of New Organization\" />\n";
-	echo "                      <button value=\"create\" name=\"action\" id=\"org_create\" type=\"submit\" class=\"btn btn-md btn-primary\">Create</button>\n";
+	echo "                      <input data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Specify name of organization.\" name=\"orgname\" type=\"text\" class=\"form-control input-md\" id=\"orgname\" placeholder=\"Name of New Organization\" />\n";
+	echo "                      <button data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Submit new organization.\" value=\"create\" name=\"action\" id=\"org_create\" type=\"submit\" class=\"btn btn-md btn-primary\">Create</button>\n";
 	echo "                    </div>\n";
 	echo "                  </form>\n";
 	echo "                </div>\n";
@@ -178,7 +178,7 @@ function showOrganizationsInfo($getPage_connection2) {
 		if ($nationInfo["invites"][$z] > 0) {
 			$organizationInfo1 = getOrganizationInfo($getPage_connection2,$nationInfo["invites"][$z]);
 			echo "            <div class=\"panel panel-info\">\n";
-			echo "              <div class=\"panel-heading\">\n";
+			echo "              <div data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Organization controls: invite.\" class=\"panel-heading\">\n";
 			echo "                <h3 class=\"panel-title\">".$organizationInfo1["name"]."        <button type=\"button\" class=\"btn btn-default btn-md collapsed\" data-toggle=\"collapse\" data-target=\"#collapseOrg".$z."\"><span class=\"glyphicon glyphicon-plus\"></span>/<span class=\"glyphicon glyphicon-minus\"></span></button></h3>\n";
 			echo "              </div>\n";
 			echo "              <div id=\"collapseOrg".$z."\" class=\"panel-body collapse in\">\n";
@@ -188,8 +188,8 @@ function showOrganizationsInfo($getPage_connection2) {
 			echo "                    <input type=\"hidden\" name=\"org\" value=\"".$organizationInfo1["id"]."\" />\n";
 			echo " 					  You have been invited to this organization.  Do you wish to join it?\n";
 			echo "                    <div class=\"form-group form-group-sm\">\n";
-			echo "                      <button value=\"join\" name=\"action\" id=\"join_org\" type=\"submit\" class=\"btn btn-md btn-success info_button\">Join Org</button>\n";
-			echo "                      <button value=\"decline\" name=\"action\" id=\"decline_org\" type=\"submit\" class=\"btn btn-md btn-danger info_button\">Decline Org</button>\n";
+			echo "                      <button data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Accept invitation to organization.\" value=\"join\" name=\"action\" id=\"join_org\" type=\"submit\" class=\"btn btn-md btn-success info_button\">Join Org</button>\n";
+			echo "                      <button data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Decline invitation to organization.\" value=\"decline\" name=\"action\" id=\"decline_org\" type=\"submit\" class=\"btn btn-md btn-danger info_button\">Decline Org</button>\n";
 			echo "                    </div>\n";
 			echo "                  </form>\n";
 			echo "                </div>\n";
@@ -203,7 +203,7 @@ function showOrganizationsInfo($getPage_connection2) {
 		if ($nationInfo["organizations"][$z] > 0) {
 			$organizationInfo1 = getOrganizationInfo($getPage_connection2,$nationInfo["organizations"][$z]);
 			echo "            <div class=\"panel panel-info\">\n";
-			echo "              <div class=\"panel-heading\">\n";
+			echo "              <div data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Organization controls.\" class=\"panel-heading\">\n";
 			echo "                <h3 class=\"panel-title\">".$organizationInfo1["name"]."        <button type=\"button\" class=\"btn btn-default btn-md collapsed\" data-toggle=\"collapse\" data-target=\"#collapseOrg".$z."\"><span class=\"glyphicon glyphicon-plus\"></span>/<span class=\"glyphicon glyphicon-minus\"></span></button></h3>\n";
 			echo "              </div>\n";
 			echo "              <div id=\"collapseOrg".$z."\" class=\"panel-body collapse in\">\n";
@@ -235,15 +235,15 @@ function showOrganizationsInfo($getPage_connection2) {
 			for ($a=0; $a < count($organizationInfo1["managers"]); $a++) {
 				if ($organizationInfo1["managers"][$a] == $_SESSION["nation_id"]) {
 					echo "                      <input name=\"orgnation\" type=\"text\" class=\"form-control input-md\" id=\"orgnation\" placeholder=\"Name of Target Nation\" />\n";
-					echo "                      <button value=\"invite\" name=\"action\" id=\"org_invite\" type=\"submit\" class=\"btn btn-md btn-success\">Invite Nation</button>\n";
-					echo "                      <button value=\"kick\" name=\"action\" id=\"org_kick\" type=\"submit\" class=\"btn btn-md btn-warning\">Kick Nation</button>\n";
-					echo "                      <button value=\"appoint\" name=\"action\" id=\"org_appoint\" type=\"submit\" class=\"btn btn-md btn-success\">Appoint Manager</button>\n";
-					echo "                      <button value=\"dismiss\" name=\"action\" id=\"org_dismiss\" type=\"submit\" class=\"btn btn-md btn-warning\">Dismiss Manager</button>\n";
+					echo "                      <button data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Invite nation to the organization.\" value=\"invite\" name=\"action\" id=\"org_invite\" type=\"submit\" class=\"btn btn-md btn-success\">Invite Nation</button>\n";
+					echo "                      <button data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Kick nation from the organization.\" value=\"kick\" name=\"action\" id=\"org_kick\" type=\"submit\" class=\"btn btn-md btn-warning\">Kick Nation</button>\n";
+					echo "                      <button data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Appoint nation to be a manager of the organization.\" value=\"appoint\" name=\"action\" id=\"org_appoint\" type=\"submit\" class=\"btn btn-md btn-success\">Appoint Manager</button>\n";
+					echo "                      <button data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Dismiss nation from being a manager of the organization.\" value=\"dismiss\" name=\"action\" id=\"org_dismiss\" type=\"submit\" class=\"btn btn-md btn-warning\">Dismiss Manager</button>\n";
 					break;
 				} // if
 			} // for
 			echo "                      <br />\n";
-			echo "                      <button value=\"leave\" name=\"action\" id=\"org_leave\" type=\"submit\" class=\"btn btn-md btn-danger info_button\">Leave Org</button>\n";
+			echo "                      <button data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Leave organization membership.\" value=\"leave\" name=\"action\" id=\"org_leave\" type=\"submit\" class=\"btn btn-md btn-danger info_button\">Leave Org</button>\n";
 			echo "                    </div>\n";
 			echo "                  </form>\n";
 			echo "                </div>\n";

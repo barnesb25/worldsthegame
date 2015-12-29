@@ -82,7 +82,7 @@ function showInfoInfo($getPage_connection2) {
 		$rankingInfo = getRankingInfo($getPage_connection2,$_SESSION["info_id"]);
 		
 		echo "          <div class=\"panel panel-info\">\n";
-		echo "            <div class=\"panel-heading\">\n";
+		echo "            <div data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"View basic govermental policies.\" class=\"panel-heading\">\n";
 		echo "              <h3 class=\"panel-title\">Government        <button type=\"button\" class=\"btn btn-default btn-md collapsed\" data-toggle=\"collapse\" data-target=\"#collapseGovernment\"><span class=\"glyphicon glyphicon-plus\"></span>/<span class=\"glyphicon glyphicon-minus\"></span></button></h3>\n";
 		echo "            </div>\n";
 		echo "            <div id=\"collapseGovernment\" class=\"panel-body collapse in\">\n";
@@ -107,7 +107,7 @@ function showInfoInfo($getPage_connection2) {
 		echo "          </div>\n";
 	
 		echo "          <div class=\"panel panel-info\">\n";
-		echo "            <div class=\"panel-heading\">\n";
+		echo "            <div data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"View general information about nation.\" class=\"panel-heading\">\n";
 		echo "              <h3 class=\"panel-title\">General        <button type=\"button\" class=\"btn btn-default btn-md collapsed\" data-toggle=\"collapse\" data-target=\"#collapseGeneral\"><span class=\"glyphicon glyphicon-plus\"></span>/<span class=\"glyphicon glyphicon-minus\"></span></button></h3>\n";
 		echo "            </div>\n";
 		echo "            <div id=\"collapseGeneral\" class=\"panel-body collapse in\">\n";
@@ -128,7 +128,7 @@ function showInfoInfo($getPage_connection2) {
 		echo "          </div>\n";
 	
 		echo "          <div class=\"panel panel-info\">\n";
-		echo "            <div class=\"panel-heading\">\n";
+		echo "            <div data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"View organizations that nation is currently a member of.\" class=\"panel-heading\">\n";
 		echo "              <h3 class=\"panel-title\">Organizations        <button type=\"button\" class=\"btn btn-default btn-md collapsed\" data-toggle=\"collapse\" data-target=\"#collapseOrganizations\"><span class=\"glyphicon glyphicon-plus\"></span>/<span class=\"glyphicon glyphicon-minus\"></span></button></h3>\n";
 		echo "            </div>\n";
 		echo "            <div id=\"collapseOrganizations\" class=\"panel-body collapse in\">\n";
@@ -156,7 +156,7 @@ function showInfoInfo($getPage_connection2) {
 		$organizationInfo = getOrganizationInfo($getPage_connection2,$_SESSION["info_id"]);
 		
 		echo "          <div class=\"panel panel-info\">\n";
-		echo "            <div class=\"panel-heading\">\n";
+		echo "            <div data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"View general information about organization.\" class=\"panel-heading\">\n";
 		echo "              <h3 class=\"panel-title\">General        <button type=\"button\" class=\"btn btn-default btn-md collapsed\" data-toggle=\"collapse\" data-target=\"#collapseGeneral\"><span class=\"glyphicon glyphicon-plus\"></span>/<span class=\"glyphicon glyphicon-minus\"></span></button></h3>\n";
 		echo "            </div>\n";
 		echo "            <div id=\"collapseGeneral\" class=\"panel-body collapse in\">\n";

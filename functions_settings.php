@@ -89,7 +89,7 @@ function showSettingsInfo($getPage_connection2) {
 	echo "        <div class=\"spacing-from-menu well well-lg standard-text\">\n";
 
 	echo "          <div class=\"panel panel-info\">\n";
-	echo "            <div class=\"panel-heading\">\n";
+	echo "            <div data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Change user account settings.\" class=\"panel-heading\">\n";
 	echo "              <h3 class=\"panel-title\">Change Settings        <button type=\"button\" class=\"btn btn-default btn-md collapsed\" data-toggle=\"collapse\" data-target=\"#collapseChange\"><span class=\"glyphicon glyphicon-plus\"></span>/<span class=\"glyphicon glyphicon-minus\"></span></button></h3>\n";
 	echo "            </div>\n";
 	echo "            <div id=\"collapseChange\" class=\"panel-body collapse in\">\n";
@@ -98,19 +98,19 @@ function showSettingsInfo($getPage_connection2) {
 	echo "                  <input type=\"hidden\" name=\"page\" value=\"settings\" />\n";
 	echo "                  <div class=\"form-group form-group-sm\">\n";
 	echo "                    <label class=\"control-label\" for=\"currentPassword\">Current Password:</label>\n";
-	echo "                    <input name=\"current_password\" type=\"password\" class=\"form-control input-md\" id=\"currentPassword\" placeholder=\"password\" />\n";
+	echo "                    <input data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Current password of user account.\" name=\"current_password\" type=\"password\" class=\"form-control input-md\" id=\"currentPassword\" placeholder=\"password\" />\n";
 	echo "                  </div>\n";
 	echo "                  <br />\n";
 	echo "                  <div class=\"form-group form-group-sm\">\n";
 	echo "                    <label class=\"control-label\" for=\"changePassword\">New Password:</label>\n";
-	echo "                    <input name=\"setting_password\" type=\"password\" class=\"form-control input-md\" id=\"changePassword\" placeholder=\"password\" />\n";
+	echo "                    <input data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"New password of user account.  Should be 8-35 characters.\" name=\"setting_password\" type=\"password\" class=\"form-control input-md\" id=\"changePassword\" placeholder=\"password\" />\n";
 	echo "                  </div>\n";
 	echo "                  <div class=\"form-group form-group-sm\">\n";
 	echo "                    <label class=\"control-label\" for=\"changePasswordConfirm\">Confirm New Password:</label>\n";
-	echo "                    <input name=\"setting_password_confirm\" type=\"password\" class=\"form-control input-md\" id=\"changePasswordConfirm\" placeholder=\"password\" />\n";
+	echo "                    <input data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Confirm new password of user account.  Should be 8-35 characters.\" name=\"setting_password_confirm\" type=\"password\" class=\"form-control input-md\" id=\"changePasswordConfirm\" placeholder=\"password\" />\n";
 	echo "                  </div>\n";
 	echo "                  <div class=\"form-group form-group-sm\">\n";
-	echo "                    <button value=\"change\" name=\"action\" id=\"change\" type=\"submit\" class=\"btn btn-md btn-primary\">Change Settings</button>\n";
+	echo "                    <button data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Submit changes to user account.\" value=\"change\" name=\"action\" id=\"change\" type=\"submit\" class=\"btn btn-md btn-primary\">Change Settings</button>\n";
 	echo "                  </div>\n";
 	echo "                </form>\n";
 	echo "              </div>\n";

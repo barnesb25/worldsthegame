@@ -111,7 +111,7 @@ function showPoliciesInfo($getPage_connection2) {
 	echo "        <div class=\"spacing-from-menu well well-lg standard-text\">\n";
 
 	echo "          <div class=\"panel panel-info\">\n";
-	echo "            <div class=\"panel-heading\">\n";
+	echo "            <div data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"View basic govermental policies.\" class=\"panel-heading\">\n";
 	echo "              <h3 class=\"panel-title\">Government        <button type=\"button\" class=\"btn btn-default btn-md collapsed\" data-toggle=\"collapse\" data-target=\"#collapseGovernment\"><span class=\"glyphicon glyphicon-plus\"></span>/<span class=\"glyphicon glyphicon-minus\"></span></button></h3>\n";
 	echo "            </div>\n";
 	echo "            <div id=\"collapseGovernment\" class=\"panel-body collapse in\">\n";
@@ -136,7 +136,7 @@ function showPoliciesInfo($getPage_connection2) {
 	echo "          </div>\n";
 
 	echo "          <div class=\"panel panel-info\">\n";
-	echo "            <div class=\"panel-heading\">\n";
+	echo "            <div data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Change basic govermental policies.\" class=\"panel-heading\">\n";
 	echo "              <h3 class=\"panel-title\">Change Policies        <button type=\"button\" class=\"btn btn-default btn-md collapsed\" data-toggle=\"collapse\" data-target=\"#collapseChange\"><span class=\"glyphicon glyphicon-plus\"></span>/<span class=\"glyphicon glyphicon-minus\"></span></button></h3>\n";
 	echo "            </div>\n";
 	echo "            <div id=\"collapseChange\" class=\"panel-body collapse in\">\n";
@@ -147,11 +147,11 @@ function showPoliciesInfo($getPage_connection2) {
 	if ($nationInfo["authorityChanged"] == 0) {
 		echo "                    <div class=\"form-group form-group-sm\">\n";
 		if ($nationInfo["authority"] > 0) {
-			echo "                      <button value=\"aminus\" name=\"action\" id=\"authority_decrease\" type=\"submit\" class=\"btn btn-md btn-primary\"><span class=\"glyphicon glyphicon-minus\"></span></button>\n";
+			echo "                      <button data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Decrease authority.  This will mean less state control of society.\" value=\"aminus\" name=\"action\" id=\"authority_decrease\" type=\"submit\" class=\"btn btn-md btn-primary\"><span class=\"glyphicon glyphicon-minus\"></span></button>\n";
 		} // if
 		echo "                Authority\n";
 		if ($nationInfo["authority"] < 10) {
-			echo "                      <button value=\"aplus\" name=\"action\" id=\"authority_increase\" type=\"submit\" class=\"btn btn-md btn-primary\"><span class=\"glyphicon glyphicon-plus\"></span></button>\n";
+			echo "                      <button data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Increase authority.  This will mean more state control of society.\" value=\"aplus\" name=\"action\" id=\"authority_increase\" type=\"submit\" class=\"btn btn-md btn-primary\"><span class=\"glyphicon glyphicon-plus\"></span></button>\n";
 		} // if
 		echo "                    </div>\n";
 	} else {
@@ -160,11 +160,11 @@ function showPoliciesInfo($getPage_connection2) {
 	if ($nationInfo["economyChanged"] == 0) {
 		echo "                    <div class=\"form-group form-group-sm\">\n";
 		if ($nationInfo["economy"] > 0) {
-			echo "                      <button value=\"eminus\" name=\"action\" id=\"economy_decrease\" type=\"submit\" class=\"btn btn-md btn-primary\"><span class=\"glyphicon glyphicon-minus\"></span></button>\n";
+			echo "                      <button data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Decrease economic control.  This will mean less state intervention in the economy.\" value=\"eminus\" name=\"action\" id=\"economy_decrease\" type=\"submit\" class=\"btn btn-md btn-primary\"><span class=\"glyphicon glyphicon-minus\"></span></button>\n";
 		} // if
 		echo "                        Economy\n";
 		if ($nationInfo["economy"] < 10) {
-			echo "                      <button value=\"eplus\" name=\"action\" id=\"economy_increase\" type=\"submit\" class=\"btn btn-md btn-primary\"><span class=\"glyphicon glyphicon-plus\"></span></button>\n";
+			echo "                      <button data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Increase economic control.  This will mean more state intervention in the economy.\" value=\"eplus\" name=\"action\" id=\"economy_increase\" type=\"submit\" class=\"btn btn-md btn-primary\"><span class=\"glyphicon glyphicon-plus\"></span></button>\n";
 		} // if
 		echo "                    </div>\n";
 	} else {
@@ -174,7 +174,7 @@ function showPoliciesInfo($getPage_connection2) {
 	echo "                    <div class=\"form-group form-group-sm\">\n";
 	echo "                      <label class=\"control-label\" for=\"formal\">Formal Name:</label>\n";
 	echo "                      <input name=\"formalname\" type=\"text\" class=\"form-control input-md\" id=\"formal\" placeholder=\"New Formal Name of Nation\" />\n";
-	echo "                      <button value=\"formal\" name=\"action\" id=\"formal_change\" type=\"submit\" class=\"btn btn-md btn-primary\">Change Formal Name</button>\n";
+	echo "                      <button data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Change long formal name of nation.  This will not affect the regular short name of your nation!\" value=\"formal\" name=\"action\" id=\"formal_change\" type=\"submit\" class=\"btn btn-md btn-primary\">Change Formal Name</button>\n";
 	echo "                    </div>\n";
 
 	echo "                  </form>\n";
@@ -183,10 +183,10 @@ function showPoliciesInfo($getPage_connection2) {
 	echo "                    <div class=\"form-group form-group-sm\">\n";
 	echo "                      <label class=\"control-label\" for=\"fileToUpload\">Upload New Flag:</label>\n";
 	echo "                      <br />\n";
-	echo "                      <span class=\"btn btn-med btn-default btn-file\">\n";
+	echo "                      <span data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Select an image file from your computer to be your new flag.\" class=\"btn btn-med btn-default btn-file\">\n";
 	echo "                        Browse <input type=\"file\" name=\"fileToUpload\" id=\"fileToUpload\" />\n";
 	echo "                      </span>\n";
-	echo "                      <button value=\"flag\" name=\"action\" type=\"submit\" class=\"btn btn-md btn-primary\">Change Flag</button>\n";
+	echo "                      <button data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Upload your new flag.\" value=\"flag\" name=\"action\" type=\"submit\" class=\"btn btn-md btn-primary\">Change Flag</button>\n";
 	echo "                    </div>\n";
 	echo "                  </form>\n";
 
@@ -195,7 +195,7 @@ function showPoliciesInfo($getPage_connection2) {
 	echo "          </div>\n";
 
 	echo "          <div class=\"panel panel-info\">\n";
-	echo "            <div class=\"panel-heading\">\n";
+	echo "            <div data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Change production expenditure and prioritization.\" class=\"panel-heading\">\n";
 	echo "              <h3 class=\"panel-title\">Production        <button type=\"button\" class=\"btn btn-default btn-md collapsed\" data-toggle=\"collapse\" data-target=\"#collapseProduction\"><span class=\"glyphicon glyphicon-plus\"></span>/<span class=\"glyphicon glyphicon-minus\"></span></button></h3>\n";
 	echo "            </div>\n";
 	echo "            <div id=\"collapseProduction\" class=\"panel-body collapse in\">\n";
@@ -204,7 +204,7 @@ function showPoliciesInfo($getPage_connection2) {
 	echo "                  <div class=\"form-group form-group-sm\">\n";
 	echo "                    <input type=\"hidden\" name=\"page\" value=\"policies\" />\n";
 	echo "                    <label class=\"control-label\" for=\"slider1\">Production Spending Percentage:</label>\n";
-	echo "                    <input name=\"prod-percent\" id=\"slider1\" type=\"range\" min=\"0\" max=\"100\" step=\"5\" value=\"".$productionInfo["spending"]."\" class=\"\" />\n";
+	echo "                    <input data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Change the amount of production you spend for this turn.  Remember that production does not transfer over to the next turn!\" name=\"prod-percent\" id=\"slider1\" type=\"range\" min=\"0\" max=\"100\" step=\"5\" value=\"".$productionInfo["spending"]."\" class=\"\" />\n";
 	echo "                    <br />\n";
 	
 	$productionInfo1 = getProductionInfo($getPage_connection2, $_SESSION["nation_id"]);
@@ -228,15 +228,15 @@ function showPoliciesInfo($getPage_connection2) {
 				echo "\n";
 				$productionType = $goodsInfo2["id"];			
 				if (strlen($productionType) >= 1) {
-					echo "                    <input name=\"prod[".$k."]\" id=\"slider_prod-".$productionType."\" type=\"range\" min=\"0\" max=\"3\" step=\"1\" value=\"".$productionInfo1["goods"][$k]."\" />\n";
+					echo "                    <input data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Change prioritization of producing this good.\" name=\"prod[".$k."]\" id=\"slider_prod-".$productionType."\" type=\"range\" min=\"0\" max=\"3\" step=\"1\" value=\"".$productionInfo1["goods"][$k]."\" />\n";
 				} else {
-					echo "                    <input name=\"prod[".$k."]\" id=\"slider_prod-".$productionType."\" type=\"range\" min=\"0\" max=\"3\" step=\"1\" value=\"0\" />\n";
+					echo "                    <input data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Change prioritization of producing this good.\" name=\"prod[".$k."]\" id=\"slider_prod-".$productionType."\" type=\"range\" min=\"0\" max=\"3\" step=\"1\" value=\"0\" />\n";
 				} // else	
 			} // if
 		} // for
 	} // if
 
-	echo "                    <button value=\"prod\" name=\"action\" id=\"prod_change\" type=\"submit\" class=\"btn btn-md btn-primary\">Set Production</button>\n";
+	echo "                    <button data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Submit changes to production expenditure and prioritization.\" value=\"prod\" name=\"action\" id=\"prod_change\" type=\"submit\" class=\"btn btn-md btn-primary\">Set Production</button>\n";
 	echo "                  </div>\n";
 	echo "                </form>\n";
 	echo "              </div>\n";
@@ -244,7 +244,7 @@ function showPoliciesInfo($getPage_connection2) {
 	echo "          </div>\n";
 
 	echo "          <div class=\"panel panel-info\">\n";
-	echo "            <div class=\"panel-heading\">\n";
+	echo "            <div data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"View general information about nation.\" class=\"panel-heading\">\n";
 	echo "              <h3 class=\"panel-title\">General        <button type=\"button\" class=\"btn btn-default btn-md collapsed\" data-toggle=\"collapse\" data-target=\"#collapseGeneral\"><span class=\"glyphicon glyphicon-plus\"></span>/<span class=\"glyphicon glyphicon-minus\"></span></button></h3>\n";
 	echo "            </div>\n";
 	echo "            <div id=\"collapseGeneral\" class=\"panel-body collapse in\">\n";
@@ -265,7 +265,7 @@ function showPoliciesInfo($getPage_connection2) {
 	echo "          </div>\n";
 
 	echo "          <div class=\"panel panel-info\">\n";
-	echo "            <div class=\"panel-heading\">\n";
+	echo "            <div data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"View goods inventory statistics of nation.\" class=\"panel-heading\">\n";
 	echo "              <h3 class=\"panel-title\">Goods        <button type=\"button\" class=\"btn btn-default btn-md collapsed\" data-toggle=\"collapse\" data-target=\"#collapseGoods\"><span class=\"glyphicon glyphicon-plus\"></span>/<span class=\"glyphicon glyphicon-minus\"></span></button></h3>\n";
 	echo "            </div>\n";
 	echo "            <div id=\"collapseGoods\" class=\"panel-body collapse in\">\n";
@@ -280,7 +280,7 @@ function showPoliciesInfo($getPage_connection2) {
 	echo "          </div>\n";
 	
 	echo "          <div class=\"panel panel-info\">\n";
-	echo "            <div class=\"panel-heading\">\n";
+	echo "            <div data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"View resources inventory statistics of nation.\" class=\"panel-heading\">\n";
 	echo "              <h3 class=\"panel-title\">Resources        <button type=\"button\" class=\"btn btn-default btn-md collapsed\" data-toggle=\"collapse\" data-target=\"#collapseResources\"><span class=\"glyphicon glyphicon-plus\"></span>/<span class=\"glyphicon glyphicon-minus\"></span></button></h3>\n";
 	echo "            </div>\n";
 	echo "            <div id=\"collapseResources\" class=\"panel-body collapse in\">\n";
@@ -295,7 +295,7 @@ function showPoliciesInfo($getPage_connection2) {
 	echo "          </div>\n";
 
 	echo "          <div class=\"panel panel-info\">\n";
-	echo "            <div class=\"panel-heading\">\n";
+	echo "            <div data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"View organizations that nation is currently a member of.\" class=\"panel-heading\">\n";
 	echo "              <h3 class=\"panel-title\">Organizations        <button type=\"button\" class=\"btn btn-default btn-md collapsed\" data-toggle=\"collapse\" data-target=\"#collapseOrganizations\"><span class=\"glyphicon glyphicon-plus\"></span>/<span class=\"glyphicon glyphicon-minus\"></span></button></h3>\n";
 	echo "            </div>\n";
 	echo "            <div id=\"collapseOrganizations\" class=\"panel-body collapse in\">\n";
