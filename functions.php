@@ -2,7 +2,7 @@
 /****************************************************************************
 * Name:        functions.php
 * Author:      Ben Barnes
-* Date:        2015-12-28
+* Date:        2015-12-29
 * Purpose:     List of functions (libraries loading).
 *****************************************************************************/
 
@@ -23,6 +23,7 @@ require "functions_terms.php";
 require "functions_search.php";
 require "functions_info.php";
 require "functions_about.php";
+require "functions_deactivate.php";
 
 require "turn.php";
 ?>

@@ -2,7 +2,7 @@
 /****************************************************************************
  * Name:        functions_map.php
  * Author:      Ben Barnes
- * Date:        2015-12-28
+ * Date:        2015-12-29
  * Purpose:     Map functions page
  *****************************************************************************/
 
@@ -1245,7 +1245,6 @@ function showMapInfo($getPage_connection2) {
 
 		// loop improvement types
 
-		$next_improvementTypes = 1;
 		$wrapCounter = 0;
 		if ($stmt = $getPage_connection2->prepare("SELECT id FROM improvements ORDER BY id ASC")) {
 			$stmt->execute();

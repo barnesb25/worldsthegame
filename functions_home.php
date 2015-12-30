@@ -2,7 +2,7 @@
 /****************************************************************************
  * Name:        functions_home.php
  * Author:      Ben Barnes
- * Date:        2015-12-28
+ * Date:        2015-12-29
  * Purpose:     Home functions page
  *****************************************************************************/
 
@@ -179,7 +179,7 @@ function registerUser($getPage_connection2) {
 						$new_date = date("Y-m-d H:i:s");
 						$new_token = mt_rand(1000,9999);
 						$new_thread = mt_rand(100,999);
-						$final_salt = $_SESSION["bf_start"].$new_salt.$_SESSION["bf_end"];
+						$final_salt = '$2y$09$'.$new_salt.'$';
 						$created_password = crypt($_SESSION["register_password"].$new_salt,$final_salt);
 						addUserInfo($getPage_connection2,$new_username,$new_avatar,$new_date,$new_date,$created_password,$new_salt,$new_token,$new_thread,0);
 						$new_userid = $getPage_connection2->insert_id;
@@ -381,5 +381,4 @@ function logoutUser($getPage_connection2) {
 		$_SESSION["warning_message"] = "Cannot complete action: user is already logged out.";
 	} // else
 } // logoutUser
-
 ?>

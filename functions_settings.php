@@ -2,7 +2,7 @@
 /****************************************************************************
  * Name:        functions_settings.php
  * Author:      Ben Barnes
- * Date:        2015-12-28
+ * Date:        2015-12-29
  * Purpose:     Settings functions page
  *****************************************************************************/
 
@@ -98,7 +98,7 @@ function showSettingsInfo($getPage_connection2) {
 	echo "                  <input type=\"hidden\" name=\"page\" value=\"settings\" />\n";
 	echo "                  <div class=\"form-group form-group-sm\">\n";
 	echo "                    <label class=\"control-label\" for=\"currentPassword\">Current Password:</label>\n";
-	echo "                    <input data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Current password of user account.\" name=\"current_password\" type=\"password\" class=\"form-control input-md\" id=\"currentPassword\" placeholder=\"password\" />\n";
+	echo "                    <input data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Current password of user account.  This is required to make any changes to your account.\" name=\"current_password\" type=\"password\" class=\"form-control input-md\" id=\"currentPassword\" placeholder=\"password\" />\n";
 	echo "                  </div>\n";
 	echo "                  <br />\n";
 	echo "                  <div class=\"form-group form-group-sm\">\n";
@@ -111,6 +111,15 @@ function showSettingsInfo($getPage_connection2) {
 	echo "                  </div>\n";
 	echo "                  <div class=\"form-group form-group-sm\">\n";
 	echo "                    <button onclick=\"loadButton(this)\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Submit changes to user account.\" value=\"change\" name=\"action\" id=\"change\" type=\"submit\" class=\"btn btn-md btn-primary\">Change Settings</button>\n";
+	echo "                  </div>\n";
+	echo "                </form>\n";
+	echo "                <br />\n";
+	echo "                <br />\n";
+	echo "                ==========";
+	echo "                <form action=\"index.php?page=deactivate\" method=\"get\">\n";
+	echo "                  <input type=\"hidden\" name=\"page\" value=\"deactivate\" />\n";
+	echo "                  <div class=\"form-group form-group-sm\">\n";
+	echo "                    <button onclick=\"loadButton(this)\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Deactivate your account.  This will disable access to your account!\" value=\"deactivate\" name=\"action\" id=\"deactivate\" type=\"submit\" class=\"btn btn-md btn-danger\">Deactivate Account</button>\n";
 	echo "                  </div>\n";
 	echo "                </form>\n";
 	echo "              </div>\n";
@@ -131,7 +140,7 @@ function changeSettings($getPage_connection2) {
 		if (strlen($_SESSION["current_password"]) > 0) {
 			$userInfo1 = getUserInfoByName($getPage_connection2,$_SESSION["username"]);
 			if ($userInfo1["id"] >= 1) {
-				$final_salt = $_SESSION["bf_start"].$userInfo1["salt"].$_SESSION["bf_end"];
+				$final_salt = '$2y$09$'.$userInfo1["salt"].'$';
 				$created_password = crypt($_SESSION["current_password"].$userInfo1["salt"],$final_salt);
 				$created_string = hash('sha512', $created_password.$userInfo1["token"]);
 				$actual_string = hash('sha512', $userInfo1["password"].$userInfo1["token"]);
@@ -146,7 +155,7 @@ function changeSettings($getPage_connection2) {
 								$new_salt .= $allowed_chars[mt_rand(0,$chars_length)];
 							} // for
 							$new_token = mt_rand(1000,9999);
-							$final_salt = $_SESSION["bf_start"].$new_salt.$_SESSION["bf_end"];
+							$final_salt = '$2y$09$'.$new_salt.'$';
 							$created_password = crypt($_SESSION["setting_password"].$new_salt,$final_salt);
 							setUserInfo($getPage_connection2,$userInfo1["id"],$userInfo1["name"],$userInfo1["avatar"],$userInfo1["joined"],$userInfo1["lastplayed"],$created_password,$new_salt,$new_token,$userInfo1["thread"],$userInfo1["admin"]);;
 
