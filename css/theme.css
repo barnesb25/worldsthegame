@@ -160,8 +160,8 @@ body:before
 /* based on code by user cskelly on Bootply */
 
 .glyphicon-refresh-animate {
-    -animation: spin .7s infinite linear;
-    -webkit-animation: spin2 .7s infinite linear;
+    -animation: spin 1s infinite linear;
+    -webkit-animation: spin2 1s infinite linear;
 }
 
 @-webkit-keyframes spin2 {
