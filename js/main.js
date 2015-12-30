@@ -12,5 +12,5 @@ function bodyLoad() {
 } // bodyLoad
 
 function loadButton(element1) {
-	element1.innerHTML = "<span class=\"glyphicon glyphicon-refresh glyphicon-refresh-animate\"></span> Loading...";
+	element1.innerHTML = "<span class=\"glyphicon glyphicon-refresh glyphicon-refresh-animate\"></span>";
 } // loadButton
