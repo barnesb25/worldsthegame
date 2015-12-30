@@ -279,8 +279,8 @@ function showTradeInfo($getPage_connection2) {
 				echo "                  <div class=\"form-group form-group-xs\">\n";
 				echo "                    <input type=\"hidden\" name=\"page\" value=\"trade\" />\n";
 				echo "                    <input type=\"hidden\" name=\"actionid\" value=\"".$agreementInfo1["id"]."\" />\n";
-				echo "                    <button data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Accept trade agreement proposal.\" name=\"action\" value=\"accept_agreement\" id=\"accept_agreement-".$agreementInfo1["id"]."\" type=\"submit\" class=\"btn btn-sm btn-success\">Accept</button>\n";
-				echo "                    <button data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Decline trade agreement proposal.\" name=\"action\" value=\"decline_agreement\" id=\"decline_agreement-".$agreementInfo1["id"]."\" type=\"submit\" class=\"btn btn-sm btn-danger\">Decline</button>\n";
+				echo "                    <button onclick=\"loadButton(this)\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Accept trade agreement proposal.\" name=\"action\" value=\"accept_agreement\" id=\"accept_agreement-".$agreementInfo1["id"]."\" type=\"submit\" class=\"btn btn-sm btn-success\">Accept</button>\n";
+				echo "                    <button onclick=\"loadButton(this)\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Decline trade agreement proposal.\" name=\"action\" value=\"decline_agreement\" id=\"decline_agreement-".$agreementInfo1["id"]."\" type=\"submit\" class=\"btn btn-sm btn-danger\">Decline</button>\n";
 				echo "                  </div>\n";
 				echo "                </form\">\n";
 				echo "                ----\n                <br />\n";
@@ -364,8 +364,8 @@ function showTradeInfo($getPage_connection2) {
 					echo "                  <div class=\"form-group form-group-xs\">\n";
 					echo "                    <input type=\"hidden\" name=\"page\" value=\"trade\" />\n";
 					echo "                    <input type=\"hidden\" name=\"actionid\" value=\"".$offerInfo1["id"]."\" />\n";
-					echo "                    <button data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Accept offer.\" name=\"action\" value=\"accept_offer\" id=\"accept_offer-".$offerInfo1["id"]."\" type=\"submit\" class=\"btn btn-sm btn-success\">Accept</button>\n";
-					echo "                    <button data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Decline offer.\" name=\"action\" value=\"decline_offer\" id=\"decline_offer-".$offerInfo1["id"]."\" type=\"submit\" class=\"btn btn-sm btn-danger\">Decline</button>\n";
+					echo "                    <button onclick=\"loadButton(this)\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Accept offer.\" name=\"action\" value=\"accept_offer\" id=\"accept_offer-".$offerInfo1["id"]."\" type=\"submit\" class=\"btn btn-sm btn-success\">Accept</button>\n";
+					echo "                    <button onclick=\"loadButton(this)\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Decline offer.\" name=\"action\" value=\"decline_offer\" id=\"decline_offer-".$offerInfo1["id"]."\" type=\"submit\" class=\"btn btn-sm btn-danger\">Decline</button>\n";
 					echo "                  </div>\n";
 					echo "                </form\">\n";
 					echo "                ----\n                <br />\n";
@@ -401,8 +401,8 @@ function showTradeInfo($getPage_connection2) {
 		echo "                    <label class=\"control-label\" for=\"set_turns_agreement\">Turns:</label>\n";
 		echo "                    <input data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Specify the duration of the deal.\" type=\"text\" name=\"turns\" id=\"set_turns_agreement\" class=\"form-control input-sm\" value=\"1\" placeholder=\"e.g. 1\" />\n";
 		echo "                    <br />\n";
-		echo "                    <button data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Send deal to nation for consideration.\" value=\"send_agreement\" name=\"action\" id=\"send_agreement\" type=\"submit\" class=\"btn btn-md btn-success info_button\">Send</button>\n";
-		echo "                    <button data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Reset deal's contents to none.\" value=\"reset_agreement\" name=\"action\" id=\"reset_agreement\" type=\"submit\" class=\"btn btn-md btn-danger info_button\">Reset</button>\n";
+		echo "                    <button onclick=\"loadButton(this)\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Send deal to nation for consideration.\" value=\"send_agreement\" name=\"action\" id=\"send_agreement\" type=\"submit\" class=\"btn btn-md btn-success info_button\">Send</button>\n";
+		echo "                    <button onclick=\"loadButton(this)\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Reset deal's contents to none.\" value=\"reset_agreement\" name=\"action\" id=\"reset_agreement\" type=\"submit\" class=\"btn btn-md btn-danger info_button\">Reset</button>\n";
 		echo "                  </div>\n";
 		echo "                </form>\n";
 	} else {
@@ -425,7 +425,7 @@ function showTradeInfo($getPage_connection2) {
 	
 	echo "                    <div class=\"col-md-6\">\n";
 	echo "                      <label for=\"add_offer\">Add Offer</label>\n";
-	echo "                      <button data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Add another offer (something the player's nation contributes).\" value=\"add_offer\" name=\"action\" id=\"add_offer\" type=\"submit\" class=\"btn btn-md btn-success\">Add</button>\n";
+	echo "                      <button onclick=\"loadButton(this)\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Add another offer (something the player's nation contributes).\" value=\"add_offer\" name=\"action\" id=\"add_offer\" type=\"submit\" class=\"btn btn-md btn-success\">Add</button>\n";
 	echo "                      <br />\n";
 	
 	echo "                      <div id=\"offers\">\n";
@@ -523,7 +523,7 @@ function showTradeInfo($getPage_connection2) {
 	
 	echo "                    <div class=\"col-md-6\">\n";
 	echo "                      <label for=\"add_demand\">Add Demand</label>\n";
-	echo "                      <button data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Add another demand (something the target nation contributes).\" value=\"add_demand\" name=\"action\" id=\"add_demand\" type=\"submit\" class=\"btn btn-md btn-success\">Add</button>\n";
+	echo "                      <button onclick=\"loadButton(this)\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Add another demand (something the target nation contributes).\" value=\"add_demand\" name=\"action\" id=\"add_demand\" type=\"submit\" class=\"btn btn-md btn-success\">Add</button>\n";
 	echo "                      <br />\n";
 	
 	echo "                      <div id=\"demands\">\n";
@@ -627,8 +627,8 @@ function showTradeInfo($getPage_connection2) {
 	echo "                    </div>\n";
 	echo "                    <br />\n";
 	echo "                    <div class=\"col-md-12\">\n";
-	echo "                      <button data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Send deal to nation for consideration.\" value=\"send_offer\" name=\"action\" id=\"send_offer\" type=\"submit\" class=\"btn btn-md btn-success info_button\">Send</button>\n";
-	echo "                      <button data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Reset deal's contents to none.\" value=\"reset_offer\" name=\"action\" id=\"reset_offer\" type=\"submit\" class=\"btn btn-md btn-danger info_button\">Reset</button>\n";
+	echo "                      <button onclick=\"loadButton(this)\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Send deal to nation for consideration.\" value=\"send_offer\" name=\"action\" id=\"send_offer\" type=\"submit\" class=\"btn btn-md btn-success info_button\">Send</button>\n";
+	echo "                      <button onclick=\"loadButton(this)\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Reset deal's contents to none.\" value=\"reset_offer\" name=\"action\" id=\"reset_offer\" type=\"submit\" class=\"btn btn-md btn-danger info_button\">Reset</button>\n";
 	echo "                    </div>\n";
 	echo "                  </div>\n";
 	echo "                </form>\n";

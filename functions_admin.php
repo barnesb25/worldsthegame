@@ -85,12 +85,12 @@ function showAdminInfo($getPage_connection2) {
 	echo "                    <input type=\"hidden\" name=\"page\" value=\"admin\" />\n";
 	
 	echo "                    <div class=\"form-group form-group-sm\">\n";
-	echo "                      <button value=\"custom_script\" name=\"action\" id=\"custom_script\" type=\"submit\" class=\"btn btn-md btn-primary\">Run Custom Script</button>\n";
+	echo "                      <button onclick=\"loadButton(this)\" value=\"custom_script\" name=\"action\" id=\"custom_script\" type=\"submit\" class=\"btn btn-md btn-primary\">Run Custom Script</button>\n";
 	echo "                    </div>\n";
 
 	echo "                    <div class=\"form-group form-group-sm\">\n";
 	echo "                      <label class=\"control-label\" for=\"reset_world\">WARNING: ALL WORLD DATA WILL BE LOST!  ADMINISTRATOR PASSWORD WILL BE RESET TO DEFAULT!</label>\n";
-	echo "                      <button value=\"reset_world\" name=\"action\" id=\"reset_world\" type=\"submit\" class=\"btn btn-md btn-danger\">Reset World to Defaults</button>\n";
+	echo "                      <button onclick=\"loadButton(this)\" value=\"reset_world\" name=\"action\" id=\"reset_world\" type=\"submit\" class=\"btn btn-md btn-danger\">Reset World to Defaults</button>\n";
 	echo "                    </div>\n";
 
 	echo "                  </form>\n";

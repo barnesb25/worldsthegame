@@ -106,7 +106,7 @@ function compileMenu($getPage_connection2,$pageType) {
 				} // else
 				echo "                        </div>\n";
 				echo "                        <div class=\"form-group form-group-sm\">\n";
-				echo "                          <button id=\"menu_submit\" type=\"submit\" class=\"btn btn-lg btn-primary\">Go</button>\n";
+				echo "                          <button onclick=\"loadButton(this)\" id=\"menu_submit\" type=\"submit\" class=\"btn btn-lg btn-primary\">Go</button>\n";
 				echo "                        </div>\n";
 				echo "                      </form>\n";
 				echo "                    </div>\n";
@@ -156,7 +156,7 @@ function compileMenu($getPage_connection2,$pageType) {
 				} // else
 				echo "                        </div>\n";
 				echo "                        <div class=\"form-group form-group-sm\">\n";
-				echo "                          <button id=\"menu_submit\" type=\"submit\" class=\"btn btn-lg btn-primary\">Go</button>\n";
+				echo "                          <button onclick=\"loadButton(this)\" id=\"menu_submit\" type=\"submit\" class=\"btn btn-lg btn-primary\">Go</button>\n";
 				echo "                        </div>\n";
 				echo "                      </form>\n";
 				echo "                    </div>\n";
@@ -247,7 +247,7 @@ function compileMenu($getPage_connection2,$pageType) {
 			echo "                          </div>\n";
 			echo "                          <div class=\"col-xs-1 col-sm-1 col-md-1\">\n";
 			echo "                            <div class=\"form-group form-group-lg\">\n";
-			echo "                              <button id=\"search_submit\" type=\"submit\" class=\"btn btn-lg btn-success\"><span class=\"glyphicon glyphicon-search\"></span></button>\n";
+			echo "                              <button onclick=\"loadButton(this)\" id=\"search_submit\" type=\"submit\" class=\"btn btn-lg btn-success\"><span class=\"glyphicon glyphicon-search\"></span></button>\n";
 			echo "                            </div>\n";
 			echo "                          </div>\n";
 			echo "                        </form>\n";
@@ -277,7 +277,7 @@ function compileMenu($getPage_connection2,$pageType) {
 			echo "                            </div>\n";
 			echo "                            <div class=\"col-xs-4 col-sm-1 col-md-2\">\n";
 			echo "                              <span class=\"form-group form-group-xs\">\n";
-			echo "                                <button id=\"menu_submit\" type=\"submit\" class=\"form-control btn btn-sm btn-success menu_login\"><span class=\"glyphicon glyphicon-log-in\"></span></button>\n";
+			echo "                                <button onclick=\"loadButton(this)\" id=\"menu_submit\" type=\"submit\" class=\"form-control btn btn-sm btn-success menu_login\"><span class=\"glyphicon glyphicon-log-in\"></span></button>\n";
 			echo "                              </span>\n";
 			echo "                            </div>\n";
 			echo "                            <span class=\"clear\"></span>\n";
@@ -312,7 +312,7 @@ function compileMenu($getPage_connection2,$pageType) {
 		echo "                            </div>\n";
 		echo "                            <div class=\"col-xs-4 col-sm-1 col-md-2\">\n";
 		echo "                              <span class=\"form-group form-group-xs\">\n";
-		echo "                                <button id=\"menu_submit\" type=\"submit\" class=\"form-control btn btn-sm btn-success menu_login\"><span class=\"glyphicon glyphicon-log-in\"></span></button>\n";
+		echo "                                <button onclick=\"loadButton(this)\" id=\"menu_submit\" type=\"submit\" class=\"form-control btn btn-sm btn-success menu_login\"><span class=\"glyphicon glyphicon-log-in\"></span></button>\n";
 		echo "                              </span>\n";
 		echo "                            </div>\n";
 		echo "                            <span class=\"clear\"></span>\n";

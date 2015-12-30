@@ -133,7 +133,7 @@ function showHomeInfo($getPage_connection2) {
 	echo "                    <input data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Your nation's long formal name.  You can change this later on.\" name=\"register_formal\" type=\"text\" class=\"form-control\" id=\"register_formal\" placeholder=\"Union of Soviet Socialist Republics\" />\n";
 	echo "                  </div>\n";
 	echo "                  <div class=\"form-group form-group-sm\">\n";
-	echo "                    <button data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Click here when you've filled out all the fields!\" value=\"register\" name=\"page\" type=\"submit\" class=\"btn btn-primary btn-lg\">Register</button>\n";
+	echo "                    <button onclick=\"loadButton(this)\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Click here when you've filled out all the fields!\" value=\"register\" name=\"page\" type=\"submit\" class=\"btn btn-primary btn-lg\">Register</button>\n";
 	echo "                    <br /><br />\n";
 	echo "                    <p class=\"sm-standard-text\">* By registering you agree to all the terms and conditions of the Site.</p>\n";
 	echo "                  </div>\n";

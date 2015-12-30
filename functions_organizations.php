@@ -167,7 +167,7 @@ function showOrganizationsInfo($getPage_connection2) {
 	echo "                    <div class=\"form-group form-group-sm\">\n";
 	echo "                      <label class=\"control-label\" for=\"orgname\">Name:</label>\n";
 	echo "                      <input data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Specify name of organization.\" name=\"orgname\" type=\"text\" class=\"form-control input-md\" id=\"orgname\" placeholder=\"Name of New Organization\" />\n";
-	echo "                      <button data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Submit new organization.\" value=\"create\" name=\"action\" id=\"org_create\" type=\"submit\" class=\"btn btn-md btn-primary\">Create</button>\n";
+	echo "                      <button onclick=\"loadButton(this)\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Submit new organization.\" value=\"create\" name=\"action\" id=\"org_create\" type=\"submit\" class=\"btn btn-md btn-primary\">Create</button>\n";
 	echo "                    </div>\n";
 	echo "                  </form>\n";
 	echo "                </div>\n";
@@ -188,8 +188,8 @@ function showOrganizationsInfo($getPage_connection2) {
 			echo "                    <input type=\"hidden\" name=\"org\" value=\"".$organizationInfo1["id"]."\" />\n";
 			echo " 					  You have been invited to this organization.  Do you wish to join it?\n";
 			echo "                    <div class=\"form-group form-group-sm\">\n";
-			echo "                      <button data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Accept invitation to organization.\" value=\"join\" name=\"action\" id=\"join_org\" type=\"submit\" class=\"btn btn-md btn-success info_button\">Join Org</button>\n";
-			echo "                      <button data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Decline invitation to organization.\" value=\"decline\" name=\"action\" id=\"decline_org\" type=\"submit\" class=\"btn btn-md btn-danger info_button\">Decline Org</button>\n";
+			echo "                      <button onclick=\"loadButton(this)\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Accept invitation to organization.\" value=\"join\" name=\"action\" id=\"join_org\" type=\"submit\" class=\"btn btn-md btn-success info_button\">Join Org</button>\n";
+			echo "                      <button onclick=\"loadButton(this)\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Decline invitation to organization.\" value=\"decline\" name=\"action\" id=\"decline_org\" type=\"submit\" class=\"btn btn-md btn-danger info_button\">Decline Org</button>\n";
 			echo "                    </div>\n";
 			echo "                  </form>\n";
 			echo "                </div>\n";
@@ -235,15 +235,15 @@ function showOrganizationsInfo($getPage_connection2) {
 			for ($a=0; $a < count($organizationInfo1["managers"]); $a++) {
 				if ($organizationInfo1["managers"][$a] == $_SESSION["nation_id"]) {
 					echo "                      <input name=\"orgnation\" type=\"text\" class=\"form-control input-md\" id=\"orgnation\" placeholder=\"Name of Target Nation\" />\n";
-					echo "                      <button data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Invite nation to the organization.\" value=\"invite\" name=\"action\" id=\"org_invite\" type=\"submit\" class=\"btn btn-md btn-success\">Invite Nation</button>\n";
-					echo "                      <button data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Kick nation from the organization.\" value=\"kick\" name=\"action\" id=\"org_kick\" type=\"submit\" class=\"btn btn-md btn-warning\">Kick Nation</button>\n";
-					echo "                      <button data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Appoint nation to be a manager of the organization.\" value=\"appoint\" name=\"action\" id=\"org_appoint\" type=\"submit\" class=\"btn btn-md btn-success\">Appoint Manager</button>\n";
-					echo "                      <button data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Dismiss nation from being a manager of the organization.\" value=\"dismiss\" name=\"action\" id=\"org_dismiss\" type=\"submit\" class=\"btn btn-md btn-warning\">Dismiss Manager</button>\n";
+					echo "                      <button onclick=\"loadButton(this)\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Invite nation to the organization.\" value=\"invite\" name=\"action\" id=\"org_invite\" type=\"submit\" class=\"btn btn-md btn-success\">Invite Nation</button>\n";
+					echo "                      <button onclick=\"loadButton(this)\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Kick nation from the organization.\" value=\"kick\" name=\"action\" id=\"org_kick\" type=\"submit\" class=\"btn btn-md btn-warning\">Kick Nation</button>\n";
+					echo "                      <button onclick=\"loadButton(this)\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Appoint nation to be a manager of the organization.\" value=\"appoint\" name=\"action\" id=\"org_appoint\" type=\"submit\" class=\"btn btn-md btn-success\">Appoint Manager</button>\n";
+					echo "                      <button onclick=\"loadButton(this)\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Dismiss nation from being a manager of the organization.\" value=\"dismiss\" name=\"action\" id=\"org_dismiss\" type=\"submit\" class=\"btn btn-md btn-warning\">Dismiss Manager</button>\n";
 					break;
 				} // if
 			} // for
 			echo "                      <br />\n";
-			echo "                      <button data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Leave organization membership.\" value=\"leave\" name=\"action\" id=\"org_leave\" type=\"submit\" class=\"btn btn-md btn-danger info_button\">Leave Org</button>\n";
+			echo "                      <button onclick=\"loadButton(this)\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Leave organization membership.\" value=\"leave\" name=\"action\" id=\"org_leave\" type=\"submit\" class=\"btn btn-md btn-danger info_button\">Leave Org</button>\n";
 			echo "                    </div>\n";
 			echo "                  </form>\n";
 			echo "                </div>\n";

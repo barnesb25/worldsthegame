@@ -110,7 +110,7 @@ function showSettingsInfo($getPage_connection2) {
 	echo "                    <input data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Confirm new password of user account.  Should be 8-35 characters.\" name=\"setting_password_confirm\" type=\"password\" class=\"form-control input-md\" id=\"changePasswordConfirm\" placeholder=\"password\" />\n";
 	echo "                  </div>\n";
 	echo "                  <div class=\"form-group form-group-sm\">\n";
-	echo "                    <button data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Submit changes to user account.\" value=\"change\" name=\"action\" id=\"change\" type=\"submit\" class=\"btn btn-md btn-primary\">Change Settings</button>\n";
+	echo "                    <button onclick=\"loadButton(this)\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Submit changes to user account.\" value=\"change\" name=\"action\" id=\"change\" type=\"submit\" class=\"btn btn-md btn-primary\">Change Settings</button>\n";
 	echo "                  </div>\n";
 	echo "                </form>\n";
 	echo "              </div>\n";

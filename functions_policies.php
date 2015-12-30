@@ -147,11 +147,11 @@ function showPoliciesInfo($getPage_connection2) {
 	if ($nationInfo["authorityChanged"] == 0) {
 		echo "                    <div class=\"form-group form-group-sm\">\n";
 		if ($nationInfo["authority"] > 0) {
-			echo "                      <button data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Decrease authority.  This will mean less state control of society.\" value=\"aminus\" name=\"action\" id=\"authority_decrease\" type=\"submit\" class=\"btn btn-md btn-primary\"><span class=\"glyphicon glyphicon-minus\"></span></button>\n";
+			echo "                      <button onclick=\"loadButton(this)\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Decrease authority.  This will mean less state control of society.\" value=\"aminus\" name=\"action\" id=\"authority_decrease\" type=\"submit\" class=\"btn btn-md btn-primary\"><span class=\"glyphicon glyphicon-minus\"></span></button>\n";
 		} // if
 		echo "                Authority\n";
 		if ($nationInfo["authority"] < 10) {
-			echo "                      <button data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Increase authority.  This will mean more state control of society.\" value=\"aplus\" name=\"action\" id=\"authority_increase\" type=\"submit\" class=\"btn btn-md btn-primary\"><span class=\"glyphicon glyphicon-plus\"></span></button>\n";
+			echo "                      <button onclick=\"loadButton(this)\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Increase authority.  This will mean more state control of society.\" value=\"aplus\" name=\"action\" id=\"authority_increase\" type=\"submit\" class=\"btn btn-md btn-primary\"><span class=\"glyphicon glyphicon-plus\"></span></button>\n";
 		} // if
 		echo "                    </div>\n";
 	} else {
@@ -160,11 +160,11 @@ function showPoliciesInfo($getPage_connection2) {
 	if ($nationInfo["economyChanged"] == 0) {
 		echo "                    <div class=\"form-group form-group-sm\">\n";
 		if ($nationInfo["economy"] > 0) {
-			echo "                      <button data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Decrease economic control.  This will mean less state intervention in the economy.\" value=\"eminus\" name=\"action\" id=\"economy_decrease\" type=\"submit\" class=\"btn btn-md btn-primary\"><span class=\"glyphicon glyphicon-minus\"></span></button>\n";
+			echo "                      <button onclick=\"loadButton(this)\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Decrease economic control.  This will mean less state intervention in the economy.\" value=\"eminus\" name=\"action\" id=\"economy_decrease\" type=\"submit\" class=\"btn btn-md btn-primary\"><span class=\"glyphicon glyphicon-minus\"></span></button>\n";
 		} // if
 		echo "                        Economy\n";
 		if ($nationInfo["economy"] < 10) {
-			echo "                      <button data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Increase economic control.  This will mean more state intervention in the economy.\" value=\"eplus\" name=\"action\" id=\"economy_increase\" type=\"submit\" class=\"btn btn-md btn-primary\"><span class=\"glyphicon glyphicon-plus\"></span></button>\n";
+			echo "                      <button onclick=\"loadButton(this)\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Increase economic control.  This will mean more state intervention in the economy.\" value=\"eplus\" name=\"action\" id=\"economy_increase\" type=\"submit\" class=\"btn btn-md btn-primary\"><span class=\"glyphicon glyphicon-plus\"></span></button>\n";
 		} // if
 		echo "                    </div>\n";
 	} else {
@@ -186,7 +186,7 @@ function showPoliciesInfo($getPage_connection2) {
 	echo "                      <span data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Select an image file from your computer to be your new flag.\" class=\"btn btn-med btn-default btn-file\">\n";
 	echo "                        Browse <input type=\"file\" name=\"fileToUpload\" id=\"fileToUpload\" />\n";
 	echo "                      </span>\n";
-	echo "                      <button data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Upload your new flag.\" value=\"flag\" name=\"action\" type=\"submit\" class=\"btn btn-md btn-primary\">Change Flag</button>\n";
+	echo "                      <button onclick=\"loadButton(this)\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Upload your new flag.\" value=\"flag\" name=\"action\" type=\"submit\" class=\"btn btn-md btn-primary\">Change Flag</button>\n";
 	echo "                    </div>\n";
 	echo "                  </form>\n";
 
@@ -236,7 +236,7 @@ function showPoliciesInfo($getPage_connection2) {
 		} // for
 	} // if
 
-	echo "                    <button data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Submit changes to production expenditure and prioritization.\" value=\"prod\" name=\"action\" id=\"prod_change\" type=\"submit\" class=\"btn btn-md btn-primary\">Set Production</button>\n";
+	echo "                    <button onclick=\"loadButton(this)\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Submit changes to production expenditure and prioritization.\" value=\"prod\" name=\"action\" id=\"prod_change\" type=\"submit\" class=\"btn btn-md btn-primary\">Set Production</button>\n";
 	echo "                  </div>\n";
 	echo "                </form>\n";
 	echo "              </div>\n";

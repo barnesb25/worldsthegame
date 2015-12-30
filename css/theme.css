@@ -159,14 +159,26 @@ body:before
 
 /* based on code by user cskelly on Bootply */
 
-.glyphicon-refresh-animate {
+.glyphicon-refresh-animate {  
     -animation: spin 1s infinite linear;
     -webkit-animation: spin2 1s infinite linear;
+    -moz-animation: spin3 1s infinite linear;
+    -o-animation: spin4 1s infinite linear;
 }
 
 @-webkit-keyframes spin2 {
     from { -webkit-transform: rotate(0deg);}
     to { -webkit-transform: rotate(360deg);}
+}
+
+@-moz-keyframes spin3 {
+    from { -moz-transform: rotate(0deg);}
+    to { -moz-transform: rotate(360deg);}
+}
+
+@-o-keyframes spin4 {
+    from { -o-transform: rotate(0deg);}
+    to { -o-transform: rotate(360deg);}
 }
 
 @keyframes spin {
