@@ -10,3 +10,7 @@ function bodyLoad() {
 		  $('[data-toggle="tooltip"]').tooltip()
 		})
 } // bodyLoad
+
+function loadButton(element1) {
+	element1.innerHTML = "<span class=\"glyphicon glyphicon-refresh glyphicon-refresh-animate\"></span> Loading...";
+} // loadButton

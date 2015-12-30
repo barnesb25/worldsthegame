@@ -174,7 +174,7 @@ function showPoliciesInfo($getPage_connection2) {
 	echo "                    <div class=\"form-group form-group-sm\">\n";
 	echo "                      <label class=\"control-label\" for=\"formal\">Formal Name:</label>\n";
 	echo "                      <input name=\"formalname\" type=\"text\" class=\"form-control input-md\" id=\"formal\" placeholder=\"New Formal Name of Nation\" />\n";
-	echo "                      <button data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Change long formal name of nation.  This will not affect the regular short name of your nation!\" value=\"formal\" name=\"action\" id=\"formal_change\" type=\"submit\" class=\"btn btn-md btn-primary\">Change Formal Name</button>\n";
+	echo "                      <button onclick=\"loadButton(this)\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Change long formal name of nation.  This will not affect the regular short name of your nation!\" value=\"formal\" name=\"action\" id=\"formal_change\" type=\"submit\" class=\"btn btn-md btn-primary\">Change Formal Name</button>\n";
 	echo "                    </div>\n";
 
 	echo "                  </form>\n";
