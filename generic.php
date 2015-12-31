@@ -90,107 +90,136 @@ function getPage($getPage_connection,$getPage_connection2,$getPage_connection3) 
 function checkLoginStatus($getPage_connection2) {
 	$loginArray = array("status"=>false,"loggingIn"=>false);
 	$loggingIn = false;
-
-	// if login info has been submitted
-	if (isset($_POST["username"]) && isset($_POST["password"])) {
-		$cleaned_username = cleanString($_POST["username"],true);
-		$cleaned_password = cleanString($_POST["password"],true);
-		if (strlen($cleaned_username) >= 1 && strlen($cleaned_password) >= 1) {
-			$loggingIn = true;
-		} // if
-	} // if
+	$resetLoginVars = false;
+	$checkCreds = false;
 
 	if (!(isset($_SESSION["login"]))) {
 		$_SESSION["login"] = 0;
 	} // if
 
-	if ($_SESSION["login"] != 1 && $loggingIn === true) {
-		$userInfo1 = getUserInfoByName($getPage_connection2,$cleaned_username);
-		if ($userInfo1["id"] >= 1) {
-			$final_salt = '$2y$09$'.$userInfo1["salt"].'$';
-			$created_password = crypt($cleaned_password.$userInfo1["salt"],$final_salt);
-			$created_string = hash('sha512', $created_password.$userInfo1["token"]);
-			$actual_string = hash('sha512', $userInfo1["password"].$userInfo1["token"]);
-
-			if ($actual_string == $created_string) {
-				$_SESSION["user_id"] = $userInfo1["id"];
-				$_SESSION["username"] = $cleaned_username;
-				$_SESSION["login_string"] = $created_string;
-				$_SESSION["login"] = 1;
-				$_SESSION["nation_id"] = $userInfo1["id"];
-				$_SESSION["admin"] = $userInfo1["admin"];
-				$new_date = date("Y-m-d H:i:s");
-				$nationInfoLogin = getNationInfo($getPage_connection2,$_SESSION["nation_id"]);
-				setUserInfo($getPage_connection2,$userInfo1["id"],$userInfo1["name"],$userInfo1["avatar"],$userInfo1["joined"],$new_date,$userInfo1["password"],$userInfo1["salt"],$userInfo1["token"],$userInfo1["thread"],$userInfo1["admin"]);
-				$_SESSION["success_message"] = "User has logged in successfully!";
-				$_SESSION["pageTypeInfo"] = getPageTypeInfo($getPage_connection2,"map");
-				$loginArray["status"] = true;
-				$loginArray["loggingIn"] = true;
-				$_POST["continent"] = $nationInfoLogin["home"];
-				$_SESSION["continent_id"] = $nationInfoLogin["home"];
-				$_SESSION["nation_id"] = $nationInfoLogin["id"];
-				$_SESSION["xpos"] = 1;
-				$_SESSION["ypos"] = 1;
-				$_POST["overlay"] = "nations";
-				$_GET["overlay"] = "nations";
-				$_SESSION["overlay"] = "nations";
+	// if not logged in,
+	if ($_SESSION["login"] != 1) {
+		// attempting login
+		
+		// if login info has been submitted
+		if (isset($_POST["username"]) && isset($_POST["password"])) {
+			$cleaned_username = cleanString($_POST["username"],true);
+			$cleaned_password = cleanString($_POST["password"],true);
+			if (strlen($cleaned_username) >= 1 && strlen($cleaned_password) >= 1) {
+				$loggingIn = true;
+			} // if
+		} // if
+		
+		if ($loggingIn === true) {	
+			$userInfo1 = getUserInfoByName($getPage_connection2,$cleaned_username);
+			if ($userInfo1["id"] >= 1) {
+				$final_salt = '$2y$09$'.$userInfo1["salt"].'$';
+				$created_password = crypt($cleaned_password.$userInfo1["salt"],$final_salt);
+				$created_string = hash('sha512', $created_password.$userInfo1["token"]);
+				$actual_string = hash('sha512', $userInfo1["password"].$userInfo1["token"]);
+	
+				if ($actual_string == $created_string) {
+					$_SESSION["user_id"] = $userInfo1["id"];
+					$_SESSION["username"] = $cleaned_username;
+					$_SESSION["login_string"] = $created_string;
+					$_SESSION["login"] = 1;
+					$_SESSION["nation_id"] = $userInfo1["id"];
+					$_SESSION["admin"] = $userInfo1["admin"];
+					$new_date = date("Y-m-d H:i:s");
+					$nationInfoLogin = getNationInfo($getPage_connection2,$_SESSION["nation_id"]);
+					setUserInfo($getPage_connection2,$userInfo1["id"],$userInfo1["name"],$userInfo1["avatar"],$userInfo1["joined"],$new_date,$userInfo1["password"],$userInfo1["salt"],$userInfo1["token"],$userInfo1["thread"],$userInfo1["admin"]);
+					$_SESSION["success_message"] = "User has logged in successfully!";
+					$_SESSION["pageTypeInfo"] = getPageTypeInfo($getPage_connection2,"map");
+					$loginArray["status"] = true;
+					$loginArray["loggingIn"] = true;
+					$_POST["continent"] = $nationInfoLogin["home"];
+					$_SESSION["continent_id"] = $nationInfoLogin["home"];
+					$_SESSION["nation_id"] = $nationInfoLogin["id"];
+					$_SESSION["xpos"] = 1;
+					$_SESSION["ypos"] = 1;
+					$_POST["overlay"] = "nations";
+					$_GET["overlay"] = "nations";
+					$_SESSION["overlay"] = "nations";
+				} else {
+					$resetLoginVars = true;
+					$_SESSION["warning_message"] = "Cannot complete action: invalid user password credentials submitted.";
+				} // else
 			} else {
-				$_SESSION["login"] = 0;
-				$loginArray["status"] = false;
-				$loginArray["loggingIn"] = false;
-				$_SESSION["success_message"] = "";
-				$_SESSION["user_id"] = 0;
-				$_SESSION["username"] = "";
-				$_SESSION["nation_id"] = 0;
-				$_SESSION["admin"] = 0;
-				$_SESSION["warning_message"] = "Cannot complete action: invalid user password credentials submitted.";
+				$resetLoginVars = true;
+				$_SESSION["warning_message"] = "Cannot complete action: invalid user name credentials submitted.";
 			} // else
 		} else {
-			$_SESSION["login"] = 0;
-			$loginArray["status"] = false;
-			$loginArray["loggingIn"] = false;
-			$_SESSION["success_message"] = "";
-			$_SESSION["user_id"] = 0;
-			$_SESSION["username"] = "";
-			$_SESSION["nation_id"] = 0;
-			$_SESSION["admin"] = 0;
-			$_SESSION["warning_message"] = "Cannot complete action: invalid user name credentials submitted.";
+			$resetLoginVars = true;
 		} // else
 	} else {
-		if (isset($_SESSION["login_string"])) {
-			if (isset($_SESSION["user_id"])) {
-				$userInfo1 = getUserInfo($getPage_connection2,$_SESSION["user_id"]);
-				if ($_SESSION["login_string"] == hash('sha512',$userInfo1["password"].$userInfo1["token"])) {
-					$_SESSION["login"] = 1;
-					$loginArray["status"] = true;
-					$loginArray["loggingIn"] = false;
-					$_SESSION["success_message"] = "";
-					$_SESSION["user_id"] = $userInfo1["id"]; // unique ID number of user
-					$_SESSION["username"] = $userInfo1["name"]; // unique string name of user
-					$_SESSION["nation_id"] = $userInfo1["id"]; // nation
-					$_SESSION["admin"] = $userInfo1["admin"]; // admin
-				} // if
-			} else {
-				$_SESSION["login"] = 0;
-				$loginArray["status"] = false;
-				$loginArray["loggingIn"] = false;
-				$_SESSION["success_message"] = "";
-				$_SESSION["user_id"] = 0;
-				$_SESSION["username"] = "";
-				$_SESSION["nation_id"] = 0;
-				$_SESSION["admin"] = 0;
-			} // else
-		} else {
-			$_SESSION["login"] = 0;
-			$loginArray["status"] = false;
-			$loginArray["loggingIn"] = false;
-			$_SESSION["success_message"] = "";
-			$_SESSION["user_id"] = 0;
-			$_SESSION["username"] = "";
-			$_SESSION["nation_id"] = 0;
-			$_SESSION["admin"] = 0;
-		} // else
+		$resetLoginVars = false;
+		$checkCreds = true;
 	} // else
+	
+	if ($checkCreds === true) {	
+		// check creds 50% of time...
+		$rand_cred = mt_rand(1,10);
+
+		if ($rand_cred > 5) {
+			// checking for login details match
+			if (isset($_SESSION["login_string"])) {
+				if (isset($_SESSION["user_id"])) {						
+					$userInfo1 = array("id"=>0,"name"=>"","password"=>"","salt"=>"","token"=>0,"thread"=>0,"admin"=>0);
+					if ($stmt654 = $getPage_connection2->prepare("SELECT id,name,password,salt,token,thread,admin FROM users WHERE id=? LIMIT 1")) {
+						$stmt654->bind_param("i", $_SESSION["user_id"]);
+						$stmt654->execute();
+						$stmt654->bind_result($r_id,$r_name,$r_password,$r_salt,$r_token,$r_thread,$r_admin);
+						$stmt654->fetch();
+						$userInfo1["id"] = $r_id;
+						$userInfo1["name"] = $r_name;
+						$userInfo1["password"] = $r_password;
+						$userInfo1["salt"] = $r_salt;
+						$userInfo1["token"] = $r_token;
+						$userInfo1["thread"] = $r_thread;
+						$userInfo1["admin"] = $r_admin;
+						$stmt654->close();
+					} else {
+						$resetLoginVars = true;
+					} // else
+			
+					// if match, assign user details
+					if ($_SESSION["login_string"] == hash('sha512',$userInfo1["password"].$userInfo1["token"])) {
+						$_SESSION["login"] = 1;
+						$loginArray["status"] = true;
+						$loginArray["loggingIn"] = false;
+						$_SESSION["success_message"] = "";
+						$_SESSION["user_id"] = $userInfo1["id"]; // unique ID number of user
+						$_SESSION["username"] = $userInfo1["name"]; // unique string name of user
+						$_SESSION["nation_id"] = $userInfo1["id"]; // nation
+						$_SESSION["admin"] = $userInfo1["admin"]; // admin
+					} else {
+						$resetLoginVars = true;
+					} // else
+				} else {
+					$resetLoginVars = true;
+				} // else
+			} else {
+				$resetLoginVars = true;
+			} // else		
+		} else {
+			$_SESSION["login"] = 1;
+			$loginArray["status"] = true;
+			$loginArray["loggingIn"] = false;
+			$resetLoginVars = false;
+		} // else
+	} // if
+	
+	if ($resetLoginVars === true) {
+		$_SESSION["login"] = 0;
+		$loginArray["status"] = false;
+		$loginArray["loggingIn"] = false;
+		$_SESSION["success_message"] = "";
+		$_SESSION["user_id"] = 0;
+		$_SESSION["username"] = "";
+		$_SESSION["nation_id"] = 0;
+		$_SESSION["admin"] = 0;
+		$resetLoginVars = false;
+	} // if
 
 	return $loginArray;
 } // checkLoginStatus
