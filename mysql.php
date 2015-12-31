@@ -1699,12 +1699,12 @@ function getUnitInfo($s_connection,$s_continent_id,$s_xpos,$s_ypos) {
 		$stmt->execute();
 		$stmt->bind_result($r_id,$r_continent,$r_xpos,$r_ypos,$r_health,$r_used,$r_name,$r_type,$r_owner,$r_level,$r_transport,$r_created,$r_exp);
 		$stmt->fetch();
+		$unit["id"] = $r_id;
 		$unit["continent"] = $r_continent;
 		$unit["xpos"] = $r_xpos;
 		$unit["ypos"] = $r_ypos;
 		$unit["health"] = $r_health;
 		$unit["used"] = $r_used;
-		$unit["id"] = $r_id;
 		$unit["name"] = $r_name;
 		$unit["type"] = $r_type;
 		$unit["owner"] = $r_owner;
@@ -1727,12 +1727,12 @@ function getUnitInfoByID($s_connection,$s_id) {
 		$stmt->execute();
 		$stmt->bind_result($r_id,$r_continent,$r_xpos,$r_ypos,$r_health,$r_used,$r_name,$r_type,$r_owner,$r_level,$r_transport,$r_created,$r_exp);
 		$stmt->fetch();
+		$unit["id"] = $r_id;
 		$unit["continent"] = $r_continent;
 		$unit["xpos"] = $r_xpos;
 		$unit["ypos"] = $r_ypos;
 		$unit["health"] = $r_health;
 		$unit["used"] = $r_used;
-		$unit["id"] = $r_id;
 		$unit["name"] = $r_name;
 		$unit["type"] = $r_type;
 		$unit["owner"] = $r_owner;

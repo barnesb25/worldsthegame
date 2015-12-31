@@ -128,6 +128,7 @@ function checkLoginStatus($getPage_connection2) {
 				$loginArray["loggingIn"] = true;
 				$_POST["continent"] = $nationInfoLogin["home"];
 				$_SESSION["continent_id"] = $nationInfoLogin["home"];
+				$_SESSION["nation_id"] = $nationInfoLogin["id"];
 				$_SESSION["xpos"] = 1;
 				$_SESSION["ypos"] = 1;
 				$_POST["overlay"] = "nations";

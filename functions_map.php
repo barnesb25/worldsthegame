@@ -280,70 +280,142 @@ function showMap($getPage_connection2) {
 			if ($tileInfo1["id"] >= 1) {
 				$terrainInfo1 = getTerrainInfo($getPage_connection2,$tileInfo1["terrain"]);
 				if ($_SESSION["overlay"] == "terrain") {
+					$unitInfo1 = getUnitInfo($getPage_connection2,$_SESSION["continent_id"] ,$x,$y);
+					$unitTypeInfo1 = getUnitTypeInfo($getPage_connection2,$unitInfo1["type"]);
 					echo "                <div class=\"tile_container\"><a class=\"tile_link\" href=\"index.php?page=map&amp;continent=".$_SESSION["continent_id"]."&amp;xpos=".$x."&amp;ypos=".$y."&amp;overlay=".$_SESSION["overlay"]."\">";
-					if ($tileInfo1["xpos"] == $_SESSION["xpos"] && $tileInfo1["ypos"] == $_SESSION["ypos"]) {
-						echo "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."\" src=\"images/selected.png\" alt=\"".$terrainInfo1["name"]."\" />";
+					
+					if ($unitInfo1["id"] >= 1) {
+						if ($tileInfo1["xpos"] == $_SESSION["xpos"] && $tileInfo1["ypos"] == $_SESSION["ypos"]) {
+							echo "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."\" src=\"".$unitTypeInfo1["selected"]."\" alt=\"".$terrainInfo1["name"]."\" />";
+						} else {
+							echo "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."\" src=\"".$unitTypeInfo1["image"]."\" alt=\"".$terrainInfo1["name"]."\" />";
+						} // else
 					} else {
-						echo "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."\" src=\"images/blank.png\" alt=\"".$terrainInfo1["name"]."\" />";
+						if ($tileInfo1["xpos"] == $_SESSION["xpos"] && $tileInfo1["ypos"] == $_SESSION["ypos"]) {
+							echo "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."\" src=\"images/selected.png\" alt=\"".$terrainInfo1["name"]."\" />";
+						} else {
+							echo "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."\" src=\"images/blank.png\" alt=\"".$terrainInfo1["name"]."\" />";
+						} // else
 					} // else
 					echo "</a></div>\n";
 
 				} else if ($_SESSION["overlay"] == "control") {
+					$unitInfo1 = getUnitInfo($getPage_connection2,$_SESSION["continent_id"] ,$x,$y);
+					$unitTypeInfo1 = getUnitTypeInfo($getPage_connection2,$unitInfo1["type"]);
 					echo "                <div class=\"tile_container\"><a class=\"tile_link\" href=\"index.php?page=map&amp;continent=".$_SESSION["continent_id"]."&amp;xpos=".$x."&amp;ypos=".$y."&amp;overlay=".$_SESSION["overlay"]."\">";
-					if ($tileInfo1["owner"] == $_SESSION["nation_id"] ) {
-						if ($tileInfo1["xpos"] == $_SESSION["xpos"] && $tileInfo1["ypos"] == $_SESSION["ypos"]) {
-							echo "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."_friendly\" src=\"images/selected.png\" alt=\"1\" />";
+					
+					if ($tileInfo1["owner"] == $_SESSION["nation_id"]) {
+						if ($unitInfo1["id"] >= 1) {
+							if ($tileInfo1["xpos"] == $_SESSION["xpos"] && $tileInfo1["ypos"] == $_SESSION["ypos"]) {
+								echo "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."_friendly\" src=\"".$unitTypeInfo1["selected"]."\" alt=\"1\" />";
+							} else {
+								echo "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."_friendly\" src=\"".$unitTypeInfo1["image"]."\" alt=\"1\" />";
+							} // else
 						} else {
-							echo "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."_friendly\" src=\"images/blank.png\" alt=\"1\" />";
+							if ($tileInfo1["xpos"] == $_SESSION["xpos"] && $tileInfo1["ypos"] == $_SESSION["ypos"]) {
+								echo "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."_friendly\" src=\"images/selected.png\" alt=\"0\" />";
+							} else {
+								echo "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."_friendly\" src=\"images/blank.png\" alt=\"0\" />";
+							} // else
 						} // else
 					} else {
-						if ($tileInfo1["xpos"] == $_SESSION["xpos"] && $tileInfo1["ypos"] == $_SESSION["ypos"]) {
-							echo "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."_enemy\" src=\"images/selected.png\" alt=\"0\" />";
+						if ($unitInfo1["id"] >= 1) {
+							if ($tileInfo1["xpos"] == $_SESSION["xpos"] && $tileInfo1["ypos"] == $_SESSION["ypos"]) {
+								echo "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."_enemy\" src=\"".$unitTypeInfo1["selected"]."\" alt=\"0\" />";
+							} else {
+								echo "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."_enemy\" src=\"".$unitTypeInfo1["image"]."\" alt=\"0\" />";
+							} // else
 						} else {
-							echo "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."_enemy\" src=\"images/blank.png\" alt=\"0\" />";
+							if ($tileInfo1["xpos"] == $_SESSION["xpos"] && $tileInfo1["ypos"] == $_SESSION["ypos"]) {
+								echo "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."_enemy\" src=\"images/selected.png\" alt=\"0\" />";
+							} else {
+								echo "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."_enemy\" src=\"images/blank.png\" alt=\"0\" />";
+							} // else
 						} // else
 					} // else
 					echo "</a></div>\n";
 
 				} else if ($_SESSION["overlay"] == "claims") {
+					$unitInfo1 = getUnitInfo($getPage_connection2,$_SESSION["continent_id"] ,$x,$y);
+					$unitTypeInfo1 = getUnitTypeInfo($getPage_connection2,$unitInfo1["type"]);
 					echo "                <div class=\"tile_container\"><a class=\"tile_link\" href=\"index.php?page=map&amp;continent=".$_SESSION["continent_id"]."&amp;xpos=".$x."&amp;ypos=".$y."&amp;overlay=".$_SESSION["overlay"]."\">";
 					
 					$claimState = checkClaimsState($getPage_connection2, $tileInfo1, $_SESSION["nation_id"]);
 							
 					// if current nation claims successfully
 					if ($claimState == 1) {
-						if ($tileInfo1["xpos"] == $_SESSION["xpos"] && $tileInfo1["ypos"] == $_SESSION["ypos"]) {
-							echo "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."_friendly\" src=\"images/selected.png\" alt=\"1\" />";
+						if ($unitInfo1["id"] >= 1) {
+							if ($tileInfo1["xpos"] == $_SESSION["xpos"] && $tileInfo1["ypos"] == $_SESSION["ypos"]) {
+								echo "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."_friendly\" src=\"".$unitTypeInfo1["selected"]."\" alt=\"1\" />";
+							} else {
+								echo "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."_friendly\" src=\"".$unitTypeInfo1["image"]."\" alt=\"1\" />";
+							} // else
 						} else {
-							echo "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."_friendly\" src=\"images/blank.png\" alt=\"1\" />";
+							if ($tileInfo1["xpos"] == $_SESSION["xpos"] && $tileInfo1["ypos"] == $_SESSION["ypos"]) {
+								echo "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."_friendly\" src=\"images/selected.png\" alt=\"1\" />";
+							} else {
+								echo "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."_friendly\" src=\"images/blank.png\" alt=\"1\" />";
+							} // else
 						} // else
 					// if enemy nation claims successfully
 					} else if ($claimState == 2) {
-						if ($tileInfo1["xpos"] == $_SESSION["xpos"] && $tileInfo1["ypos"] == $_SESSION["ypos"]) {
-							echo "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."_enemy\" src=\"images/selected.png\" alt=\"0\" />";
+						if ($unitInfo1["id"] >= 1) {
+							if ($tileInfo1["xpos"] == $_SESSION["xpos"] && $tileInfo1["ypos"] == $_SESSION["ypos"]) {
+								echo "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."_enemy\" src=\"".$unitTypeInfo1["selected"]."\" alt=\"0\" />";
+							} else {
+								echo "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."_enemy\" src=\"".$unitTypeInfo1["image"]."\" alt=\"0\" />";
+							} // else		
 						} else {
-							echo "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."_enemy\" src=\"images/blank.png\" alt=\"0\" />";
-						} // else						
+							if ($tileInfo1["xpos"] == $_SESSION["xpos"] && $tileInfo1["ypos"] == $_SESSION["ypos"]) {
+								echo "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."_enemy\" src=\"images/selected.png\" alt=\"0\" />";
+							} else {
+								echo "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."_enemy\" src=\"images/blank.png\" alt=\"0\" />";
+							} // else
+						} // else				
 					// if claim is contested and player is involved
 					} else if ($claimState == 3) {
-						if ($tileInfo1["xpos"] == $_SESSION["xpos"] && $tileInfo1["ypos"] == $_SESSION["ypos"]) {
-							echo "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."_player_contested\" src=\"images/selected.png\" alt=\"0\" />";
+						if ($unitInfo1["id"] >= 1) {
+							if ($tileInfo1["xpos"] == $_SESSION["xpos"] && $tileInfo1["ypos"] == $_SESSION["ypos"]) {
+								echo "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."_player_contested\" src=\"".$unitTypeInfo1["selected"]."\" alt=\"0\" />";
+							} else {
+								echo "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."_player_contested\" src=\"".$unitTypeInfo1["image"]."\" alt=\"0\" />";
+							} // else
 						} else {
-							echo "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."_player_contested\" src=\"images/blank.png\" alt=\"0\" />";
+							if ($tileInfo1["xpos"] == $_SESSION["xpos"] && $tileInfo1["ypos"] == $_SESSION["ypos"]) {
+								echo "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."_enemy\" src=\"images/selected.png\" alt=\"0\" />";
+							} else {
+								echo "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."_enemy\" src=\"images/blank.png\" alt=\"0\" />";
+							} // else
 						} // else
 					// if claim is contested and player is not involved
 					} else if ($claimState == 4) {
-						if ($tileInfo1["xpos"] == $_SESSION["xpos"] && $tileInfo1["ypos"] == $_SESSION["ypos"]) {
-							echo "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."_enemy_contested\" src=\"images/selected.png\" alt=\"0\" />";
+						if ($unitInfo1["id"] >= 1) {
+							if ($tileInfo1["xpos"] == $_SESSION["xpos"] && $tileInfo1["ypos"] == $_SESSION["ypos"]) {
+								echo "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."_enemy_contested\" src=\"".$unitTypeInfo1["selected"]."\" alt=\"0\" />";
+							} else {
+								echo "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."_enemy_contested\" src=\"".$unitTypeInfo1["image"]."\" alt=\"0\" />";
+							} // else
 						} else {
-							echo "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."_enemy_contested\" src=\"images/blank.png\" alt=\"0\" />";
+							if ($tileInfo1["xpos"] == $_SESSION["xpos"] && $tileInfo1["ypos"] == $_SESSION["ypos"]) {
+								echo "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."_enemy\" src=\"images/selected.png\" alt=\"0\" />";
+							} else {
+								echo "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."_enemy\" src=\"images/blank.png\" alt=\"0\" />";
+							} // else
 						} // else
 						// default to enemy claim
 					} else {
-						if ($tileInfo1["xpos"] == $_SESSION["xpos"] && $tileInfo1["ypos"] == $_SESSION["ypos"]) {
-							echo "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."_enemy\" src=\"images/selected.png\" alt=\"0\" />";
+						if ($unitInfo1["id"] >= 1) {
+							if ($tileInfo1["xpos"] == $_SESSION["xpos"] && $tileInfo1["ypos"] == $_SESSION["ypos"]) {
+								echo "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."_enemy\" src=\"".$unitTypeInfo1["selected"]."\" alt=\"0\" />";
+							} else {
+								echo "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."_enemy\" src=\"".$unitTypeInfo1["image"]."\" alt=\"0\" />";
+							} // else
 						} else {
-							echo "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."_enemy\" src=\"images/blank.png\" alt=\"0\" />";
+							if ($tileInfo1["xpos"] == $_SESSION["xpos"] && $tileInfo1["ypos"] == $_SESSION["ypos"]) {
+								echo "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."_enemy\" src=\"images/selected.png\" alt=\"0\" />";
+							} else {
+								echo "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."_enemy\" src=\"images/blank.png\" alt=\"0\" />";
+							} // else
 						} // else
 					} // else
 						
@@ -353,6 +425,7 @@ function showMap($getPage_connection2) {
 					$unitInfo1 = getUnitInfo($getPage_connection2,$_SESSION["continent_id"] ,$x,$y);
 					$unitTypeInfo1 = getUnitTypeInfo($getPage_connection2,$unitInfo1["type"]);
 					echo "                <div class=\"tile_container\"><a class=\"tile_link\" href=\"index.php?page=map&amp;continent=".$_SESSION["continent_id"] ."&amp;xpos=".$x."&amp;ypos=".$y."&amp;overlay=".$_SESSION["overlay"]."\">";
+					
 					if ($unitInfo1["id"] >= 1) {
 						if ($unitInfo1["owner"] == $_SESSION["nation_id"] ) {
 							if ($tileInfo1["xpos"] == $_SESSION["xpos"] && $tileInfo1["ypos"] == $_SESSION["ypos"]) {
@@ -385,6 +458,8 @@ function showMap($getPage_connection2) {
 					echo "</a></div>\n";
 					
 				} else if ($_SESSION["overlay"] == "nations") {
+					$unitInfo1 = getUnitInfo($getPage_connection2,$_SESSION["continent_id"] ,$x,$y);
+					$unitTypeInfo1 = getUnitTypeInfo($getPage_connection2,$unitInfo1["type"]);
 					echo "                <div class=\"tile_container\"><a class=\"tile_link\" href=\"index.php?page=map&amp;continent=".$_SESSION["continent_id"]."&amp;xpos=".$x."&amp;ypos=".$y."&amp;overlay=".$_SESSION["overlay"]."\">";
 					
 					// associate nation with colour
@@ -413,21 +488,40 @@ function showMap($getPage_connection2) {
 						} // if
 						$nation1 = $nation_index;
 						if ($nationsMap[$u] == $tileInfo1["owner"]) {
-							if ($tileInfo1["xpos"] == $_SESSION["xpos"] && $tileInfo1["ypos"] == $_SESSION["ypos"]) {
-								echo "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."_nation_".$nation1."\" src=\"images/selected.png\" alt=\"0\" />"; 
+							if ($unitInfo1["id"] >= 1) {
+								if ($tileInfo1["xpos"] == $_SESSION["xpos"] && $tileInfo1["ypos"] == $_SESSION["ypos"]) {
+									echo "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."_nation_".$nation1."\" src=\"".$unitTypeInfo1["selected"]."\" alt=\"0\" />"; 
+								} else {
+									echo "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."_nation_".$nation1."\" src=\"".$unitTypeInfo1["image"]."\" alt=\"0\" />";
+								} // else
 							} else {
-								echo "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."_nation_".$nation1."\" src=\"images/blank.png\" alt=\"0\" />";
+								if ($tileInfo1["xpos"] == $_SESSION["xpos"] && $tileInfo1["ypos"] == $_SESSION["ypos"]) {
+									echo "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."_nation_".$nation1."\" src=\"images/selected.png\" alt=\"0\" />";
+								} else {
+									echo "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."_nation_".$nation1."\" src=\"images/blank.png\" alt=\"0\" />";
+								} // else								
 							} // else
 						} // if
 					} // for						
 					
 					echo "</a></div>\n";
 				} else {
+					$unitInfo1 = getUnitInfo($getPage_connection2,$_SESSION["continent_id"] ,$x,$y);
+					$unitTypeInfo1 = getUnitTypeInfo($getPage_connection2,$unitInfo1["type"]);
 					echo "                <div class=\"tile_container\"><a class=\"tile_link\" href=\"index.php?page=map&amp;continent=".$_SESSION["continent_id"] ."&amp;xpos=".$x."&amp;ypos=".$y."&amp;overlay=".$_SESSION["overlay"]."\">";
-					if ($tileInfo1["xpos"] == $_SESSION["xpos"] && $tileInfo1["ypos"] == $_SESSION["ypos"]) {
-						echo "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."\" src=\"images/selected.png\" alt=\"".$terrainInfo1["name"]."\" />";
+					
+					if ($unitInfo1["id"] >= 1) {
+						if ($tileInfo1["xpos"] == $_SESSION["xpos"] && $tileInfo1["ypos"] == $_SESSION["ypos"]) {
+							echo "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."\" src=\"".$unitTypeInfo1["selected"]."\" alt=\"".$terrainInfo1["name"]."\" />";
+						} else {
+							echo "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."\" src=\"".$unitTypeInfo1["image"]."\" alt=\"".$terrainInfo1["name"]."\" />";
+						} // else
 					} else {
-						echo "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."\" src=\"images/blank.png\" alt=\"".$terrainInfo1["name"]."\" />";
+						if ($tileInfo1["xpos"] == $_SESSION["xpos"] && $tileInfo1["ypos"] == $_SESSION["ypos"]) {
+							echo "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."\" src=\"images/selected.png\" alt=\"".$terrainInfo1["name"]."\" />";
+						} else {
+							echo "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."\" src=\"images/blank.png\" alt=\"".$terrainInfo1["name"]."\" />";
+						} // else
 					} // else
 					echo "</a></div>\n";
 				} // else
