@@ -290,10 +290,34 @@ function showMap($getPage_connection2) {
 					$stmt99->close();
 				} else {
 				} // else
+				
+				$unitInfo1 = array("id"=>0,"type"=>0);
+				if ($stmt98 = $getPage_connection2->prepare("SELECT id,type FROM unitsmap WHERE continent=? AND xpos=? AND ypos=? LIMIT 1")) {
+					$stmt98->bind_param("iii", $tileInfo1["continent"], $tileInfo1["xpos"], $tileInfo1["ypos"]);
+					$stmt98->execute();
+					$stmt98->bind_result($r_id,$r_type);
+					$stmt98->fetch();
+					$unitInfo1["id"] = $r_id;
+					$unitInfo1["type"] = $r_type;
+					$stmt98->close();
+				} else {
+				} // else
+					
+				$unitTypeInfo1 = array("id"=>0,"name"=>"","image"=>"","selected"=>"");
+				if ($stmt89 = $getPage_connection2->prepare("SELECT id,name,image,selected FROM units WHERE id=? LIMIT 1")) {
+					$stmt89->bind_param("i", $unitInfo1["type"]);
+					$stmt89->execute();
+					$stmt89->bind_result($r_id,$r_name,$r_image,$r_selected);
+					$stmt89->fetch();
+					$unitTypeInfo1["id"] = $r_id;
+					$unitTypeInfo1["name"] = $r_name;
+					$unitTypeInfo1["image"] = $r_image;
+					$unitTypeInfo1["selected"] = $r_selected;
+					$stmt89->close();
+				} else {
+				} // else
 					
 				if ($_SESSION["overlay"] == "terrain") {
-					$unitInfo1 = getUnitInfo($getPage_connection2,$_SESSION["continent_id"] ,$x,$y);
-					$unitTypeInfo1 = getUnitTypeInfo($getPage_connection2,$unitInfo1["type"]);
 					echo "                <div class=\"tile_container\"><a class=\"tile_link\" href=\"index.php?page=map&amp;continent=".$_SESSION["continent_id"]."&amp;xpos=".$x."&amp;ypos=".$y."&amp;overlay=".$_SESSION["overlay"]."\">";
 					
 					if ($unitInfo1["id"] >= 1) {
@@ -312,8 +336,6 @@ function showMap($getPage_connection2) {
 					echo "</a></div>\n";
 
 				} else if ($_SESSION["overlay"] == "control") {
-					$unitInfo1 = getUnitInfo($getPage_connection2,$_SESSION["continent_id"] ,$x,$y);
-					$unitTypeInfo1 = getUnitTypeInfo($getPage_connection2,$unitInfo1["type"]);
 					echo "                <div class=\"tile_container\"><a class=\"tile_link\" href=\"index.php?page=map&amp;continent=".$_SESSION["continent_id"]."&amp;xpos=".$x."&amp;ypos=".$y."&amp;overlay=".$_SESSION["overlay"]."\">";
 					
 					if ($tileInfo1["owner"] == $_SESSION["nation_id"]) {
@@ -348,8 +370,6 @@ function showMap($getPage_connection2) {
 					echo "</a></div>\n";
 
 				} else if ($_SESSION["overlay"] == "claims") {
-					$unitInfo1 = getUnitInfo($getPage_connection2,$_SESSION["continent_id"] ,$x,$y);
-					$unitTypeInfo1 = getUnitTypeInfo($getPage_connection2,$unitInfo1["type"]);
 					echo "                <div class=\"tile_container\"><a class=\"tile_link\" href=\"index.php?page=map&amp;continent=".$_SESSION["continent_id"]."&amp;xpos=".$x."&amp;ypos=".$y."&amp;overlay=".$_SESSION["overlay"]."\">";
 					
 					$claimState = checkClaimsState($getPage_connection2, $tileInfo1, $_SESSION["nation_id"]);
@@ -434,8 +454,6 @@ function showMap($getPage_connection2) {
 					echo "</a></div>\n";
 
 				} else if ($_SESSION["overlay"] == "units") {
-					$unitInfo1 = getUnitInfo($getPage_connection2,$_SESSION["continent_id"] ,$x,$y);
-					$unitTypeInfo1 = getUnitTypeInfo($getPage_connection2,$unitInfo1["type"]);
 					echo "                <div class=\"tile_container\"><a class=\"tile_link\" href=\"index.php?page=map&amp;continent=".$_SESSION["continent_id"] ."&amp;xpos=".$x."&amp;ypos=".$y."&amp;overlay=".$_SESSION["overlay"]."\">";
 					
 					if ($unitInfo1["id"] >= 1) {
@@ -470,8 +488,6 @@ function showMap($getPage_connection2) {
 					echo "</a></div>\n";
 					
 				} else if ($_SESSION["overlay"] == "nations") {
-					$unitInfo1 = getUnitInfo($getPage_connection2,$_SESSION["continent_id"] ,$x,$y);
-					$unitTypeInfo1 = getUnitTypeInfo($getPage_connection2,$unitInfo1["type"]);
 					echo "                <div class=\"tile_container\"><a class=\"tile_link\" href=\"index.php?page=map&amp;continent=".$_SESSION["continent_id"]."&amp;xpos=".$x."&amp;ypos=".$y."&amp;overlay=".$_SESSION["overlay"]."\">";
 					
 					// associate nation with colour
@@ -518,8 +534,6 @@ function showMap($getPage_connection2) {
 					
 					echo "</a></div>\n";
 				} else {
-					$unitInfo1 = getUnitInfo($getPage_connection2,$_SESSION["continent_id"] ,$x,$y);
-					$unitTypeInfo1 = getUnitTypeInfo($getPage_connection2,$unitInfo1["type"]);
 					echo "                <div class=\"tile_container\"><a class=\"tile_link\" href=\"index.php?page=map&amp;continent=".$_SESSION["continent_id"] ."&amp;xpos=".$x."&amp;ypos=".$y."&amp;overlay=".$_SESSION["overlay"]."\">";
 					
 					if ($unitInfo1["id"] >= 1) {
