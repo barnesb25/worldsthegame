@@ -4,7 +4,7 @@
         <div class="container">
           <p class="text-muted"><a href="#real_content">&uarr; Go Back To Top of Page &uarr;</a></p>
           <br />
-          <p class="text-muted"><a href="index.php">Home</a> - <a target="_blank" href="index.php?page=about">About</a> - <a target="_blank" href="index.php?page=terms">Legal and Privacy</a> <br /> Made with the awesome <a href=\"https://getbootstrap.com/\">Bootstrap!</a> <br /> &copy; Ben Barnes 2015-2016. </p>
+          <p class="text-muted"><a href="index.php">Home</a> - <a target="_blank" href="index.php?page=about">About</a> - <a target="_blank" href="index.php?page=terms">Legal and Privacy</a> <br /> Made with the awesome <a href="https://getbootstrap.com/">Bootstrap!</a> <br /> &copy; Ben Barnes 2015-2016. </p>
         </div>
       </footer>
     <!-- End of real content -->

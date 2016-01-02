@@ -374,9 +374,10 @@ function showWarning($getPage_connection2) {
 	
 	if (isset($_SESSION["warning_message"])) {
 		if (strlen($_SESSION["warning_message"]) >= 1) {
-			unset($_POST);
+			//unset($_POST);
 			$warning = cleanString($_SESSION["warning_message"],false);
 			$_SESSION["warning_message"] = "";
+			unset($_SESSION["warning_message"]);
 		} else {
 			$warning = "";
 		} // else
@@ -386,9 +387,10 @@ function showWarning($getPage_connection2) {
 		
 	if (isset($_SESSION["success_message"])) {
 		if (strlen($_SESSION["success_message"]) >= 1) {
-			unset($_POST);
+			//unset($_POST);
 			$success = cleanString($_SESSION["success_message"],false);
 			$_SESSION["success_message"] = "";
+			unset($_SESSION["success_message"]);
 		} else {
 			$success = "";
 		} // else
@@ -405,6 +407,9 @@ function showWarning($getPage_connection2) {
 		echo "          <strong>Your request has been processed...</strong> <br /> ".$success."\n";
 		echo "        </div>\n";
 	} // else if
+	
+	unset($warning);
+	unset($success);
 } // showWarning
 
 /********************************

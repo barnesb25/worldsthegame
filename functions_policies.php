@@ -118,7 +118,11 @@ function showPoliciesInfo($getPage_connection2) {
 	echo "              <div class=\"col-md-8 col-center\">\n";
 	echo "                <h3>".$nationInfo["formal"]."</h3>\n";
 	echo "                <br />\n";
-	echo "                <img class=\"info_flag\" src=\"".$nationInfo["flag"]."\" alt=\"Flag of ".$nationInfo["name"]."\" />\n";
+	if (strlen($nationInfo["flag"]) >= 1) {
+		echo "                <img class=\"info_flag\" src=\"".$nationInfo["flag"]."\" alt=\"Flag of ".$nationInfo["name"]."\" />\n";
+	} else {
+		echo "                <img class=\"info_flag\" src=\"images/blank.png\" alt=\"Flag of ".$nationInfo["name"]."\" />\n";
+	} // else
 	echo "                <br />\n";
 	echo "                <br />\n";
 	echo "                <br />\n";
@@ -665,6 +669,7 @@ function setProduction($getPage_connection2) {
 							$productionInfoZZ = getProductionInfo($getPage_connection2, $_SESSION["nation_id"]);
 							setProductionInfo($getPage_connection2,$_SESSION["nation_id"],$_SESSION["prod_percent"],$_SESSION["prod"], $productionInfoZZ["ratios"]);
 							$_SESSION["success_message"] = "Nation's production policies have been changed successfully!";
+							error_log("set prod");
 						} else {
 							$_SESSION["warning_message"] = "Cannot complete action: one or more production variables is/are not defined.";
 						} // else

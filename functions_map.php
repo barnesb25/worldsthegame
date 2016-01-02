@@ -278,7 +278,19 @@ function showMap($getPage_connection2) {
 		for ($x = 1; $x < 21; $x++ ) {
 			$tileInfo1 = getTileInfo($getPage_connection2,$_SESSION["continent_id"],$x,$y);
 			if ($tileInfo1["id"] >= 1) {
-				$terrainInfo1 = getTerrainInfo($getPage_connection2,$tileInfo1["terrain"]);
+				
+				$terrainInfo1 = array("name"=>"","image"=>"");
+				if ($stmt99 = $getPage_connection2->prepare("SELECT name,image FROM terrain WHERE id=? LIMIT 1")) {
+					$stmt99->bind_param("i", $tileInfo1["terrain"]);
+					$stmt99->execute();
+					$stmt99->bind_result($r_name,$r_image);
+					$stmt99->fetch();
+					$terrainInfo1["name"] = $r_name;
+					$terrainInfo1["image"] = $r_image;
+					$stmt99->close();
+				} else {
+				} // else
+					
 				if ($_SESSION["overlay"] == "terrain") {
 					$unitInfo1 = getUnitInfo($getPage_connection2,$_SESSION["continent_id"] ,$x,$y);
 					$unitTypeInfo1 = getUnitTypeInfo($getPage_connection2,$unitInfo1["type"]);
