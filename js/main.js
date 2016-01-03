@@ -1,7 +1,7 @@
 /****************************************************************************
 * Name:        main.js
 * Author:      Ben Barnes
-* Date:        2015-12-28
+* Date:        2016-01-03
 * Purpose:     Client-side error checking and interface enhancing.
 *****************************************************************************/
 /* Main Body Loading */
