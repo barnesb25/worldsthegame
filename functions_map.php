@@ -270,8 +270,7 @@ function showMap($getPage_connection2) {
 	echo "          <div class=\"spacing-from-menu row\">\n";
 	echo "            <div class=\"well well-lg map_well\">\n";
 	echo "              <div id=\"map\">\n";
-	$a = 1;
-	$nationsMap = array(0=>0);
+	//$a = 1;
 	// go through y positions
 	for ($y = 1; $y < 21; $y++ ) {
 		// go through x positions
@@ -434,7 +433,7 @@ function showMap($getPage_connection2) {
 								echo "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."_enemy\" src=\"images/blank.png\" alt=\"0\" />";
 							} // else
 						} // else
-						// default to enemy claim
+					// default to enemy claim
 					} else {
 						if ($unitInfo1["id"] >= 1) {
 							if ($tileInfo1["xpos"] == $_SESSION["xpos"] && $tileInfo1["ypos"] == $_SESSION["ypos"]) {
@@ -490,6 +489,8 @@ function showMap($getPage_connection2) {
 				} else if ($_SESSION["overlay"] == "nations") {
 					echo "                <div class=\"tile_container\"><a class=\"tile_link\" href=\"index.php?page=map&amp;continent=".$_SESSION["continent_id"]."&amp;xpos=".$x."&amp;ypos=".$y."&amp;overlay=".$_SESSION["overlay"]."\">";
 					
+					$nationsMap = array(0=>0);
+					
 					// associate nation with colour
 					$foundNation = false;
 					for ($d=0; $d < count($nationsMap); $d++) {
@@ -503,8 +504,7 @@ function showMap($getPage_connection2) {
 					if ($foundNation === false) {
 						$new_index_nationMaps = count($nationsMap);
 						$nationsMap[$new_index_nationMaps] = $tileInfo1["owner"];
-					} // if
-					
+					} // if			
 					
 					// list nations according to colour
 					for ($u=0; $u < count($nationsMap); $u++) {
@@ -552,7 +552,7 @@ function showMap($getPage_connection2) {
 					echo "</a></div>\n";
 				} // else
 
-				$a++;
+				//$a++;
 			} // if
 		} // for
 		echo "                <div class=\"clear\"></div>\n";
