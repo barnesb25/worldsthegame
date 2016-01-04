@@ -206,10 +206,10 @@ function getGlobals_map($getPage_connection2) {
 	$_SESSION["prev_continent"] = $prev_continent;
 	
 	// get info
-	$_SESSION["continentInfo"] = getContinentInfo($getPage_connection2,$_SESSION["next_continent"]);
+	//$_SESSION["continentInfo"] = getContinentInfo($getPage_connection2,$_SESSION["next_continent"]);
 	$_SESSION["tileInfo"] = getTileInfo($getPage_connection2,$_SESSION["continent_id"],$_SESSION["xpos"],$_SESSION["ypos"]);
-	$_SESSION["terrainInfo"] = getTerrainInfo($getPage_connection2,$_SESSION["tileInfo"]["terrain"]);
-	$_SESSION["userInfo"] = getUserInfo($getPage_connection2,$_SESSION["user_id"]);
+	//$_SESSION["terrainInfo"] = getTerrainInfo($getPage_connection2,$_SESSION["tileInfo"]["terrain"]);
+	//$_SESSION["userInfo"] = getUserInfo($getPage_connection2,$_SESSION["user_id"]);
 } // getGlobals_map
 
 /********************************
