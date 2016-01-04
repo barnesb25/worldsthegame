@@ -359,7 +359,8 @@ function generateContinent($getPage_connection2) {
 			// if border tile, it has to be water!
 			if ($x == 1 || $x == 20 || $y == 1 || $y == 20) {
 				$new_terrain = 2;
-				addTileInfo($getPage_connection2,$new_continent,$x,$y,$new_terrain,$new_resources,array(0=>0),0,array(0=>0),1000);
+				$rand_pop = mt_rand(500,1100);
+				addTileInfo($getPage_connection2,$new_continent,$x,$y,$new_terrain,$new_resources,array(0=>0),0,array(0=>0),$rand_pop);
 
 				// random generate resources where applicable
 				for ($v=0; $v < 4; $v++) {
@@ -395,7 +396,8 @@ function generateContinent($getPage_connection2) {
 				// 20 % chance for water tile on non-border tiles based on normal calculations
 				if ($randTerrain <= 20) {
 					$new_terrain = 2;
-					addTileInfo($getPage_connection2,$new_continent,$x,$y,$new_terrain,$new_resources,array(0=>0),0,array(0=>0),1000);
+					$rand_pop = mt_rand(500,1100);
+					addTileInfo($getPage_connection2,$new_continent,$x,$y,$new_terrain,$new_resources,array(0=>0),0,array(0=>0),$rand_pop);
 						
 					// random generate resources where applicable
 					for ($v=0; $v < 4; $v++) {
@@ -441,8 +443,9 @@ function generateContinent($getPage_connection2) {
 					if ($new_terrain == 6) {
 						$new_terrain = 1;
 					} // if
-						
-					addTileInfo($getPage_connection2,$new_continent,$x,$y,$new_terrain,$new_resources,array(0=>0),0,array(0=>0),1000);
+					
+					$rand_pop = mt_rand(500,1100);
+					addTileInfo($getPage_connection2,$new_continent,$x,$y,$new_terrain,$new_resources,array(0=>0),0,array(0=>0),$rand_pop);
 						
 					// random generate resources where applicable
 						
