@@ -210,8 +210,8 @@ function getGlobals_trade($getPage_connection2) {
 	} // else if
 	
 	// get info
-	$_SESSION["userInfo"] = getUserInfo($getPage_connection2,$_SESSION["user_id"]);
-	$_SESSION["nationInfo"] = getNationInfo($getPage_connection2,$_SESSION["nation_id"]);
+	//$_SESSION["userInfo"] = getUserInfo($getPage_connection2,$_SESSION["user_id"]);
+	//$_SESSION["nationInfo"] = getNationInfo($getPage_connection2,$_SESSION["nation_id"]);
 } // getGlobals_trade
 
 /********************************

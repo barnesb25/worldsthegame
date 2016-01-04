@@ -70,8 +70,8 @@ function getGlobals_policies($getPage_connection2) {
 	} // else
 
 	// get info
-	$_SESSION["userInfo"] = getUserInfo($getPage_connection2,$_SESSION["user_id"]);
-	$_SESSION["nationInfo"] = getNationInfo($getPage_connection2,$_SESSION["nation_id"]);
+	//$_SESSION["userInfo"] = getUserInfo($getPage_connection2,$_SESSION["user_id"]);
+	//$_SESSION["nationInfo"] = getNationInfo($getPage_connection2,$_SESSION["nation_id"]);
 } // getGlobals_policies
 
 /********************************
