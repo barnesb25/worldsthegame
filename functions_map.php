@@ -323,6 +323,10 @@ function showMap($getPage_connection2) {
 				if ($x == $_SESSION["prev_xpos"] && $y == $_SESSION["prev_ypos"]) {
 					$tokenSet = false;
 				} // if
+				
+				if ($x == $_SESSION["new_xpos"] && $y == $_SESSION["new_ypos"]) {
+					$tokenSet = false;
+				} // if
 						
 				if ($tokenSet === true && $_SESSION["mapContentsTokens"][$y][$x] == $tileInfo1_token["token"]) {
 					$mapContentToken = $_SESSION["mapContentsTokens"][$y][$x];
