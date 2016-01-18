@@ -140,6 +140,9 @@ function checkLoginStatus($getPage_connection2) {
 					$_POST["overlay"] = "nations";
 					$_GET["overlay"] = "nations";
 					$_SESSION["overlay"] = "nations";
+					
+					$_SESSION["mapContents"] = array(array(""));
+					$_SESSION["mapContentsTokens"] = array(array(0));
 				} else {
 					$resetLoginVars = true;
 					$_SESSION["warning_message"] = "Cannot complete action: invalid user password credentials submitted.";
@@ -307,11 +310,31 @@ function resetSession($keepCores) {
 			$saved_ypos = $_SESSION["ypos"];
 		} else {
 			$saved_ypos = 0;
+		} // else	
+		if (isset($_SESSION["prev_xpos"])) {
+			$saved_prev_xpos = $_SESSION["prev_xpos"];
+		} else {
+			$saved_prev_xpos = 0;
 		} // else
+		if (isset($_SESSION["prev_ypos"])) {
+			$saved_prev_ypos = $_SESSION["prev_ypos"];
+		} else {
+			$saved_prev_ypos = 0;
+		} // else		
 		if (isset($_SESSION["overlay"])) {
 			$saved_overlay = $_SESSION["overlay"];
 		} else {
 			$saved_overlay = 0;
+		} // else
+		if (isset($_SESSION["mapContents"])) {
+			$saved_mapContents = $_SESSION["mapContents"];
+		} else {
+			$saved_mapContents = 0;
+		} // else
+		if (isset($_SESSION["mapContentsTokens"])) {
+			$saved_mapContentsTokens = $_SESSION["mapContentsTokens"];
+		} else {
+			$saved_mapContentsTokens = 0;
 		} // else
 
 		session_unset();
@@ -324,9 +347,14 @@ function resetSession($keepCores) {
 		$_SESSION["admin"] = $saved_admin;
 		$_SESSION["pageTypeInfo"] = $saved_pageTypeInfo;
 		$_SESSION["continent_id"] = $saved_continent_id;
+		$_SESSION["prev_xpos"] = $saved_prev_xpos;
+		$_SESSION["prev_ypos"] = $saved_prev_ypos;
 		$_SESSION["xpos"] = $saved_xpos;
 		$_SESSION["ypos"] = $saved_ypos;
 		$_SESSION["overlay"] = $saved_overlay;
+		
+		$_SESSION["mapContents"] = $saved_mapContents;
+		$_SESSION["mapContentsTokens"] = $saved_mapContentsTokens;
 	} else {
 		session_unset();
 	} // else

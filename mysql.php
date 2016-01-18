@@ -1344,11 +1344,11 @@ function setTerrainInfo($s_connection,$s_id,$s_name,$s_image,$s_movementRestrict
 
 // tilesmap
 function getTileInfo($s_connection,$s_continent_id,$s_x,$s_y) {
-	$tile = array("id"=>0,"continent"=>0,"xpos"=>0,"ypos"=>0,"terrain"=>0,"resources"=>array(0=>""),"improvements"=>array(0=>""),"owner"=>0,"claims"=>array(0=>""),"population"=>0);
-	if ($stmt = $s_connection->prepare("SELECT id,continent,xpos,ypos,terrain,resources,improvements,owner,claims,population FROM tilesmap WHERE continent=? AND xpos=? AND ypos=? LIMIT 1")) {
+	$tile = array("id"=>0,"continent"=>0,"xpos"=>0,"ypos"=>0,"terrain"=>0,"resources"=>array(0=>""),"improvements"=>array(0=>""),"owner"=>0,"claims"=>array(0=>""),"population"=>0,"token"=>0);
+	if ($stmt = $s_connection->prepare("SELECT id,continent,xpos,ypos,terrain,resources,improvements,owner,claims,population,token FROM tilesmap WHERE continent=? AND xpos=? AND ypos=? LIMIT 1")) {
 		$stmt->bind_param("iii", $s_continent_id, $s_x, $s_y);
 		$stmt->execute();
-		$stmt->bind_result($r_id,$r_continent,$r_xpos,$r_ypos,$r_terrain,$r_resources,$r_improvements,$r_owner,$r_claims,$r_population);
+		$stmt->bind_result($r_id,$r_continent,$r_xpos,$r_ypos,$r_terrain,$r_resources,$r_improvements,$r_owner,$r_claims,$r_population,$r_token);
 		$stmt->fetch();
 		$tile["id"] = $r_id;
 		$tile["continent"] = $r_continent;
@@ -1372,6 +1372,7 @@ function getTileInfo($s_connection,$s_continent_id,$s_x,$s_y) {
 			$tile["claims"] = array(0=>$r_claims);
 		} // else
 		$tile["population"] = $r_population;
+		$tile["token"] = $r_token;
 		$stmt->close();
 	} else {
 	} // else
@@ -1380,11 +1381,11 @@ function getTileInfo($s_connection,$s_continent_id,$s_x,$s_y) {
 } // getTileInfo
 
 function getTileInfoByID($s_connection,$s_id) {
-	$tile = array("id"=>0,"continent"=>0,"xpos"=>0,"ypos"=>0,"terrain"=>0,"resources"=>array(0=>""),"improvements"=>array(0=>""),"owner"=>0,"claims"=>array(0=>""),"population"=>0);
-	if ($stmt = $s_connection->prepare("SELECT id,continent,xpos,ypos,terrain,resources,improvements,owner,claims,population FROM tilesmap WHERE id=? LIMIT 1")) {
+	$tile = array("id"=>0,"continent"=>0,"xpos"=>0,"ypos"=>0,"terrain"=>0,"resources"=>array(0=>""),"improvements"=>array(0=>""),"owner"=>0,"claims"=>array(0=>""),"population"=>0,"token"=>0);
+	if ($stmt = $s_connection->prepare("SELECT id,continent,xpos,ypos,terrain,resources,improvements,owner,claims,population,token FROM tilesmap WHERE id=? LIMIT 1")) {
 		$stmt->bind_param("i", $s_id);
 		$stmt->execute();
-		$stmt->bind_result($r_id,$r_continent,$r_xpos,$r_ypos,$r_terrain,$r_resources,$r_improvements,$r_owner,$r_claims,$r_population);
+		$stmt->bind_result($r_id,$r_continent,$r_xpos,$r_ypos,$r_terrain,$r_resources,$r_improvements,$r_owner,$r_claims,$r_population,$r_token);
 		$stmt->fetch();
 		$tile["id"] = $r_id;
 		$tile["continent"] = $r_continent;
@@ -1408,6 +1409,7 @@ function getTileInfoByID($s_connection,$s_id) {
 			$tile["claims"] = array(0=>$r_claims);
 		} // else
 		$tile["population"] = $r_population;
+		$tile["token"] = $r_token;
 		$stmt->close();
 	} else {
 	} // else
@@ -1431,8 +1433,11 @@ function setTileInfo($s_connection,$s_id,$s_continent,$s_xpos,$s_ypos,$s_terrain
 	} else {
 		$new_claims = $s_claims[0];
 	} // else
-	if ($stmt = $s_connection->prepare("UPDATE tilesmap SET continent=?,xpos=?,ypos=?,terrain=?,resources=?,improvements=?,owner=?,claims=?,population=? WHERE id=?")) {
-		$stmt->bind_param("iiiissisii", $s_continent, $s_xpos, $s_ypos, $s_terrain, $new_resources, $new_improvements, $s_owner, $new_claims, $s_population, $s_id);
+		
+	$rand = mt_rand(1111,9999);
+	
+	if ($stmt = $s_connection->prepare("UPDATE tilesmap SET continent=?,xpos=?,ypos=?,terrain=?,resources=?,improvements=?,owner=?,claims=?,population=?,token=? WHERE id=?")) {
+		$stmt->bind_param("iiiissisiii", $s_continent, $s_xpos, $s_ypos, $s_terrain, $new_resources, $new_improvements, $s_owner, $new_claims, $s_population, $rand, $s_id);
 		$stmt->execute();
 		$stmt->close();
 	} else {
@@ -1455,8 +1460,11 @@ function addTileInfo($s_connection,$s_continent,$s_xpos,$s_ypos,$s_terrain,$s_re
 	} else {
 		$new_claims = $s_claims[0];
 	} // else
-	if ($stmt = $s_connection->prepare("INSERT INTO tilesmap (continent,xpos,ypos,terrain,resources,improvements,owner,claims,population) VALUES (?,?,?,?,?,?,?,?,?)")) {
-		$stmt->bind_param("iiiissisi", $s_continent, $s_xpos, $s_ypos, $s_terrain, $new_resources, $new_improvements, $s_owner, $new_claims, $s_population);
+		
+	$rand = mt_rand(1111,9999);
+	
+	if ($stmt = $s_connection->prepare("INSERT INTO tilesmap (continent,xpos,ypos,terrain,resources,improvements,owner,claims,population,token) VALUES (?,?,?,?,?,?,?,?,?,?)")) {
+		$stmt->bind_param("iiiissisii", $s_continent, $s_xpos, $s_ypos, $s_terrain, $new_resources, $new_improvements, $s_owner, $new_claims, $s_population, $rand);
 		$stmt->execute();
 		$stmt->close();
 	} else {
