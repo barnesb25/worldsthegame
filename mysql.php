@@ -474,9 +474,31 @@ function setImprovementInfo($s_connection,$s_id,$s_continent,$s_xpos,$s_ypos,$s_
 		$stmt->close();
 	} else {
 	} // else
+		
+	$rand = mt_rand(1111,9999);
+	
+	if ($stmt = $s_connection->prepare("UPDATE tilesmap SET token=? WHERE continent=? AND xpos=? AND ypos=?")) {
+		$stmt->bind_param("iiii", $rand, $s_continent, $s_xpos, $s_ypos);
+		$stmt->execute();
+		$stmt->close();
+	} else {
+	} // else
 } // setImprovementInfo
 
 function deleteImprovementInfo($s_connection,$s_id,$s_continent,$s_xpos,$s_ypos) {
+	$improvement1 = array("continent"=>0,"xpos"=>0,"ypos"=>0);
+	if ($stmt = $s_connection->prepare("SELECT continent,xpos,ypos FROM improvementsmap WHERE id=? LIMIT 1")) {
+		$stmt->bind_param("i", $s_id);
+		$stmt->execute();
+		$stmt->bind_result($r_continent,$r_xpos,$r_ypos);
+		$stmt->fetch();
+		$improvement1["continent"] = $r_continent;
+		$improvement1["xpos"] = $r_xpos;
+		$improvement1["ypos"] = $r_ypos;
+		$stmt->close();
+	} else {
+	} // else
+		
 	$new_improvements = array(0=>0);
 	if ($stmt = $s_connection->prepare("DELETE FROM improvementsmap WHERE id=?")) {
 		$stmt->bind_param("i", $s_id);
@@ -493,6 +515,15 @@ function deleteImprovementInfo($s_connection,$s_id,$s_continent,$s_xpos,$s_ypos)
 		} // if
 	} // for
 	setTileInfo($s_connection,$tileInfoM["id"],$tileInfoM["continent"],$tileInfoM["xpos"],$tileInfoM["ypos"],$tileInfoM["terrain"],$tileInfoM["resources"],$new_improvements,$tileInfoM["owner"],$tileInfoM["claims"],$tileInfoM["population"]);
+
+	$rand = mt_rand(1111,9999);
+	
+	if ($stmt = $s_connection->prepare("UPDATE tilesmap SET token=? WHERE continent=? AND xpos=? AND ypos=?")) {
+		$stmt->bind_param("iiii", $rand, $improvement1["continent"], $improvement1["xpos"], $improvement1["ypos"]);
+		$stmt->execute();
+		$stmt->close();
+	} else {
+	} // else
 } // deleteImprovementInfo
 
 function addImprovementInfo($s_connection,$s_continent,$s_xpos,$s_ypos,$s_type,$s_level,$s_usingResources,$s_owners) {
@@ -520,6 +551,15 @@ function addImprovementInfo($s_connection,$s_continent,$s_xpos,$s_ypos,$s_type,$
 	$new_index = count($tileInfoM["improvements"]) + 1;
 	$new_improvements[$new_index] = $new_id;
 	setTileInfo($s_connection,$tileInfoM["id"],$tileInfoM["continent"],$tileInfoM["xpos"],$tileInfoM["ypos"],$tileInfoM["terrain"],$tileInfoM["resources"],$new_improvements,$tileInfoM["owner"],$tileInfoM["claims"],$tileInfoM["population"]);
+	
+	$rand = mt_rand(1111,9999);
+	
+	if ($stmt = $s_connection->prepare("UPDATE tilesmap SET token=? WHERE continent=? AND xpos=? AND ypos=?")) {
+		$stmt->bind_param("iiii", $rand, $s_continent, $s_xpos, $s_ypos);
+		$stmt->execute();
+		$stmt->close();
+	} else {
+	} // else
 } // addImprovementInfo
 
 // market
@@ -1762,11 +1802,42 @@ function setUnitInfo($s_connection,$s_id,$s_continent,$s_xpos,$s_ypos,$s_health,
 		$stmt->close();
 	} else {
 	} // else
+		
+	$rand = mt_rand(1111,9999);
+	
+	if ($stmt = $s_connection->prepare("UPDATE tilesmap SET token=? WHERE continent=? AND xpos=? AND ypos=?")) {
+		$stmt->bind_param("iiii", $rand, $s_continent, $s_xpos, $s_ypos);
+		$stmt->execute();
+		$stmt->close();
+	} else {
+	} // else
 } // setUnitInfo
 
-function deleteUnitInfo($s_connection,$s_id) {
+function deleteUnitInfo($s_connection,$s_id) {	
+	$unit1 = array("continent"=>0,"xpos"=>0,"ypos"=>0);
+	if ($stmt = $s_connection->prepare("SELECT continent,xpos,ypos FROM unitsmap WHERE id=? LIMIT 1")) {
+		$stmt->bind_param("i", $s_id);
+		$stmt->execute();
+		$stmt->bind_result($r_continent,$r_xpos,$r_ypos);
+		$stmt->fetch();
+		$unit1["continent"] = $r_continent;
+		$unit1["xpos"] = $r_xpos;
+		$unit1["ypos"] = $r_ypos;
+		$stmt->close();
+	} else {
+	} // else
+	
 	if ($stmt = $s_connection->prepare("DELETE FROM unitsmap WHERE id=?")) {
 		$stmt->bind_param("i", $s_id);
+		$stmt->execute();
+		$stmt->close();
+	} else {
+	} // else
+			
+	$rand = mt_rand(1111,9999);
+	
+	if ($stmt = $s_connection->prepare("UPDATE tilesmap SET token=? WHERE continent=? AND xpos=? AND ypos=?")) {
+		$stmt->bind_param("iiii", $rand, $unit1["continent"], $unit1["xpos"], $unit1["ypos"]);
 		$stmt->execute();
 		$stmt->close();
 	} else {
@@ -1776,6 +1847,15 @@ function deleteUnitInfo($s_connection,$s_id) {
 function addUnitInfo($s_connection,$s_continent,$s_xpos,$s_ypos,$s_health,$s_used,$s_name,$s_type,$s_owner,$s_level,$s_transport,$s_created,$s_exp) {
 	if ($stmt = $s_connection->prepare("INSERT INTO unitsmap (continent,xpos,ypos,health,used,name,type,owner,level,transport,created,exp) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)")) {
 		$stmt->bind_param("iiidisiiiiii", $s_continent, $s_xpos, $s_ypos, $s_health, $s_used, $s_name, $s_type, $s_owner, $s_level, $s_transport, $s_created, $s_exp);
+		$stmt->execute();
+		$stmt->close();
+	} else {
+	} // else
+		
+	$rand = mt_rand(1111,9999);
+	
+	if ($stmt = $s_connection->prepare("UPDATE tilesmap SET token=? WHERE continent=? AND xpos=? AND ypos=?")) {
+		$stmt->bind_param("iiii", $rand, $s_continent, $s_xpos, $s_ypos);
 		$stmt->execute();
 		$stmt->close();
 	} else {
