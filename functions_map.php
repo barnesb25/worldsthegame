@@ -2,7 +2,7 @@
 /****************************************************************************
  * Name:        functions_map.php
  * Author:      Ben Barnes
- * Date:        2016-01-03
+ * Date:        2016-01-18
  * Purpose:     Map functions page
  *****************************************************************************/
 
@@ -59,7 +59,12 @@ function getGlobals_map($getPage_connection2) {
 		// post: current overlay state
 		if (isset($_POST["overlay"])) {
 			if (isset($_SESSION["overlay"])) {
+				$prev_prev_overlay = $_SESSION["prev_overlay"];
 				$_SESSION["prev_overlay"] = $_SESSION["overlay"];
+				if ($prev_prev_overlay != $_SESSION["prev_overlay"]) {
+					unset($_SESSION["mapContentsTokens"]);
+					unset($_SESSION["mapContents"]);
+				} // if
 			} else {
 				$_SESSION["prev_overlay"] = "terrain";
 			} // else
@@ -150,7 +155,12 @@ function getGlobals_map($getPage_connection2) {
 		// get: current overlay state
 		if (isset($_GET["overlay"])) {
 			if (isset($_SESSION["overlay"])) {
+				$prev_prev_overlay = $_SESSION["prev_overlay"];
 				$_SESSION["prev_overlay"] = $_SESSION["overlay"];
+				if ($prev_prev_overlay != $_SESSION["prev_overlay"]) {
+					unset($_SESSION["mapContentsTokens"]);
+					unset($_SESSION["mapContents"]);
+				} // if
 			} else {
 				$_SESSION["prev_overlay"] = "terrain";
 			} // else
@@ -335,10 +345,6 @@ function showMap($getPage_connection2) {
 				} // if
 				
 				if ($x == $_SESSION["new_xpos"] && $y == $_SESSION["new_ypos"]) {
-					$tokenSet = false;
-				} // if
-				
-				if ($_SESSION["overlay"] != $_SESSION["prev_overlay"]) {
 					$tokenSet = false;
 				} // if
 						

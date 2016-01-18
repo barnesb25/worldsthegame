@@ -2,7 +2,7 @@
 /****************************************************************************
  * Name:        generic.php
  * Author:      Ben Barnes
- * Date:        2016-01-03
+ * Date:        2016-01-18
  * Purpose:     Miscellaneous functions page
  *****************************************************************************/
 
@@ -320,7 +320,12 @@ function resetSession($keepCores) {
 			$saved_prev_ypos = $_SESSION["prev_ypos"];
 		} else {
 			$saved_prev_ypos = 0;
-		} // else		
+		} // else	
+		if (isset($_SESSION["prev_overlay"])) {
+			$saved_prev_overlay = $_SESSION["prev_overlay"];
+		} else {
+			$saved_prev_overlay = 0;
+		} // else
 		if (isset($_SESSION["overlay"])) {
 			$saved_overlay = $_SESSION["overlay"];
 		} else {
@@ -349,6 +354,7 @@ function resetSession($keepCores) {
 		$_SESSION["continent_id"] = $saved_continent_id;
 		$_SESSION["prev_xpos"] = $saved_prev_xpos;
 		$_SESSION["prev_ypos"] = $saved_prev_ypos;
+		$_SESSION["prev_overlay"] = $saved_prev_overlay;
 		$_SESSION["xpos"] = $saved_xpos;
 		$_SESSION["ypos"] = $saved_ypos;
 		$_SESSION["overlay"] = $saved_overlay;
