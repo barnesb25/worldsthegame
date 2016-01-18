@@ -58,6 +58,11 @@ function getGlobals_map($getPage_connection2) {
 		
 		// post: current overlay state
 		if (isset($_POST["overlay"])) {
+			if (isset($_SESSION["overlay"])) {
+				$_SESSION["prev_overlay"] = $_SESSION["overlay"];
+			} else {
+				$_SESSION["prev_overlay"] = "terrain";
+			} // else
 			$_SESSION["overlay"] = cleanString($_POST["overlay"],true);
 		} else {
 			$_SESSION["overlay"] = "terrain";
@@ -144,6 +149,11 @@ function getGlobals_map($getPage_connection2) {
 		
 		// get: current overlay state
 		if (isset($_GET["overlay"])) {
+			if (isset($_SESSION["overlay"])) {
+				$_SESSION["prev_overlay"] = $_SESSION["overlay"];
+			} else {
+				$_SESSION["prev_overlay"] = "terrain";
+			} // else
 			$_SESSION["overlay"] = cleanString($_GET["overlay"],true);
 		} else {
 			if (!(isset($_SESSION["overlay"]))) {
@@ -325,6 +335,10 @@ function showMap($getPage_connection2) {
 				} // if
 				
 				if ($x == $_SESSION["new_xpos"] && $y == $_SESSION["new_ypos"]) {
+					$tokenSet = false;
+				} // if
+				
+				if ($_SESSION["overlay"] != $_SESSION["prev_overlay"]) {
 					$tokenSet = false;
 				} // if
 						
@@ -2126,14 +2140,15 @@ function generateMapTile ($getPage_connection2,$x,$y) {
 		} else {
 		} // else
 			
-		$unitInfo1 = array("id"=>0,"type"=>0);
-		if ($stmt98 = $getPage_connection2->prepare("SELECT id,type FROM unitsmap WHERE continent=? AND xpos=? AND ypos=? LIMIT 1")) {
+		$unitInfo1 = array("id"=>0,"type"=>0,"owner"=>0);
+		if ($stmt98 = $getPage_connection2->prepare("SELECT id,type,owner FROM unitsmap WHERE continent=? AND xpos=? AND ypos=? LIMIT 1")) {
 			$stmt98->bind_param("iii", $tileInfo1["continent"], $tileInfo1["xpos"], $tileInfo1["ypos"]);
 			$stmt98->execute();
-			$stmt98->bind_result($r_id,$r_type);
+			$stmt98->bind_result($r_id,$r_type,$r_owner);
 			$stmt98->fetch();
 			$unitInfo1["id"] = $r_id;
 			$unitInfo1["type"] = $r_type;
+			$unitInfo1["owner"] = $r_owner;
 			$stmt98->close();
 		} else {
 		} // else
