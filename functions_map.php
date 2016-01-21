@@ -2,7 +2,7 @@
 /****************************************************************************
  * Name:        functions_map.php
  * Author:      Ben Barnes
- * Date:        2016-01-18
+ * Date:        2016-01-20
  * Purpose:     Map functions page
  *****************************************************************************/
 
@@ -406,18 +406,17 @@ function showMap($getPage_connection2) {
  visualize current map tile information
  ********************************/
 function showMapInfo($getPage_connection2) {
-	echo "          <div class=\"row\">\n";
-	echo "            <div class=\"well well-lg row\">\n";
+	echo "          <div class=\"well well-lg info_well row\">\n";
 
 	// Command Module
 	$unitInfo = getUnitInfo($getPage_connection2,$_SESSION["continent_id"],$_SESSION["xpos"],$_SESSION["ypos"]);
-	echo "              <div class=\"col-sm-4\">\n";
+	echo "            <div class=\"col-sm-4 info_panels\">\n";
 
-	echo "                <div class=\"panel panel-danger\">\n";
-	echo "                  <div data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Command your units on the present tile.\" class=\"panel-heading\">\n";
-	echo "                    <h3 class=\"panel-title\">Command        <button type=\"button\" class=\"btn btn-default btn-md collapsed\" data-toggle=\"collapse\" data-target=\"#collapseCommand\"><span class=\"glyphicon glyphicon-plus\"></span>/<span class=\"glyphicon glyphicon-minus\"></span></button></h3>\n";
-	echo "                  </div>\n";
-	echo "                  <div id=\"collapseCommand\" class=\"panel-body standard-text collapse in\">\n";
+	echo "              <div class=\"panel panel-danger\">\n";
+	echo "                <div data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Command your units on the present tile.\" class=\"panel-heading\">\n";
+	echo "                  <h3 class=\"panel-title\">Command        <button type=\"button\" class=\"btn btn-default btn-md collapsed\" data-toggle=\"collapse\" data-target=\"#collapseCommand\"><span class=\"glyphicon glyphicon-plus\"></span>/<span class=\"glyphicon glyphicon-minus\"></span></button></h3>\n";
+	echo "                </div>\n";
+	echo "                <div id=\"collapseCommand\" class=\"panel-body standard-text collapse in\">\n";
 	if ($unitInfo["id"] >= 1) {
 		$unitTypeInfo = getUnitTypeInfo($getPage_connection2,$unitInfo["type"]);
 		$currentPlayer = false;
@@ -425,59 +424,59 @@ function showMapInfo($getPage_connection2) {
 		if ($unitInfo["owner"] == $_SESSION["nation_id"]) {
 			$currentPlayer = true;
 		} // if
-		echo "                    <ul class=\"list-group\">\n";
-		echo "                      <li class=\"list-group-item\">\n";
-		echo "                        ".$unitInfo["name"]."\n";
-		echo "                        <br />\n";
-		echo "                        ".$unitTypeInfo["name"]."\n";
-		echo "                        <br />\n";
-		echo "                        ".$unitInfo["health"]." / ". $unitTypeInfo["health"] ." HP\n";
-		echo "                        <br />\n";
-		echo "                        Moves: ".($unitTypeInfo["movement"] - $unitInfo["used"])." / ".$unitTypeInfo["movement"]."\n";
-		echo "                        <br />\n";
-		echo "                        Level ".$unitInfo["level"]."\n";
-		echo "                        <br />\n";
-		echo "                        Experience: ".$unitInfo["exp"]."\n";
-		echo "                        <br />\n";
-		echo "                        Owned by <a href=\"index.php?page=info&amp;section=nations&amp;info_id=".$nationInfoX["id"]."\">".$nationInfoX["name"]."</a>\n";
-		echo "                      </li>\n";
+		echo "                  <ul class=\"list-group\">\n";
+		echo "                    <li class=\"list-group-item\">\n";
+		echo "                      ".$unitInfo["name"]."\n";
+		echo "                      <br />\n";
+		echo "                      ".$unitTypeInfo["name"]."\n";
+		echo "                      <br />\n";
+		echo "                      ".$unitInfo["health"]." / ". $unitTypeInfo["health"] ." HP\n";
+		echo "                      <br />\n";
+		echo "                      Moves: ".($unitTypeInfo["movement"] - $unitInfo["used"])." / ".$unitTypeInfo["movement"]."\n";
+		echo "                      <br />\n";
+		echo "                      Level ".$unitInfo["level"]."\n";
+		echo "                      <br />\n";
+		echo "                      Experience: ".$unitInfo["exp"]."\n";
+		echo "                      <br />\n";
+		echo "                      Owned by <a href=\"index.php?page=info&amp;section=nations&amp;info_id=".$nationInfoX["id"]."\">".$nationInfoX["name"]."</a>\n";
+		echo "                    </li>\n";
 		if ($currentPlayer === true) {
-			echo "                      <li class=\"list-group-item\">\n";
-			echo "                        <div class=\"row\">\n";
-			echo "                          Modify/Abilities\n                          <br />\n                          <br />\n";
-			echo "                        </div>\n";
-			echo "                        <div class=\"row\">\n";
+			echo "                    <li class=\"list-group-item\">\n";
+			echo "                      <div class=\"row\">\n";
+			echo "                        Modify/Abilities\n                        <br />\n                        <br />\n";
+			echo "                      </div>\n";
+			echo "                      <div class=\"row\">\n";
 			if ($unitInfo["level"] < 20) {
-				echo "                          <div class=\"col-xs-3\">\n";
-				echo "                            <form action=\"index.php?page=map&amp;overlay=units\" method=\"post\">\n";
-				echo "                              <input type=\"hidden\" name=\"continent\" value=\"".$_SESSION["continent_id"]."\" />\n";
-				echo "                              <input type=\"hidden\" name=\"xpos\" value=\"".$_SESSION["xpos"]."\" />\n";
-				echo "                              <input type=\"hidden\" name=\"ypos\" value=\"".$_SESSION["ypos"]."\" />\n";
-				echo "                              <input type=\"hidden\" name=\"actionid\" value=\"".$unitInfo["id"]."\" />\n";
-				echo "                              <input type=\"hidden\" name=\"action\" value=\"unit-upgrade\" />\n";
-				echo "                              <input type=\"hidden\" name=\"overlay\" value=\"units\" />\n";
-				echo "                              <button onclick=\"loadButton(this)\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Upgrade unit.\" value=\"map\" name=\"page\" type=\"submit\" class=\"btn btn-primary btn-sm\"><img src=\"images/buttons/btn_upgrade.png\" alt=\"Upgrade\" /></button>\n";
-				echo "                            </form>\n";
-				echo "                          </div>\n";
+				echo "                        <div class=\"col-xs-3\">\n";
+				echo "                          <form action=\"index.php?page=map&amp;overlay=units\" method=\"post\">\n";
+				echo "                            <input type=\"hidden\" name=\"continent\" value=\"".$_SESSION["continent_id"]."\" />\n";
+				echo "                            <input type=\"hidden\" name=\"xpos\" value=\"".$_SESSION["xpos"]."\" />\n";
+				echo "                            <input type=\"hidden\" name=\"ypos\" value=\"".$_SESSION["ypos"]."\" />\n";
+				echo "                            <input type=\"hidden\" name=\"actionid\" value=\"".$unitInfo["id"]."\" />\n";
+				echo "                            <input type=\"hidden\" name=\"action\" value=\"unit-upgrade\" />\n";
+				echo "                            <input type=\"hidden\" name=\"overlay\" value=\"units\" />\n";
+				echo "                            <button onclick=\"loadButton(this)\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Upgrade unit.\" value=\"map\" name=\"page\" type=\"submit\" class=\"btn btn-primary btn-sm\"><img src=\"images/buttons/btn_upgrade.png\" alt=\"Upgrade\" /></button>\n";
+				echo "                          </form>\n";
+				echo "                        </div>\n";
 			} // if
-			echo "                          <div class=\"col-xs-3\">\n";
-			echo "                            <form action=\"index.php?page=map&amp;overlay=units\" method=\"post\">\n";
-			echo "                              <input type=\"hidden\" name=\"continent\" value=\"".$_SESSION["continent_id"]."\" />\n";
-			echo "                              <input type=\"hidden\" name=\"xpos\" value=\"".$_SESSION["xpos"]."\" />\n";
-			echo "                              <input type=\"hidden\" name=\"ypos\" value=\"".$_SESSION["ypos"]."\" />\n";
-			echo "                              <input type=\"hidden\" name=\"actionid\" value=\"".$unitInfo["id"]."\" />\n";
-			echo "                              <input type=\"hidden\" name=\"action\" value=\"unit-remove\" />\n";
-			echo "                              <input type=\"hidden\" name=\"overlay\" value=\"units\" />\n";
-			echo "                              <button onclick=\"loadButton(this)\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Remove unit.\" value=\"map\" name=\"page\" type=\"submit\" class=\"btn btn-primary btn-sm\"><img src=\"images/buttons/btn_remove.png\" alt=\"Remove\" /></button>\n";
-			echo "                            </form>\n";
-			echo "                          </div>\n";
-
-			echo "                          <div class=\"col-xs-3\">\n";
-			echo "                          </div>\n";
-
+			echo "                        <div class=\"col-xs-3\">\n";
+			echo "                          <form action=\"index.php?page=map&amp;overlay=units\" method=\"post\">\n";
+			echo "                            <input type=\"hidden\" name=\"continent\" value=\"".$_SESSION["continent_id"]."\" />\n";
+			echo "                            <input type=\"hidden\" name=\"xpos\" value=\"".$_SESSION["xpos"]."\" />\n";
+			echo "                            <input type=\"hidden\" name=\"ypos\" value=\"".$_SESSION["ypos"]."\" />\n";
+			echo "                            <input type=\"hidden\" name=\"actionid\" value=\"".$unitInfo["id"]."\" />\n";
+			echo "                            <input type=\"hidden\" name=\"action\" value=\"unit-remove\" />\n";
+			echo "                            <input type=\"hidden\" name=\"overlay\" value=\"units\" />\n";
+			echo "                            <button onclick=\"loadButton(this)\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Remove unit.\" value=\"map\" name=\"page\" type=\"submit\" class=\"btn btn-primary btn-sm\"><img src=\"images/buttons/btn_remove.png\" alt=\"Remove\" /></button>\n";
+			echo "                          </form>\n";
 			echo "                        </div>\n";
 
-			echo "                      </li>\n";
+			echo "                        <div class=\"col-xs-3\">\n";
+			echo "                        </div>\n";
+
+			echo "                      </div>\n";
+
+			echo "                    </li>\n";
 		} // if
 
 		$directionsX = array(0=>-1,1=>0,2=>1,3=>-1,4=>0,5=>1,6=>-1,7=>0,8=>1);
@@ -495,11 +494,11 @@ function showMapInfo($getPage_connection2) {
 				if ($transportInfo["id"] >= 1) {
 					if (count($transportInfo["list"]) >= 2) {
 						$unitInfoI = getUnitInfoByID($getPage_connection2,$transportInfo["list"][1]);
-						echo "                      <li class=\"list-group-item\">\n";
-						echo "                        <div class=\"row\">\n";
+						echo "                    <li class=\"list-group-item\">\n";
+						echo "                      <div class=\"row\">\n";
 						$carrying = count($transportInfo["list"]) - 1;
-						echo "                          Carrying ".$carrying." of 4\n                          <br />\n                          <br />\n";
-						echo "                          Unload unit ".$unitInfoI["name"].": \n                          <br />\n                          <br />\n";
+						echo "                        Carrying ".$carrying." of 4\n                        <br />\n                        <br />\n";
+						echo "                        Unload unit ".$unitInfoI["name"].": \n                        <br />\n                        <br />\n";
 					} else {
 						$notUnload = true;
 					} // else
@@ -589,52 +588,52 @@ function showMapInfo($getPage_connection2) {
 							} // else
 
 							if ($hh == 0) {
-								echo "                        <div class=\"row\">\n";
+								echo "                      <div class=\"row\">\n";
 							} else if ($hh == 3 || $hh == 6) {
-								echo "                        </div>\n                        <div class=\"row\">\n";
+								echo "                      </div>\n                      <div class=\"row\">\n";
 							} // else if
 
 							if ($grey === true) {
-								echo "                        <div class=\"col-xs-3\">\n";
-								echo "                          <form action=\"index.php?page=map&amp;overlay=units\" method=\"post\">\n";
-								echo "                            <button disabled value=\"map\" name=\"page\" type=\"submit\" class=\"btn btn-primary btn-sm\"><img src=\"images/buttons/btn_greyed.png\" alt=\"\" /></button>\n";
-								echo "                          </form>\n";
-								echo "                        </div>\n";
+								echo "                      <div class=\"col-xs-3\">\n";
+								echo "                        <form action=\"index.php?page=map&amp;overlay=units\" method=\"post\">\n";
+								echo "                          <button disabled value=\"map\" name=\"page\" type=\"submit\" class=\"btn btn-primary btn-sm\"><img src=\"images/buttons/btn_greyed.png\" alt=\"\" /></button>\n";
+								echo "                        </form>\n";
+								echo "                      </div>\n";
 							} else {
-								echo "                        <div class=\"col-xs-3\">\n";
-								echo "                          <form action=\"index.php?page=map&amp;overlay=units\" method=\"post\">\n";
-								echo "                            <input type=\"hidden\" name=\"continent\" value=\"".$_SESSION["continent_id"]."\" />\n";
-								echo "                            <input type=\"hidden\" name=\"xpos\" value=\"".$_SESSION["xpos"]."\" />\n";
-								echo "                            <input type=\"hidden\" name=\"ypos\" value=\"".$_SESSION["ypos"]."\" />\n";
-								echo "                            <input type=\"hidden\" name=\"actionid\" value=\"".$unitInfo["id"]."\" />\n";
-								echo "                            <input type=\"hidden\" name=\"action\" value=\"unit-unload\" />\n";
-								echo "                            <input type=\"hidden\" name=\"overlay\" value=\"units\" />\n";
-								echo "                            <input type=\"hidden\" name=\"newcontinent\" value=\"".$newcontinent."\" />\n";
-								echo "                            <input type=\"hidden\" name=\"newxpos\" value=\"".$newxpos."\" />\n";
-								echo "                            <input type=\"hidden\" name=\"newypos\" value=\"".$newypos."\" />\n";
-								echo "                            <button onclick=\"loadButton(this)\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Unload unit.\" value=\"map\" name=\"page\" type=\"submit\" class=\"btn btn-primary btn-sm\"><img src=\"images/buttons/btn_unload_".strtolower($directionsName[$hh]).".png\" alt=\"".$directionsName[$hh]." Unload\" /></button>\n";
-								echo "                          </form>\n";
-								echo "                        </div>\n";
+								echo "                      <div class=\"col-xs-3\">\n";
+								echo "                        <form action=\"index.php?page=map&amp;overlay=units\" method=\"post\">\n";
+								echo "                          <input type=\"hidden\" name=\"continent\" value=\"".$_SESSION["continent_id"]."\" />\n";
+								echo "                          <input type=\"hidden\" name=\"xpos\" value=\"".$_SESSION["xpos"]."\" />\n";
+								echo "                          <input type=\"hidden\" name=\"ypos\" value=\"".$_SESSION["ypos"]."\" />\n";
+								echo "                          <input type=\"hidden\" name=\"actionid\" value=\"".$unitInfo["id"]."\" />\n";
+								echo "                          <input type=\"hidden\" name=\"action\" value=\"unit-unload\" />\n";
+								echo "                          <input type=\"hidden\" name=\"overlay\" value=\"units\" />\n";
+								echo "                          <input type=\"hidden\" name=\"newcontinent\" value=\"".$newcontinent."\" />\n";
+								echo "                          <input type=\"hidden\" name=\"newxpos\" value=\"".$newxpos."\" />\n";
+								echo "                          <input type=\"hidden\" name=\"newypos\" value=\"".$newypos."\" />\n";
+								echo "                          <button onclick=\"loadButton(this)\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Unload unit.\" value=\"map\" name=\"page\" type=\"submit\" class=\"btn btn-primary btn-sm\"><img src=\"images/buttons/btn_unload_".strtolower($directionsName[$hh]).".png\" alt=\"".$directionsName[$hh]." Unload\" /></button>\n";
+								echo "                        </form>\n";
+								echo "                      </div>\n";
 							} // else
 							if ($hh == 8) {
-								echo "                        </div>\n";
+								echo "                      </div>\n";
 							} // if
 						} // for
 					} else {
-						echo "                          Unit can move no further this turn.\n";
-						echo "                        </div>\n";
+						echo "                        Unit can move no further this turn.\n";
+						echo "                      </div>\n";
 					} // else
 				} // if
-				echo "                      </li>\n";
+				echo "                    </li>\n";
 			} // if
 		} // if
 
 		// transport/move
 		if ($currentPlayer === true) {
-			echo "                      <li class=\"list-group-item\">\n";
-			echo "                        <div class=\"row\">\n";
-			echo "                          Move\n                          <br />\n                          <br />\n";
-			echo "                        </div>\n";
+			echo "                    <li class=\"list-group-item\">\n";
+			echo "                      <div class=\"row\">\n";
+			echo "                        Move\n                        <br />\n                        <br />\n";
+			echo "                      </div>\n";
 			if ($unitInfo["used"] < $unitTypeInfo["movement"]) {
 				// land units
 				if ($unitTypeInfo["water"] == 0) {
@@ -802,40 +801,40 @@ function showMapInfo($getPage_connection2) {
 						} // else
 
 						if ($hh == 0) {
-							echo "                        <div class=\"row\">\n";
+							echo "                      <div class=\"row\">\n";
 						} else if ($hh == 3 || $hh == 6) {
-							echo "                        </div>\n                        <div class=\"row\">\n";
+							echo "                      </div>\n                      <div class=\"row\">\n";
 						} // else if
 
 						if ($grey === true) {
-							echo "                        <div class=\"col-xs-3\">\n";
-							echo "                          <form action=\"index.php?page=map&amp;overlay=units\" method=\"post\">\n";
-							echo "                            <button disabled value=\"map\" name=\"page\" type=\"submit\" class=\"btn btn-primary btn-sm\"><img src=\"images/buttons/btn_greyed.png\" alt=\"\" /></button>\n";
-							echo "                          </form>\n";
-							echo "                        </div>\n\n";
+							echo "                      <div class=\"col-xs-3\">\n";
+							echo "                        <form action=\"index.php?page=map&amp;overlay=units\" method=\"post\">\n";
+							echo "                          <button disabled value=\"map\" name=\"page\" type=\"submit\" class=\"btn btn-primary btn-sm\"><img src=\"images/buttons/btn_greyed.png\" alt=\"\" /></button>\n";
+							echo "                        </form>\n";
+							echo "                      </div>\n\n";
 						} else {
-							echo "                        <div class=\"col-xs-3\">\n";
-							echo "                          <form action=\"index.php?page=map&amp;overlay=units\" method=\"post\">\n";
-							echo "                            <input type=\"hidden\" name=\"continent\" value=\"".$_SESSION["continent_id"]."\" />\n";
-							echo "                            <input type=\"hidden\" name=\"xpos\" value=\"".$_SESSION["xpos"]."\" />\n";
-							echo "                            <input type=\"hidden\" name=\"ypos\" value=\"".$_SESSION["ypos"]."\" />\n";
-							echo "                            <input type=\"hidden\" name=\"actionid\" value=\"".$unitInfo["id"]."\" />\n";
-							echo "                            <input type=\"hidden\" name=\"action\" value=\"unit-".$verb."\" />\n";
-							echo "                            <input type=\"hidden\" name=\"overlay\" value=\"units\" />\n";
-							echo "                            <input type=\"hidden\" name=\"newcontinent\" value=\"".$newcontinent."\" />\n";
-							echo "                            <input type=\"hidden\" name=\"newxpos\" value=\"".$newxpos."\" />\n";
-							echo "                            <input type=\"hidden\" name=\"newypos\" value=\"".$newypos."\" />\n";
+							echo "                      <div class=\"col-xs-3\">\n";
+							echo "                        <form action=\"index.php?page=map&amp;overlay=units\" method=\"post\">\n";
+							echo "                          <input type=\"hidden\" name=\"continent\" value=\"".$_SESSION["continent_id"]."\" />\n";
+							echo "                          <input type=\"hidden\" name=\"xpos\" value=\"".$_SESSION["xpos"]."\" />\n";
+							echo "                          <input type=\"hidden\" name=\"ypos\" value=\"".$_SESSION["ypos"]."\" />\n";
+							echo "                          <input type=\"hidden\" name=\"actionid\" value=\"".$unitInfo["id"]."\" />\n";
+							echo "                          <input type=\"hidden\" name=\"action\" value=\"unit-".$verb."\" />\n";
+							echo "                          <input type=\"hidden\" name=\"overlay\" value=\"units\" />\n";
+							echo "                          <input type=\"hidden\" name=\"newcontinent\" value=\"".$newcontinent."\" />\n";
+							echo "                          <input type=\"hidden\" name=\"newxpos\" value=\"".$newxpos."\" />\n";
+							echo "                          <input type=\"hidden\" name=\"newypos\" value=\"".$newypos."\" />\n";
 							if ($verb == "transport") {
-								echo "                            <button onclick=\"loadButton(this)\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Transport ".$directionsName[$hh].".\" value=\"map\" name=\"page\" type=\"submit\" class=\"btn btn-primary btn-sm\"><img src=\"images/buttons/btn_unload_".strtolower($directionsName[$hh]).".png\" alt=\"".$directionsName[$hh]." Transport\" /></button>\n";
+								echo "                          <button onclick=\"loadButton(this)\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Transport ".$directionsName[$hh].".\" value=\"map\" name=\"page\" type=\"submit\" class=\"btn btn-primary btn-sm\"><img src=\"images/buttons/btn_unload_".strtolower($directionsName[$hh]).".png\" alt=\"".$directionsName[$hh]." Transport\" /></button>\n";
 							} else {
-								echo "                            <button onclick=\"loadButton(this)\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Move ".$directionsName[$hh].".\" value=\"map\" name=\"page\" type=\"submit\" class=\"btn btn-primary btn-sm\"><img src=\"images/buttons/btn_".strtolower($directionsName[$hh]).".png\" alt=\"".$directionsName[$hh]." Move\" /></button>\n";
+								echo "                          <button onclick=\"loadButton(this)\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Move ".$directionsName[$hh].".\" value=\"map\" name=\"page\" type=\"submit\" class=\"btn btn-primary btn-sm\"><img src=\"images/buttons/btn_".strtolower($directionsName[$hh]).".png\" alt=\"".$directionsName[$hh]." Move\" /></button>\n";
 							} // else
-							echo "                          </form>\n";
-							echo "                        </div>\n";
+							echo "                        </form>\n";
+							echo "                      </div>\n";
 						} // else
 
 						if ($hh == 8) {
-							echo "                        </div>\n\n";
+							echo "                      </div>\n\n";
 						} // if
 					} // for
 				// water units
@@ -964,68 +963,68 @@ function showMapInfo($getPage_connection2) {
 						} // else
 
 						if ($hh == 0) {
-							echo "                        <div class=\"row\">\n";
+							echo "                      <div class=\"row\">\n";
 						} else if ($hh == 3 || $hh == 6) {
-							echo "                      </div>\n                      <div class=\"row\">\n";
+							echo "                    </div>\n                    <div class=\"row\">\n";
 						} // else if
 
 						if ($grey === true) {
-							echo "                        <div class=\"col-xs-3\">\n";
-							echo "                          <form action=\"index.php?page=map&amp;overlay=units\" method=\"post\">\n";
-							echo "                            <button disabled value=\"map\" name=\"page\" type=\"submit\" class=\"btn btn-primary btn-sm\"><img src=\"images/buttons/btn_greyed.png\" alt=\"\" /></button>\n";
-							echo "                          </form>\n";
-							echo "                        </div>\n\n";
+							echo "                      <div class=\"col-xs-3\">\n";
+							echo "                        <form action=\"index.php?page=map&amp;overlay=units\" method=\"post\">\n";
+							echo "                          <button disabled value=\"map\" name=\"page\" type=\"submit\" class=\"btn btn-primary btn-sm\"><img src=\"images/buttons/btn_greyed.png\" alt=\"\" /></button>\n";
+							echo "                        </form>\n";
+							echo "                      </div>\n\n";
 						} else {
-							echo "                        <div class=\"col-xs-3\">\n";
-							echo "                          <form action=\"index.php?page=map&amp;overlay=units\" method=\"post\">\n";
-							echo "                            <input type=\"hidden\" name=\"continent\" value=\"".$_SESSION["continent_id"]."\" />\n";
-							echo "                            <input type=\"hidden\" name=\"xpos\" value=\"".$_SESSION["xpos"]."\" />\n";
-							echo "                            <input type=\"hidden\" name=\"ypos\" value=\"".$_SESSION["ypos"]."\" />\n";
-							echo "                            <input type=\"hidden\" name=\"actionid\" value=\"".$unitInfo["id"]."\" />\n";
-							echo "                            <input type=\"hidden\" name=\"action\" value=\"unit-move\" />\n";
-							echo "                            <input type=\"hidden\" name=\"overlay\" value=\"units\" />\n";
-							echo "                            <input type=\"hidden\" name=\"newcontinent\" value=\"".$newcontinent."\" />\n";
-							echo "                            <input type=\"hidden\" name=\"newxpos\" value=\"".$newxpos."\" />\n";
-							echo "                            <input type=\"hidden\" name=\"newypos\" value=\"".$newypos."\" />\n";
-							echo "                            <button onclick=\"loadButton(this)\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Move ".$directionsName[$hh].".\" value=\"map\" name=\"page\" type=\"submit\" class=\"btn btn-primary btn-sm\"><img src=\"images/buttons/btn_".strtolower($directionsName[$hh]).".png\" alt=\"".$directionsName[$hh]." Move\" /></button>\n";
-							echo "                          </form>\n";
-							echo "                        </div>\n\n";
+							echo "                      <div class=\"col-xs-3\">\n";
+							echo "                        <form action=\"index.php?page=map&amp;overlay=units\" method=\"post\">\n";
+							echo "                          <input type=\"hidden\" name=\"continent\" value=\"".$_SESSION["continent_id"]."\" />\n";
+							echo "                          <input type=\"hidden\" name=\"xpos\" value=\"".$_SESSION["xpos"]."\" />\n";
+							echo "                          <input type=\"hidden\" name=\"ypos\" value=\"".$_SESSION["ypos"]."\" />\n";
+							echo "                          <input type=\"hidden\" name=\"actionid\" value=\"".$unitInfo["id"]."\" />\n";
+							echo "                          <input type=\"hidden\" name=\"action\" value=\"unit-move\" />\n";
+							echo "                          <input type=\"hidden\" name=\"overlay\" value=\"units\" />\n";
+							echo "                          <input type=\"hidden\" name=\"newcontinent\" value=\"".$newcontinent."\" />\n";
+							echo "                          <input type=\"hidden\" name=\"newxpos\" value=\"".$newxpos."\" />\n";
+							echo "                          <input type=\"hidden\" name=\"newypos\" value=\"".$newypos."\" />\n";
+							echo "                          <button onclick=\"loadButton(this)\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Move ".$directionsName[$hh].".\" value=\"map\" name=\"page\" type=\"submit\" class=\"btn btn-primary btn-sm\"><img src=\"images/buttons/btn_".strtolower($directionsName[$hh]).".png\" alt=\"".$directionsName[$hh]." Move\" /></button>\n";
+							echo "                        </form>\n";
+							echo "                      </div>\n\n";
 						} // else
 
 						if ($hh == 8) {
-							echo "                        </div>\n\n";
+							echo "                      </div>\n\n";
 						} // if
 					} // for
 				} // else
 			} else {
-				echo "                        Unit can move no further this turn.\n";
+				echo "                      Unit can move no further this turn.\n";
 			} // else
-			echo "                      </li>\n";
-			echo "                    </ul>\n";
+			echo "                    </li>\n";
+			echo "                  </ul>\n";
 		} // if
 	} // if
-	echo "                  </div>\n";
 	echo "                </div>\n";
-	echo "              </div><!-- /.col-sm-4 -->\n\n";
+	echo "              </div>\n";
+	echo "            </div><!-- /.col-sm-4 -->\n\n";
 
 	// Improve Module
-	echo "              <div class=\"col-sm-4\">\n";
-	echo "                <div class=\"panel panel-success\">\n";
-	echo "                  <div data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Add and modify your improvements on the present tile.\" class=\"panel-heading\">\n";
-	echo "                    <h3 class=\"panel-title\">Improve        <button type=\"button\" class=\"btn btn-default btn-md collapsed\" data-toggle=\"collapse\" data-target=\"#collapseImprove\"><span class=\"glyphicon glyphicon-plus\"></span>/<span class=\"glyphicon glyphicon-minus\"></span></button></h3>\n";
-	echo "                  </div>\n";
-	echo "                  <div id=\"collapseImprove\" class=\"panel-body standard-text collapse in\">\n";
+	echo "            <div class=\"col-sm-4  info_panels\">\n";
+	echo "              <div class=\"panel panel-success\">\n";
+	echo "                <div data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Add and modify your improvements on the present tile.\" class=\"panel-heading\">\n";
+	echo "                  <h3 class=\"panel-title\">Improve        <button type=\"button\" class=\"btn btn-default btn-md collapsed\" data-toggle=\"collapse\" data-target=\"#collapseImprove\"><span class=\"glyphicon glyphicon-plus\"></span>/<span class=\"glyphicon glyphicon-minus\"></span></button></h3>\n";
+	echo "                </div>\n";
+	echo "                <div id=\"collapseImprove\" class=\"panel-body standard-text collapse in\">\n";
 	for ($q = 0; $q < count($_SESSION["tileInfo"]["improvements"]); $q++) {
 		$improvementInfo = getImprovementInfo($getPage_connection2,$_SESSION["tileInfo"]["improvements"][$q]);
 		if ($improvementInfo["id"] >= 1) {
-			echo "                    <ul class=\"list-group\">\n";
+			echo "                  <ul class=\"list-group\">\n";
 			$improvementTypeInfo = getImprovementTypeInfo($getPage_connection2,$improvementInfo["type"]);
 			$currentPlayer = false;
-			echo "                      <li class=\"list-group-item\">\n";
-			echo "                        ".$improvementTypeInfo["name"]."\n";
-			echo "                        <br />\n";
-			echo "                        Level ".$improvementInfo["level"]."\n";
-			echo "                        <br />\n";
+			echo "                    <li class=\"list-group-item\">\n";
+			echo "                      ".$improvementTypeInfo["name"]."\n";
+			echo "                      <br />\n";
+			echo "                      Level ".$improvementInfo["level"]."\n";
+			echo "                      <br />\n";
 			if ($improvementInfo["usingResources"][0] > 0) {
 				echo "                        Using Resources: ";
 				for ($u=0; $u < count($improvementInfo["usingResources"]); $u++) {
@@ -1039,8 +1038,8 @@ function showMapInfo($getPage_connection2) {
 					} // if
 				} // for
 			} // if								
-			echo "\n                        <br />\n";			
-			echo "                        Owned by ";
+			echo "\n                      <br />\n";			
+			echo "                      Owned by ";
 			for ($z = 0; $z < count($improvementInfo["owners"]); $z++) {
 				$nationInfoY = getNationInfo($getPage_connection2,$improvementInfo["owners"][$z]);
 				if ($z >= 1) {
@@ -1054,37 +1053,37 @@ function showMapInfo($getPage_connection2) {
 			} // for
 			echo "\n                      </li>\n";
 			if ($currentPlayer === true) {
-				echo "                      <li class=\"list-group-item\">\n";
-				echo "                        <div class=\"row\">\n";
-				echo "                          Modify/Abilities\n                          <br />\n                          <br />\n";
-				echo "                        </div>\n";
-				echo "                        <div class=\"row\">\n";
+				echo "                    <li class=\"list-group-item\">\n";
+				echo "                      <div class=\"row\">\n";
+				echo "                        Modify/Abilities\n                        <br />\n                        <br />\n";
+				echo "                      </div>\n";
+				echo "                      <div class=\"row\">\n";
 				if ($improvementInfo["level"] < 20) {
-					echo "                          <div class=\"col-xs-3\">\n";
-					echo "                            <form action=\"index.php?page=map&amp;overlay=terrain\" method=\"post\">\n";
-					echo "                              <input type=\"hidden\" name=\"continent\" value=\"".$_SESSION["continent_id"]."\" />\n";
-					echo "                              <input type=\"hidden\" name=\"xpos\" value=\"".$_SESSION["xpos"]."\" />\n";
-					echo "                              <input type=\"hidden\" name=\"ypos\" value=\"".$_SESSION["ypos"]."\" />\n";
-					echo "                              <input type=\"hidden\" name=\"actionid\" value=\"".$improvementInfo["id"]."\" />\n";
-					echo "                              <input type=\"hidden\" name=\"action\" value=\"improvement-upgrade\" />\n";
-					echo "                              <input type=\"hidden\" name=\"overlay\" value=\"control\" />\n";
-					echo "                              <button onclick=\"loadButton(this)\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Upgrade improvement.\" value=\"map\" name=\"page\" type=\"submit\" class=\"btn btn-primary btn-sm\"><img src=\"images/buttons/btn_upgrade.png\" alt=\"Upgrade\" /></button>\n";
-					echo "                            </form>\n";
-					echo "                          </div>\n";
+					echo "                        <div class=\"col-xs-3\">\n";
+					echo "                          <form action=\"index.php?page=map&amp;overlay=terrain\" method=\"post\">\n";
+					echo "                            <input type=\"hidden\" name=\"continent\" value=\"".$_SESSION["continent_id"]."\" />\n";
+					echo "                            <input type=\"hidden\" name=\"xpos\" value=\"".$_SESSION["xpos"]."\" />\n";
+					echo "                            <input type=\"hidden\" name=\"ypos\" value=\"".$_SESSION["ypos"]."\" />\n";
+					echo "                            <input type=\"hidden\" name=\"actionid\" value=\"".$improvementInfo["id"]."\" />\n";
+					echo "                            <input type=\"hidden\" name=\"action\" value=\"improvement-upgrade\" />\n";
+					echo "                            <input type=\"hidden\" name=\"overlay\" value=\"control\" />\n";
+					echo "                            <button onclick=\"loadButton(this)\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Upgrade improvement.\" value=\"map\" name=\"page\" type=\"submit\" class=\"btn btn-primary btn-sm\"><img src=\"images/buttons/btn_upgrade.png\" alt=\"Upgrade\" /></button>\n";
+					echo "                          </form>\n";
+					echo "                        </div>\n";
 				} // if
-				echo "                          <div class=\"col-xs-3\">\n";
-				echo "                            <form action=\"index.php?page=map&amp;overlay=terrain\" method=\"post\">\n";
-				echo "                              <input type=\"hidden\" name=\"continent\" value=\"".$_SESSION["continent_id"]."\" />\n";
-				echo "                              <input type=\"hidden\" name=\"xpos\" value=\"".$_SESSION["xpos"]."\" />\n";
-				echo "                              <input type=\"hidden\" name=\"ypos\" value=\"".$_SESSION["ypos"]."\" />\n";
-				echo "                              <input type=\"hidden\" name=\"actionid\" value=\"".$improvementInfo["id"]."\" />\n";
-				echo "                              <input type=\"hidden\" name=\"action\" value=\"improvement-remove\" />\n";
-				echo "                              <input type=\"hidden\" name=\"overlay\" value=\"control\" />\n";
-				echo "                              <button onclick=\"loadButton(this)\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Remove improvement.\" value=\"map\" name=\"page\" type=\"submit\" class=\"btn btn-primary btn-sm\"><img src=\"images/buttons/btn_remove.png\" alt=\"Remove\" /></button>\n";
-				echo "                            </form>\n";
-				echo "                          </div>\n";
+				echo "                        <div class=\"col-xs-3\">\n";
+				echo "                          <form action=\"index.php?page=map&amp;overlay=terrain\" method=\"post\">\n";
+				echo "                            <input type=\"hidden\" name=\"continent\" value=\"".$_SESSION["continent_id"]."\" />\n";
+				echo "                            <input type=\"hidden\" name=\"xpos\" value=\"".$_SESSION["xpos"]."\" />\n";
+				echo "                            <input type=\"hidden\" name=\"ypos\" value=\"".$_SESSION["ypos"]."\" />\n";
+				echo "                            <input type=\"hidden\" name=\"actionid\" value=\"".$improvementInfo["id"]."\" />\n";
+				echo "                            <input type=\"hidden\" name=\"action\" value=\"improvement-remove\" />\n";
+				echo "                            <input type=\"hidden\" name=\"overlay\" value=\"control\" />\n";
+				echo "                            <button onclick=\"loadButton(this)\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Remove improvement.\" value=\"map\" name=\"page\" type=\"submit\" class=\"btn btn-primary btn-sm\"><img src=\"images/buttons/btn_remove.png\" alt=\"Remove\" /></button>\n";
+				echo "                          </form>\n";
 				echo "                        </div>\n";
-				echo "                      </li>\n";
+				echo "                      </div>\n";
+				echo "                    </li>\n";
 				// if it is a depot, allow construction of military units
 				if ($improvementInfo["type"] == 5) {
 					echo "                    <li class=\"list-group-item\">\n";
@@ -1126,29 +1125,29 @@ function showMapInfo($getPage_connection2) {
 									if ($notEnough === false) {
 										$wrapCounter++;
 										if ($wrapCounter == 1) {
-											echo "                        <div class=\"row\">\n";
+											echo "                      <div class=\"row\">\n";
 										} // if
-										echo "                          <div class=\"col-xs-3\">\n";
-										echo "                            <form action=\"index.php?page=map&amp;overlay=units\" method=\"post\">\n";
-										echo "                              <input type=\"hidden\" name=\"continent\" value=\"".$_SESSION["continent_id"]."\" />\n";
-										echo "                              <input type=\"hidden\" name=\"xpos\" value=\"".$_SESSION["xpos"]."\" />\n";
-										echo "                              <input type=\"hidden\" name=\"ypos\" value=\"".$_SESSION["ypos"]."\" />\n";
-										echo "                              <input type=\"hidden\" name=\"actionid\" value=\"".$unitTypeInfo["id"]."\" />\n";
-										echo "                              <input type=\"hidden\" name=\"action\" value=\"unit-build\" />\n";
-										echo "                              <input type=\"hidden\" name=\"overlay\" value=\"units\" />\n";
-										echo "                              <button onclick=\"loadButton(this)\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Train ".$unitTypeInfo["name"].".\" value=\"map\" name=\"page\" type=\"submit\" class=\"btn btn-primary btn-sm\"><img src=\"".$unitTypeInfo["image"]."\" alt=\"Train ".$unitTypeInfo["name"]."\" /></button>\n";
-										echo "                            </form>\n";
-										echo "                          </div>\n";
+										echo "                        <div class=\"col-xs-3\">\n";
+										echo "                          <form action=\"index.php?page=map&amp;overlay=units\" method=\"post\">\n";
+										echo "                            <input type=\"hidden\" name=\"continent\" value=\"".$_SESSION["continent_id"]."\" />\n";
+										echo "                            <input type=\"hidden\" name=\"xpos\" value=\"".$_SESSION["xpos"]."\" />\n";
+										echo "                            <input type=\"hidden\" name=\"ypos\" value=\"".$_SESSION["ypos"]."\" />\n";
+										echo "                            <input type=\"hidden\" name=\"actionid\" value=\"".$unitTypeInfo["id"]."\" />\n";
+										echo "                            <input type=\"hidden\" name=\"action\" value=\"unit-build\" />\n";
+										echo "                            <input type=\"hidden\" name=\"overlay\" value=\"units\" />\n";
+										echo "                            <button onclick=\"loadButton(this)\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Train ".$unitTypeInfo["name"].".\" value=\"map\" name=\"page\" type=\"submit\" class=\"btn btn-primary btn-sm\"><img src=\"".$unitTypeInfo["image"]."\" alt=\"Train ".$unitTypeInfo["name"]."\" /></button>\n";
+										echo "                          </form>\n";
+										echo "                        </div>\n";
 										if ($wrapCounter == 3) {
 											$wrapCounter = 0;
-											echo "                        </div>\n";
+											echo "                      </div>\n";
 										} // if
 									} // if
 								} // if
 							} // if
 	
 							if ($next_unitTypes < 1 && $wrapCounter != 0) {
-								echo "                      </div>\n";
+								echo "                    </div>\n";
 							} // if
 						} // while
 
@@ -1156,10 +1155,10 @@ function showMapInfo($getPage_connection2) {
 					} else {
 					} // else
 						
-					echo "                      </li>\n";
+					echo "                    </li>\n";
 				} // if
 			} // if
-			echo "                    </ul>\n";
+			echo "                  </ul>\n";
 		} // if
 	} // for
 
@@ -1168,9 +1167,9 @@ function showMapInfo($getPage_connection2) {
 		$currentPlayer = true;
 	} // if
 	if ($currentPlayer === true) {
-		echo "                    <ul class=\"list-group\">\n";
-		echo "                      <li class=\"list-group-item\">\n";
-		echo "                        Build\n                        <br />\n                        <br />\n";
+		echo "                  <ul class=\"list-group\">\n";
+		echo "                    <li class=\"list-group-item\">\n";
+		echo "                      Build\n                      <br />\n                      <br />\n";
 		$availableResources = array(0=>0);
 		$counter = 1;
 		// loop tile's resources
@@ -1241,43 +1240,43 @@ function showMapInfo($getPage_connection2) {
 								if ($nationInfoC["home"] == 0) {
 									$wrapCounter++;
 									if ($wrapCounter == 1) {
-										echo "                        <div class=\"row\">\n";
+										echo "                      <div class=\"row\">\n";
 									} // if
-									echo "                          <div class=\"col-xs-3\">\n";
-									echo "                            <form action=\"index.php?page=map&amp;overlay=units\" method=\"post\">\n";
-									echo "                              <input type=\"hidden\" name=\"continent\" value=\"".$_SESSION["continent_id"]."\" />\n";
-									echo "                              <input type=\"hidden\" name=\"xpos\" value=\"".$_SESSION["xpos"]."\" />\n";
-									echo "                              <input type=\"hidden\" name=\"ypos\" value=\"".$_SESSION["ypos"]."\" />\n";
-									echo "                              <input type=\"hidden\" name=\"actionid\" value=\"".$next_improvementTypes."\" />\n";
-									echo "                              <input type=\"hidden\" name=\"action\" value=\"improvement-build\" />\n";
-									echo "                              <input type=\"hidden\" name=\"overlay\" value=\"units\" />\n";
-									echo "                              <button onclick=\"loadButton(this)\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Build ".$improvementTypeInfo1["name"].".\" value=\"map\" name=\"page\" type=\"submit\" class=\"btn btn-primary btn-sm\"><img src=\"".$improvementTypeInfo1["image"]."\" alt=\"Build ".$improvementTypeInfo1["name"]."\" /></button>\n";
-									echo "                            </form>\n";
-									echo "                          </div>\n";
+									echo "                        <div class=\"col-xs-3\">\n";
+									echo "                          <form action=\"index.php?page=map&amp;overlay=units\" method=\"post\">\n";
+									echo "                            <input type=\"hidden\" name=\"continent\" value=\"".$_SESSION["continent_id"]."\" />\n";
+									echo "                            <input type=\"hidden\" name=\"xpos\" value=\"".$_SESSION["xpos"]."\" />\n";
+									echo "                            <input type=\"hidden\" name=\"ypos\" value=\"".$_SESSION["ypos"]."\" />\n";
+									echo "                            <input type=\"hidden\" name=\"actionid\" value=\"".$next_improvementTypes."\" />\n";
+									echo "                            <input type=\"hidden\" name=\"action\" value=\"improvement-build\" />\n";
+									echo "                            <input type=\"hidden\" name=\"overlay\" value=\"units\" />\n";
+									echo "                            <button onclick=\"loadButton(this)\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Build ".$improvementTypeInfo1["name"].".\" value=\"map\" name=\"page\" type=\"submit\" class=\"btn btn-primary btn-sm\"><img src=\"".$improvementTypeInfo1["image"]."\" alt=\"Build ".$improvementTypeInfo1["name"]."\" /></button>\n";
+									echo "                          </form>\n";
+									echo "                        </div>\n";
 									if ($wrapCounter == 3) {
 										$wrapCounter = 0;
-										echo "                        </div>\n";
+										echo "                      </div>\n";
 									} // if									
 								} // if															
 							} else {
 								$wrapCounter++;
 								if ($wrapCounter == 1) {
-									echo "                        <div class=\"row\">\n";
+									echo "                      <div class=\"row\">\n";
 								} // if
-								echo "                          <div class=\"col-xs-3\">\n";
-								echo "                            <form action=\"index.php?page=map&amp;overlay=units\" method=\"post\">\n";
-								echo "                              <input type=\"hidden\" name=\"continent\" value=\"".$_SESSION["continent_id"]."\" />\n";
-								echo "                              <input type=\"hidden\" name=\"xpos\" value=\"".$_SESSION["xpos"]."\" />\n";
-								echo "                              <input type=\"hidden\" name=\"ypos\" value=\"".$_SESSION["ypos"]."\" />\n";
-								echo "                              <input type=\"hidden\" name=\"actionid\" value=\"".$next_improvementTypes."\" />\n";
-								echo "                              <input type=\"hidden\" name=\"action\" value=\"improvement-build\" />\n";
-								echo "                              <input type=\"hidden\" name=\"overlay\" value=\"units\" />\n";
-								echo "                              <button onclick=\"loadButton(this)\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Build ".$improvementTypeInfo1["name"].".\" value=\"map\" name=\"page\" type=\"submit\" class=\"btn btn-primary btn-sm\"><img src=\"".$improvementTypeInfo1["image"]."\" alt=\"Build ".$improvementTypeInfo1["name"]."\" /></button>\n";
-								echo "                            </form>\n";
-								echo "                          </div>\n";
+								echo "                        <div class=\"col-xs-3\">\n";
+								echo "                          <form action=\"index.php?page=map&amp;overlay=units\" method=\"post\">\n";
+								echo "                            <input type=\"hidden\" name=\"continent\" value=\"".$_SESSION["continent_id"]."\" />\n";
+								echo "                            <input type=\"hidden\" name=\"xpos\" value=\"".$_SESSION["xpos"]."\" />\n";
+								echo "                            <input type=\"hidden\" name=\"ypos\" value=\"".$_SESSION["ypos"]."\" />\n";
+								echo "                            <input type=\"hidden\" name=\"actionid\" value=\"".$next_improvementTypes."\" />\n";
+								echo "                            <input type=\"hidden\" name=\"action\" value=\"improvement-build\" />\n";
+								echo "                            <input type=\"hidden\" name=\"overlay\" value=\"units\" />\n";
+								echo "                            <button onclick=\"loadButton(this)\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Build ".$improvementTypeInfo1["name"].".\" value=\"map\" name=\"page\" type=\"submit\" class=\"btn btn-primary btn-sm\"><img src=\"".$improvementTypeInfo1["image"]."\" alt=\"Build ".$improvementTypeInfo1["name"]."\" /></button>\n";
+								echo "                          </form>\n";
+								echo "                        </div>\n";
 								if ($wrapCounter == 3) {
 									$wrapCounter = 0;
-									echo "                        </div>\n";
+									echo "                      </div>\n";
 								} // if
 							} // else
 						} // if
@@ -1313,22 +1312,22 @@ function showMapInfo($getPage_connection2) {
 							if (count($_SESSION["tileInfo"]["improvements"]) < 5) {
 								$wrapCounter++;
 								if ($wrapCounter == 1) {
-									echo "                        <div class=\"row\">\n";
+									echo "                      <div class=\"row\">\n";
 								} // if
-								echo "                          <div class=\"col-xs-3\">\n";
-								echo "                            <form action=\"index.php?page=map&amp;overlay=units\" method=\"post\">\n";
-								echo "                              <input type=\"hidden\" name=\"continent\" value=\"".$_SESSION["continent_id"]."\" />\n";
-								echo "                              <input type=\"hidden\" name=\"xpos\" value=\"".$_SESSION["xpos"]."\" />\n";
-								echo "                              <input type=\"hidden\" name=\"ypos\" value=\"".$_SESSION["ypos"]."\" />\n";
-								echo "                              <input type=\"hidden\" name=\"actionid\" value=\"".$next_improvementTypes."\" />\n";
-								echo "                              <input type=\"hidden\" name=\"action\" value=\"improvement-build\" />\n";
-								echo "                              <input type=\"hidden\" name=\"overlay\" value=\"units\" />\n";
-								echo "                              <button onclick=\"loadButton(this)\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Build ".$improvementTypeInfo1["name"].".\" value=\"map\" name=\"page\" type=\"submit\" class=\"btn btn-primary btn-sm\"><img src=\"".$improvementTypeInfo1["image"]."\" alt=\"Build ".$improvementTypeInfo1["name"]."\" /></button>\n";
-								echo "                            </form>\n";
-								echo "                          </div>\n";
+								echo "                        <div class=\"col-xs-3\">\n";
+								echo "                          <form action=\"index.php?page=map&amp;overlay=units\" method=\"post\">\n";
+								echo "                            <input type=\"hidden\" name=\"continent\" value=\"".$_SESSION["continent_id"]."\" />\n";
+								echo "                            <input type=\"hidden\" name=\"xpos\" value=\"".$_SESSION["xpos"]."\" />\n";
+								echo "                            <input type=\"hidden\" name=\"ypos\" value=\"".$_SESSION["ypos"]."\" />\n";
+								echo "                            <input type=\"hidden\" name=\"actionid\" value=\"".$next_improvementTypes."\" />\n";
+								echo "                            <input type=\"hidden\" name=\"action\" value=\"improvement-build\" />\n";
+								echo "                            <input type=\"hidden\" name=\"overlay\" value=\"units\" />\n";
+								echo "                            <button onclick=\"loadButton(this)\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Build ".$improvementTypeInfo1["name"].".\" value=\"map\" name=\"page\" type=\"submit\" class=\"btn btn-primary btn-sm\"><img src=\"".$improvementTypeInfo1["image"]."\" alt=\"Build ".$improvementTypeInfo1["name"]."\" /></button>\n";
+								echo "                          </form>\n";
+								echo "                        </div>\n";
 								if ($wrapCounter == 3) {
 									$wrapCounter = 0;
-									echo "                        </div>\n";
+									echo "                      </div>\n";
 								} // if
 							} // if
 						} // if
@@ -1336,104 +1335,101 @@ function showMapInfo($getPage_connection2) {
 				} // if
 	
 				if ($next_improvementTypes < 1 && $wrapCounter != 0) {
-					echo "                        </div>\n";
+					echo "                      </div>\n";
 				} // if
 			} // while
 			$stmt->close();
 		} else {
 		} // else
-		echo "                      </li>\n";
-		echo "                    </ul>\n";
+		echo "                    </li>\n";
+		echo "                  </ul>\n";
 	} // if
-	echo "                  </div>\n";
 	echo "                </div>\n";
-	echo "              </div><!-- /.col-sm-4 -->\n\n";
+	echo "              </div>\n";
+	echo "            </div><!-- /.col-sm-4 -->\n\n";
 
 	// Info Module
-	echo "              <div class=\"col-sm-4\">\n";
-	echo "                <div class=\"panel panel-info\">\n";
-	echo "                  <div data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Check out more information about the present tile.\" class=\"panel-heading\">\n";
-	echo "                    <h3 class=\"panel-title\">Info        <button type=\"button\" class=\"btn btn-default btn-md collapsed\" data-toggle=\"collapse\" data-target=\"#collapseInfo\"><span class=\"glyphicon glyphicon-plus\"></span>/<span class=\"glyphicon glyphicon-minus\"></span></button></h3>\n";
-	echo "                  </div>\n";
-	echo "                  <div id=\"collapseInfo\" class=\"panel-body standard-text collapse in\">\n";
+	echo "            <div class=\"col-sm-4 info_panels\">\n";
+	echo "              <div class=\"panel panel-info\">\n";
+	echo "                <div data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Check out more information about the present tile.\" class=\"panel-heading\">\n";
+	echo "                  <h3 class=\"panel-title\">Info        <button type=\"button\" class=\"btn btn-default btn-md collapsed\" data-toggle=\"collapse\" data-target=\"#collapseInfo\"><span class=\"glyphicon glyphicon-plus\"></span>/<span class=\"glyphicon glyphicon-minus\"></span></button></h3>\n";
+	echo "                </div>\n";
+	echo "                <div id=\"collapseInfo\" class=\"panel-body standard-text collapse in\">\n";
 	$nationInfoN = getNationInfo($getPage_connection2,$_SESSION["tileInfo"]["owner"]);
-	echo "                    <ul class=\"list-group\">\n";
-	echo "                      Overview:\n";
-	echo "                      <li class=\"list-group-item\">\n";
-	echo "                        Continent: ".$_SESSION["continent_id"]."\n";
-	echo "                      </li>\n";
-	echo "                      <li class=\"list-group-item\">\n";
-	echo "                        Position: ".$_SESSION["xpos"].", ".$_SESSION["ypos"]."\n";
-	echo "                      </li>\n";
-	echo "                      <li class=\"list-group-item\">\n";
-	echo "                        Population: ".$_SESSION["tileInfo"]["population"]."\n";
-	echo "                      </li>\n";
-	echo "                      <li class=\"list-group-item\">\n";
+	echo "                  <ul class=\"list-group\">\n";
+	echo "                    <li class=\"list-group-item\">\n";
+	echo "                      Continent: ".$_SESSION["continent_id"]."\n";
+	echo "                    </li>\n";
+	echo "                    <li class=\"list-group-item\">\n";
+	echo "                      Position: ".$_SESSION["xpos"].", ".$_SESSION["ypos"]."\n";
+	echo "                    </li>\n";
+	echo "                    <li class=\"list-group-item\">\n";
+	echo "                      Population: ".$_SESSION["tileInfo"]["population"]."\n";
+	echo "                    </li>\n";
+	echo "                    <li class=\"list-group-item\">\n";
 	if (isset($nationInfoN["name"])) {
 		if (strlen($nationInfoN["name"]) >= 1) {
-			echo "                        Owner: <a href=\"index.php?page=info&amp;section=nations&amp;info_id=".$nationInfoN["id"]."\">".$nationInfoN["name"]."</a>\n";
+			echo "                      Owner: <a href=\"index.php?page=info&amp;section=nations&amp;info_id=".$nationInfoN["id"]."\">".$nationInfoN["name"]."</a>\n";
 		} else {
-			echo "                        Owner: None\n";
+			echo "                      Owner: None\n";
 		} // else
 	} else {
-		echo "                        Owner: None\n";
+		echo "                      Owner: None\n";
 	} // else
-	echo "                      </li>\n";
-	echo "                    </ul>\n";
-	echo "                    <ul class=\"list-group\">\n";
+	echo "                    </li>\n";
+	echo "                  </ul>\n";
+	echo "                  <ul class=\"list-group\">\n";
 	$hasResourceInfo = false;
 	for ($q = 0; $q < count($_SESSION["tileInfo"]["resources"]); $q++) {
 		$resourceInfo = getResourceInfo($getPage_connection2,$_SESSION["tileInfo"]["resources"][$q]);
 		if ($resourceInfo["id"] >= 1) {
 			if ($hasResourceInfo === false) {
-				echo "                      Resources:\n";
+				echo "                    Resources:\n";
 				$hasResourceInfo = true;
 			} // if
 			$resourceTypeInfo = getResourceTypeInfo($getPage_connection2,$resourceInfo["type"]);
-			echo "                      <li class=\"list-group-item\">\n";
-			echo "                        ".$resourceTypeInfo["name"].", Capacity: ".$resourceInfo["capacity"]."\n";
-			echo "                      </li>\n";
+			echo "                    <li class=\"list-group-item\">\n";
+			echo "                      ".$resourceTypeInfo["name"].", Capacity: ".$resourceInfo["capacity"]."\n";
+			echo "                    </li>\n";
 		} // if
 	} // for
-	echo "                    </ul>\n";
-	echo "                    <ul class=\"list-group\">\n";
+	echo "                  </ul>\n";
+	echo "                  <ul class=\"list-group\">\n";
 	$hasClaimInfo = false;
 	for ($q = 0; $q < count($_SESSION["tileInfo"]["claims"]); $q++) {
 		$claimInfoV = getClaimInfo($getPage_connection2,$_SESSION["tileInfo"]["claims"][$q]);
 		if ($claimInfoV["id"] >= 1) {
 			if ($hasClaimInfo === false) {
-				echo "                      Claims:\n";
+				echo "                    Claims:\n";
 				$hasClaimInfo = true;
 			} // if
 			$nationInfoV = getNationInfo($getPage_connection2, $claimInfoV["owner"]);
-			echo "                      <li class=\"list-group-item\">\n";
-			echo "                        ".$nationInfoV["name"]." Claim: ".$claimInfoV["strength"]."\n";
-			echo "                      </li>\n";
+			echo "                    <li class=\"list-group-item\">\n";
+			echo "                      ".$nationInfoV["name"]." Claim: ".$claimInfoV["strength"]."\n";
+			echo "                    </li>\n";
 		} // if
 	} // for
-	echo "                    </ul>\n";
-	echo "                    <ul class=\"list-group\">\n";
+	echo "                  </ul>\n";
+	echo "                  <ul class=\"list-group\">\n";
 	$hasImprovementInfo = false;
 	for ($q = 0; $q < count($_SESSION["tileInfo"]["improvements"]); $q++) {
 		$improvementInfoH = getImprovementInfo($getPage_connection2,$_SESSION["tileInfo"]["improvements"][$q]);
 		if ($improvementInfoH["id"] >= 1) {
 			if ($hasImprovementInfo === false) {
-				echo "                      Improvements:\n";
+				echo "                    Improvements:\n";
 				$hasImprovementInfo = true;
 			} // if
 			$improvementTypeInfoH = getImprovementTypeInfo($getPage_connection2,$improvementInfoH["type"]);
-			echo "                      <li class=\"list-group-item\">\n";
-			echo "                        ".$improvementTypeInfoH["name"].", Level: ".$improvementInfoH["level"]."\n";
-			echo "                      </li>\n";
+			echo "                    <li class=\"list-group-item\">\n";
+			echo "                      ".$improvementTypeInfoH["name"].", Level: ".$improvementInfoH["level"]."\n";
+			echo "                    </li>\n";
 		} // if
 	} // for
-	echo "                    </ul>\n";
-	echo "                  </div>\n";
+	echo "                  </ul>\n";
 	echo "                </div>\n";
-	echo "              </div><!-- /.col-sm-4 -->\n\n";
-
-	echo "            </div>\n";
-
+	echo "              </div>\n";
+	echo "            </div><!-- /.col-sm-4 -->\n";
+	
 	echo "          </div>\n";
 	echo "        </div>\n";
 } // showMapInfo

@@ -2,7 +2,7 @@
 /****************************************************************************
  * Name:        visual.php
  * Author:      Ben Barnes
- * Date:        2016-01-18
+ * Date:        2016-01-20
  * Purpose:     Visualization functions page
  *****************************************************************************/
 
@@ -63,6 +63,109 @@ function compileMenu($getPage_connection2,$pageType) {
 				echo "                </ul>\n";
 				echo "              </li>\n";
 			} // else
+				
+			if ($pageType == "news") {
+				echo "              <li class=\"dropdown active\">\n";
+				echo "                <a href=\"#\" class=\"dropdown-toggle menu_text\" data-toggle=\"dropdown\" role=\"button\" aria-expanded=\"false\"><span class=\"glyphicon glyphicon-bell menu_glyph\"></span><br />News <span class=\"caret\"></span></a>\n";
+				echo "                <ul class=\"dropdown-menu\" role=\"menu\">\n";
+				echo "                  <li>\n";
+				echo "                    <div class=\"well well-sm\">\n";
+				echo "                      <form action=\"index.php?page=map\" method=\"post\">\n";
+				echo "                        <div class=\"form-group form-group-sm\">\n";
+				if (isset($_SESSION["overlay"])) {
+					echo "                          <input type=\"hidden\" name=\"page\" value=\"map\"><input type=\"hidden\" name=\"overlay\" value=\"".$_SESSION["overlay"]."\" />\n";
+				} else {
+					echo "                          <input type=\"hidden\" name=\"page\" value=\"map\"><input type=\"hidden\" name=\"overlay\" value=\"terrain\" />\n";
+				} // else
+				if (isset($_SESSION["continent_id"])) {
+					echo "                          <label for=\"menu_continentInput\">Continent</label>\n                          <input name=\"continent\" type=\"text\" class=\"form-control\" id=\"menu_continentInput\" placeholder=\"e.g. 1\" value=\"".$_SESSION["continent_id"]."\"/>\n";
+				} else {
+					echo "                          <label for=\"menu_continentInput\">Continent</label>\n                          <input name=\"continent\" type=\"text\" class=\"form-control\" id=\"menu_continentInput\" placeholder=\"e.g. 1\" />\n";
+				} // else
+				echo "                        </div>\n";
+				echo "                        <div class=\"form-group form-group-sm\">\n";
+				if (isset($_SESSION["xpos"])) {
+					echo "                          <label for=\"menu_xPosInput\">X Position</label>\n                          <input name=\"xpos\" type=\"text\" class=\"form-control\" id=\"menu_xPosInput\" placeholder=\"e.g. 1\" value=\"".$_SESSION["xpos"]."\" />\n";
+				} else {
+					echo "                          <label for=\"menu_xPosInput\">X Position</label>\n                          <input name=\"xpos\" type=\"text\" class=\"form-control\" id=\"menu_xPosInput\" placeholder=\"e.g. 1\" />\n";
+				} // else
+				echo "                        </div>\n";
+				echo "                        <div class=\"form-group form-group-sm\">\n";
+				if (isset($_SESSION["ypos"])) {
+					echo "                          <label for=\"menu_yPosInput\">Y Position</label>\n                          <input name=\"ypos\" type=\"text\" class=\"form-control\" id=\"menu_yPosInput\" placeholder=\"e.g. 1\" value=\"".$_SESSION["ypos"]."\" />\n";
+				} else {
+					echo "                          <label for=\"menu_yPosInput\">Y Position</label>\n                          <input name=\"ypos\" type=\"text\" class=\"form-control\" id=\"menu_yPosInput\" placeholder=\"e.g. 1\" />\n";
+				} // else
+				echo "                        </div>\n";
+				echo "                        <div class=\"form-group form-group-sm\">\n";
+				if (isset($_SESSION["overlay"])) {
+					echo "                          <label for=\"menu_overlayInput\">Overlay</label>\n \n";
+					showOverlayOptions($getPage_connection2);
+				} else {
+					echo "                          <label for=\"menu_overlayInput\">Overlay</label>\n \n";
+					showOverlayOptions($getPage_connection2);
+				} // else
+				echo "                        </div>\n";
+				echo "                        <div class=\"form-group form-group-sm\">\n";
+				echo "                          <button onclick=\"loadButton(this)\" id=\"menu_submit\" type=\"submit\" class=\"btn btn-lg btn-primary\">Go</button>\n";
+				echo "                        </div>\n";
+				echo "                      </form>\n";
+				echo "                    </div>\n";
+				echo "                  </li>\n";
+				echo "                </ul>\n";
+				echo "              </li>\n";
+			} else {
+				echo "              <li class=\"dropdown\">\n";
+				echo "                <a href=\"#\" class=\"dropdown-toggle menu_text\" data-toggle=\"dropdown\" role=\"button\" aria-expanded=\"false\"><span class=\"glyphicon glyphicon-bell menu_glyph\"></span><br />News <span class=\"caret\"></span></a>\n";
+				echo "                <ul class=\"dropdown-menu\" role=\"menu\">\n";
+				echo "                  <li>\n";
+				echo "                    <div class=\"well well-sm\">\n";
+				echo "                      <form action=\"index.php?page=map\" method=\"post\">\n";
+				echo "                        <div class=\"form-group form-group-sm\">\n";
+				if (isset($_SESSION["overlay"])) {
+					echo "                          <input type=\"hidden\" name=\"page\" value=\"map\"><input type=\"hidden\" name=\"overlay\" value=\"".$_SESSION["overlay"]."\" />\n";
+				} else {
+					echo "                          <input type=\"hidden\" name=\"page\" value=\"map\"><input type=\"hidden\" name=\"overlay\" value=\"terrain\" />\n";
+				} // else
+				if (isset($_SESSION["continent_id"])) {
+					echo "                          <label for=\"menu_continentInput\">Continent</label>\n                          <input name=\"continent\" type=\"text\" class=\"form-control\" id=\"menu_continentInput\" placeholder=\"e.g. 1\" value=\"".$_SESSION["continent_id"]."\"/>\n";
+				} else {
+					echo "                          <label for=\"menu_continentInput\">Continent</label>\n                          <input name=\"continent\" type=\"text\" class=\"form-control\" id=\"menu_continentInput\" placeholder=\"e.g. 1\" />\n";
+				} // else
+				echo "                        </div>\n";
+				echo "                        <div class=\"form-group form-group-sm\">\n";
+				if (isset($_SESSION["xpos"])) {
+					echo "                          <label for=\"menu_xPosInput\">X Position</label>\n                          <input name=\"xpos\" type=\"text\" class=\"form-control\" id=\"menu_xPosInput\" placeholder=\"e.g. 1\" value=\"".$_SESSION["xpos"]."\" />\n";
+				} else {
+					echo "                          <label for=\"menu_xPosInput\">X Position</label>\n                          <input name=\"xpos\" type=\"text\" class=\"form-control\" id=\"menu_xPosInput\" placeholder=\"e.g. 1\" />\n";
+				} // else
+				echo "                        </div>\n";
+				echo "                        <div class=\"form-group form-group-sm\">\n";
+				if (isset($_SESSION["ypos"])) {
+					echo "                          <label for=\"menu_yPosInput\">Y Position</label>\n                          <input name=\"ypos\" type=\"text\" class=\"form-control\" id=\"menu_yPosInput\" placeholder=\"e.g. 1\" value=\"".$_SESSION["ypos"]."\" />\n";
+				} else {
+					echo "                          <label for=\"menu_yPosInput\">Y Position</label>\n                          <input name=\"ypos\" type=\"text\" class=\"form-control\" id=\"menu_yPosInput\" placeholder=\"e.g. 1\" />\n";
+				} // else
+				echo "                        </div>\n";
+				echo "                        <div class=\"form-group form-group-sm\">\n";
+				if (isset($_SESSION["overlay"])) {
+					echo "                          <label for=\"menu_overlayInput\">Overlay</label>\n \n";
+					showOverlayOptions($getPage_connection2);
+				} else {
+					echo "                          <label for=\"menu_overlayInput\">Overlay</label>\n \n";
+					showOverlayOptions($getPage_connection2);
+				} // else
+				echo "                        </div>\n";
+				echo "                        <div class=\"form-group form-group-sm\">\n";
+				echo "                          <button onclick=\"loadButton(this)\" id=\"menu_submit\" type=\"submit\" class=\"btn btn-lg btn-primary\">Go</button>\n";
+				echo "                        </div>\n";
+				echo "                      </form>\n";
+				echo "                    </div>\n";
+				echo "                  </li>\n";
+				echo "                </ul>\n";
+				echo "              </li>\n";
+			} // else
+				
 			if ($pageType == "map") {
 				echo "              <li class=\"dropdown active\">\n";
 				echo "                <a href=\"#\" class=\"dropdown-toggle menu_text\" data-toggle=\"dropdown\" role=\"button\" aria-expanded=\"false\"><span class=\"glyphicon glyphicon-th menu_glyph\"></span><br />Map <span class=\"caret\"></span></a>\n";
@@ -163,7 +266,7 @@ function compileMenu($getPage_connection2,$pageType) {
 				echo "                  </li>\n";
 				echo "                </ul>\n";
 				echo "              </li>\n";
-			} // else				
+			} // else
 				
 			if ($pageType == "policies") {
 				echo "              <li class=\"more_buttons_main active\"><a class=\"menu_text\" href=\"index.php?page=policies\"><span class=\"glyphicon glyphicon-tasks menu_glyph\"></span><br />Policies</a></li>\n";
@@ -171,16 +274,15 @@ function compileMenu($getPage_connection2,$pageType) {
 				echo "              <li class=\"more_buttons_main\"><a class=\"menu_text\" href=\"index.php?page=policies\"><span class=\"glyphicon glyphicon-tasks menu_glyph\"></span><br />Policies</a></li>\n";
 			} // else
 			if ($pageType == "trade") {
-				echo "              <li class=\"more_buttons_main active\"><a class=\"menu_text\" href=\"index.php?page=trade\"><span class=\"glyphicon glyphicon-transfer menu_glyph\"></span><br />Trade</a></li>\n";
+				echo "              <li class=\"more_buttons_mobileVisible active\"><a class=\"menu_text\" href=\"index.php?page=trade\"><span class=\"glyphicon glyphicon-transfer menu_glyph\"></span><br />Trade</a></li>\n";
 			} else {
-				echo "              <li class=\"more_buttons_main\"><a class=\"menu_text\" href=\"index.php?page=trade\"><span class=\"glyphicon glyphicon-transfer menu_glyph\"></span><br />Trade</a></li>\n";
+				echo "              <li class=\"more_buttons_mobileVisible\"><a class=\"menu_text\" href=\"index.php?page=trade\"><span class=\"glyphicon glyphicon-transfer menu_glyph\"></span><br />Trade</a></li>\n";
 			} // else
 			if ($pageType == "organizations") {
-				echo "              <li class=\"more_buttons_main active\"><a class=\"menu_text\" href=\"index.php?page=organizations\"><span class=\"glyphicon glyphicon-globe menu_glyph\"></span><br />Orgs</a></li>\n";
+				echo "              <li class=\"more_buttons_mobileVisible active\"><a class=\"menu_text\" href=\"index.php?page=organizations\"><span class=\"glyphicon glyphicon-globe menu_glyph\"></span><br />Orgs</a></li>\n";
 			} else {
-				echo "              <li class=\"more_buttons_main\"><a class=\"menu_text\" href=\"index.php?page=organizations\"><span class=\"glyphicon glyphicon-globe menu_glyph\"></span><br />Orgs</a></li>\n";
+				echo "              <li class=\"more_buttons_mobileVisible\"><a class=\"menu_text\" href=\"index.php?page=organizations\"><span class=\"glyphicon glyphicon-globe menu_glyph\"></span><br />Orgs</a></li>\n";
 			} // else
-				
 			if ($pageType == "forum") {
 				echo "              <li class=\"more_buttons_mobileVisible active\"><a class=\"menu_text\" href=\"index.php?page=forum\"><span class=\"glyphicon glyphicon-comment menu_glyph\"></span><br />Forum</a></li>\n";
 			} else {
@@ -207,15 +309,15 @@ function compileMenu($getPage_connection2,$pageType) {
 				echo "                  <li class=\"more_buttons_menu\"><a class=\"menu_text\" href=\"index.php?page=policies\"><span class=\"glyphicon glyphicon-tasks menu_glyph\"></span>  Policies</a></li>\n";
 			} // else
 			if ($pageType == "trade") {
-				echo "                  <li class=\"more_buttons_menu active\"><a class=\"menu_text\" href=\"index.php?page=trade\"><span class=\"glyphicon glyphicon-transfer menu_glyph\"></span>  Trade</a></li>\n";
+				echo "                  <li class=\"active\"><a class=\"menu_text\" href=\"index.php?page=trade\"><span class=\"glyphicon glyphicon-transfer menu_glyph\"></span>  Trade</a></li>\n";
 			} else {
-				echo "                  <li class=\"more_buttons_menu\"><a class=\"menu_text\" href=\"index.php?page=trade\"><span class=\"glyphicon glyphicon-transfer menu_glyph\"></span>  Trade</a></li>\n";
-			} // else
+				echo "                  <li><a class=\"menu_text\" href=\"index.php?page=trade\"><span class=\"glyphicon glyphicon-transfer menu_glyph\"></span>  Trade</a></li>\n";
+			} // else	
 			if ($pageType == "organizations") {
-				echo "                  <li class=\"more_buttons_menu active\"><a class=\"menu_text\" href=\"index.php?page=organizations\"><span class=\"glyphicon glyphicon-globe menu_glyph\"></span>  Orgs</a></li>\n";
+				echo "                  <li class=\"active\"><a class=\"menu_text\" href=\"index.php?page=organizations\"><span class=\"glyphicon glyphicon-globe menu_glyph\"></span>  Orgs</a></li>\n";
 			} else {
-				echo "                  <li class=\"more_buttons_menu\"><a class=\"menu_text\" href=\"index.php?page=organizations\"><span class=\"glyphicon glyphicon-globe menu_glyph\"></span>  Orgs</a></li>\n";
-			} // else				
+				echo "                  <li><a class=\"menu_text\" href=\"index.php?page=organizations\"><span class=\"glyphicon glyphicon-globe menu_glyph\"></span>  Orgs</a></li>\n";
+			} // else
 			if ($pageType == "forum") {
 				echo "                  <li class=\"active\"><a class=\"menu_text\" href=\"index.php?page=forum\"><span class=\"glyphicon glyphicon-comment menu_glyph\"></span>  Forum</a></li>\n";
 			} else {
@@ -229,30 +331,28 @@ function compileMenu($getPage_connection2,$pageType) {
 				
 			// Admin Controls
 			if ($_SESSION["admin"] == 1) {
-				echo "              <li class=\"admin_button\"><a class=\"menu_text\" target=\"_blank\" href=\"index.php?page=admin\"><span class=\"glyphicon glyphicon-dashboard menu_glyph\"></span>  Admin</a></li>\n";
+				echo "                  <li class=\"admin_button\"><a class=\"menu_text\" target=\"_blank\" href=\"index.php?page=admin\"><span class=\"glyphicon glyphicon-dashboard menu_glyph\"></span>  Admin</a></li>\n";
 			} // if
 			
 			echo "                </ul>\n";
 			echo "              </li>\n";
 			
-			echo "                    <li>\n";
-			echo "                      <div class=\"row menu_login\">\n";
-			echo "                        <form action=\"index.php?page=search\" method=\"post\">\n";
-			echo "                          <div class=\"col-xs-1 col-sm-1 col-md-1\">\n";
-			echo "                          </div>\n";
-			echo "                          <div class=\"col-xs-8 col-sm-9 col-md-10\">\n";
-			echo "                            <div class=\"form-group form-group-lg\">\n";
-			echo "                              <input data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Search for any nation or organization here.\" name=\"search\" id=\"search_terms\" type=\"text\" class=\"form-control\" placeholder=\"Enter Search here...\" />\n";
-			echo "                            </div>\n";
-			echo "                          </div>\n";
-			echo "                          <div class=\"col-xs-1 col-sm-1 col-md-1\">\n";
-			echo "                            <div class=\"form-group form-group-lg\">\n";
-			echo "                              <button onclick=\"loadButton(this)\" id=\"search_submit\" type=\"submit\" class=\"btn btn-lg btn-success\"><span class=\"glyphicon glyphicon-search\"></span></button>\n";
-			echo "                            </div>\n";
-			echo "                          </div>\n";
-			echo "                        </form>\n";
+			echo "              <li>\n";
+			echo "                <div id=\"menu_search\" class=\"row menu_login\">\n";
+			echo "                  <form action=\"index.php?page=search\" method=\"post\">\n";
+			echo "                    <div class=\"col-xs-9 col-sm-9 col-md-9\">\n";
+			echo "                      <div class=\"form-group form-group-lg\">\n";
+			echo "                        <input data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Search for any nation or organization here.\" name=\"search\" id=\"search_terms\" type=\"text\" class=\"form-control\" placeholder=\"Enter Search here...\" />\n";
 			echo "                      </div>\n";
-			echo "                    </li>\n";
+			echo "                     </div>\n";
+			echo "                     <div class=\"col-xs-3 col-sm-3 col-md-3\">\n";
+			echo "                       <div class=\"form-group form-group-lg\">\n";
+			echo "                         <button onclick=\"loadButton(this)\" id=\"search_submit\" type=\"submit\" class=\"btn btn-lg btn-success\"><span class=\"glyphicon glyphicon-search\"></span></button>\n";
+			echo "                       </div>\n";
+			echo "                     </div>\n";
+			echo "                   </form>\n";
+			echo "                 </div>\n";
+			echo "               </li>\n";
 			
 		} else {
 			echo "                <li>\n";
@@ -335,7 +435,7 @@ function compileMenu($getPage_connection2,$pageType) {
  visualize overlay menu
  ********************************/
 function showOverlayOptions($getPage_connection2) {
-	echo "          <select id=\"menu_overlayInput\" name=\"overlay\" class=\"dropdown1 btn btn-lg btn-default\">\n";
+	echo "                          <select id=\"menu_overlayInput\" name=\"overlay\" class=\"dropdown1 btn btn-lg btn-default\">\n";
 
 	if ($stmt = $getPage_connection2->prepare("SELECT id,name FROM overlays ORDER BY id ASC")) {
 		$stmt->execute();
@@ -347,12 +447,12 @@ function showOverlayOptions($getPage_connection2) {
 			
 			if (isset($_SESSION["overlay"])) {
 				if ($_SESSION["overlay"] == strtolower($overlayInfo1["name"])) {
-					echo "            <option class=\"option1\" selected=\"selected\" value=\"".strtolower($overlayInfo1["name"])."\">".$overlayInfo1["name"]."</option>\n";
+					echo "                            <option class=\"option1\" selected=\"selected\" value=\"".strtolower($overlayInfo1["name"])."\">".$overlayInfo1["name"]."</option>\n";
 				} else {
-					echo "            <option class=\"option1\" value=\"".strtolower($overlayInfo1["name"])."\">".$overlayInfo1["name"]."</option>\n";
+					echo "                            <option class=\"option1\" value=\"".strtolower($overlayInfo1["name"])."\">".$overlayInfo1["name"]."</option>\n";
 				} // else
 			} else {
-				echo "            <option class=\"option1\" value=\"".strtolower($overlayInfo1["name"])."\">".$overlayInfo1["name"]."</option>\n";
+				echo "                            <option class=\"option1\" value=\"".strtolower($overlayInfo1["name"])."\">".$overlayInfo1["name"]."</option>\n";
 			} // else
 		} // while
 
@@ -360,7 +460,7 @@ function showOverlayOptions($getPage_connection2) {
 	} else {
 	} // else
 			
-	echo "          </select>\n";
+	echo "                          </select>\n";
 } // showOverlayOptions
 
 /********************************

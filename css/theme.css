@@ -1,7 +1,7 @@
 /****************************************************************************
 * Name:        theme.php
 * Author:      Ben Barnes
-* Date:        2016-01-18
+* Date:        2016-01-20
 * Purpose:     Stylesheet: custom content
 *****************************************************************************/
 
@@ -195,6 +195,12 @@ body:before
   margin-top:1.6em;
   margin-left:auto;
   margin-right:auto;
+  margin-bottom:0;
+}
+
+#menu_search
+{
+	width:300px;
 }
 
 .menu_text
@@ -204,7 +210,7 @@ body:before
 
 .menu_glyph
 {
-  padding-bottom:10px;
+  padding-bottom:8px;
 }
 
 #menu_submit
@@ -344,11 +350,12 @@ SPECIAL THANKS TO user claviska on Stack Overflow for an excellent upload templa
 {
   min-width:460px;
   min-height:460px;
+  background:rgba(255, 255, 255, 0.9); 
 }
 
 .info_well
 {
-  background:rgba(255, 255, 255, 0.9);
+  background:rgba(255, 255, 255, 0.9); 
 }
 
 .info_flag
@@ -1224,6 +1231,11 @@ and (max-device-width : 480px) {
     width:20px;
     height:20px;
   }
+  
+  #menu_search
+  {
+  	width:300px;
+  }
 
   #menu_submit
   {
@@ -1252,24 +1264,32 @@ and (max-device-width : 480px) {
   {  	
   	display:block !important;
   	visibility:visible;  	
+  	width:auto;
+  	height:auto;  	
   }
   
   .more_buttons_menu
   {  	
   	display:none !important;
-  	visibility:hidden;  	
+  	visibility:hidden;  
+  	width:0;
+  	height:0;  		
   } 
   
   .more_buttons_mobileVisible
   {
   	display:block !important;
   	visibility:visible;
+  	width:auto;
+  	height:auto;  	
   } 
   
   .more_buttons_mobileHidden
   {
   	display:none !important;
   	visibility:hidden;
+  	width:0;
+  	height:0;  	
   }        
   
   .registration_ad
@@ -1300,6 +1320,11 @@ Larger Mobile
     height:23px;
   }
   
+  #menu_search
+  {
+  	width:300px;
+  }
+  
   #menu_submit
   {
     margin-left:auto;
@@ -1328,24 +1353,32 @@ Larger Mobile
   {  	
   	display:block !important;
   	visibility:visible;  	
+  	width:auto;
+  	height:auto;  	
   }
   
   .more_buttons_menu
   {  	
   	display:none !important;
-  	visibility:hidden;  	
+  	visibility:hidden;  
+  	width:0;
+  	height:0;  		
   }  
   
   .more_buttons_mobileVisible
   {
   	display:block !important;
   	visibility:visible;
+  	width:auto;
+  	height:auto;  	
   }  
   
   .more_buttons_mobileHidden
   {
   	display:none !important;
   	visibility:hidden;
+  	width:0;
+  	height:0;  	
   }        
   
   .registration_ad
@@ -1376,6 +1409,11 @@ Tablet/Small Laptops, pt.1
     height:29px;
   }
   
+  #menu_search
+  {
+  	width:350px;
+  }
+  
   #menu_submit
   {
     margin-left:auto;
@@ -1403,24 +1441,32 @@ Tablet/Small Laptops, pt.1
   {  	
   	display:block !important;
   	visibility:visible;  	
+  	width:auto;
+  	height:auto;  	
   }
   
   .more_buttons_menu
   {  	
   	display:none !important;
-  	visibility:hidden;  	
+  	visibility:hidden;  
+  	width:0;
+  	height:0;  		
   }  
   
   .more_buttons_mobileVisible
   {
   	display:block !important;
   	visibility:visible;
+  	width:auto;
+  	height:auto;  	
   }  
   
   .more_buttons_mobileHidden
   {
   	display:none !important;
   	visibility:hidden;
+  	width:0;
+  	height:0;  	
   }        
   
   .registration_ad
@@ -1451,6 +1497,11 @@ Tablets/Small laptops, pt.2
     height:31.25px;
   }
   
+  #menu_search
+  {
+  	width:320px;
+  }
+  
   #menu_submit
   {
     margin-left:auto;
@@ -1478,24 +1529,32 @@ Tablets/Small laptops, pt.2
   {
   	display:none !important;
   	visibility:hidden;
+  	width:0;
+  	height:0;
   }
   
   .more_buttons_menu
   {
   	display:block !important;
   	visibility:visible;
+  	width:auto;
+  	height:auto;
   }  
   
   .more_buttons_mobileVisible
   {
   	display:none !important;
   	visibility:hidden;
+  	width:0;
+  	height:0;  	
   }   
   
   .more_buttons_mobileHidden
   {
   	display:block !important;
   	visibility:visible;
+  	width:auto;
+  	height:auto;
   }       
   
    .registration_ad
@@ -1526,6 +1585,11 @@ Smaller Desktop
     height:37px;
   }
   
+  #menu_search
+  {
+  	width:400px;
+  }
+  
   #menu_submit
   {
     margin-left:auto;
@@ -1553,24 +1617,32 @@ Smaller Desktop
   {
   	display:none !important;
   	visibility:hidden;
+  	width:0;
+  	height:0;
   }
   
   .more_buttons_menu
   {
   	display:block !important;
   	visibility:visible;
+  	width:auto;
+  	height:auto;
   } 
    
   .more_buttons_mobileVisible
   {
   	display:none !important;
   	visibility:hidden;
+  	width:0;
+  	height:0;
   }   
    
   .more_buttons_mobileHidden
   {
   	display:block !important;
   	visibility:visible;
+  	width:auto;
+  	height:auto;
   }   
      
    .registration_ad
@@ -1601,6 +1673,11 @@ Larger Desktop
     height:42px;
   }
   
+  #menu_search
+  {
+  	width:400px;
+  }
+  
   #menu_submit
   {
     margin-left:auto;
@@ -1628,24 +1705,32 @@ Larger Desktop
   {
   	display:block !important;
   	visibility:visible;
+  	width:auto;
+  	height:auto;
   }
   
   .more_buttons_menu
   {
   	display:none !important;
   	visibility:hidden;
+  	width:0;
+  	height:0;
   }
   
   .more_buttons_mobileVisible
   {
   	display:none !important;
   	visibility:hidden;
+  	width:0;
+  	height:0;
   }  
   
   .more_buttons_mobileHidden
   {
   	display:block !important;
   	visibility:visible;
+  	width:auto;
+  	height:auto;  	
   }     
   
    .registration_ad
@@ -1676,6 +1761,12 @@ HD+
     height:42px;
   }
   
+  
+  #menu_search
+  {
+  	width:400px;
+  }
+  
   #menu_submit
   {
     margin-left:auto;
@@ -1703,24 +1794,32 @@ HD+
   {
   	display:block !important;
   	visibility:visible;
+  	width:auto;
+  	height:auto;
   }
   
   .more_buttons_menu
   {
   	display:none !important;
   	visibility:hidden;
+  	width:0;
+  	height:0;
   }
   
   .more_buttons_mobileVisible
   {
   	display:none !important;
   	visibility:hidden;
+  	width:0;
+  	height:0;
   }   
   
   .more_buttons_mobileHidden
   {
   	display:block !important;
   	visibility:visible;
+  	width:auto;
+  	height:auto;
   }    
   
    .registration_ad
