@@ -135,10 +135,13 @@ function checkLoginStatus($getPage_connection2) {
 					$_POST["continent"] = $nationInfoLogin["home"];
 					$_SESSION["continent_id"] = $nationInfoLogin["home"];
 					$_SESSION["nation_id"] = $nationInfoLogin["id"];
+					$_SESSION["prev_xpos"] = 1;
+					$_SESSION["prev_ypos"] = 1;
 					$_SESSION["xpos"] = 1;
 					$_SESSION["ypos"] = 1;
 					$_POST["overlay"] = "nations";
 					$_GET["overlay"] = "nations";
+					$_SESSION["prev_overlay"] = "nations";
 					$_SESSION["overlay"] = "nations";
 					
 					$_SESSION["mapContents"] = array(array(""));
@@ -759,6 +762,11 @@ function combat($getPage_connection2,$continent,$xpos,$ypos,$attacker,$defender,
 		$unitTypeInfoAttacker = getUnitTypeInfo($getPage_connection2,$attacker["type"]);
 		$unitTypeInfoDefender = getUnitTypeInfo($getPage_connection2,$defender["type"]);
 		
+		$attackerA = 0.0;
+		$attackerD = 0.0;
+		$defenderA = 0.0;
+		$defenderD = 0.0;
+		
 		$attackerReconLevel = array(0=>0);
 		$defenderReconLevel = array(0=>0);
 		$attackerReconExp = array(0=>0);
@@ -868,10 +876,10 @@ function combat($getPage_connection2,$continent,$xpos,$ypos,$attacker,$defender,
 			} // for
 		} // if
 		
-		$attackerA = $attackerA + $attackerArtilleryBonus;
-		$attackerD = $attackerD + $attackerArtilleryBonus;
-		$defenderA = $defenderA + $defenderArtilleryBonus;
-		$defenderD = $defenderD + $defenderArtilleryBonus;
+		$attackerA += $attackerArtilleryBonus;
+		$attackerD += $attackerArtilleryBonus;
+		$defenderA += $defenderArtilleryBonus;
+		$defenderD += $defenderArtilleryBonus;
 
 		$attackerA += $unitTypeInfoAttacker["attack"] + (($attacker["level"] * 0.25) + ($attackerExp * 0.05));
 		$attackerD += $unitTypeInfoAttacker["defense"] + (($attacker["level"] * 0.25) + ($attackerExp * 0.05));
@@ -1013,9 +1021,11 @@ function combat($getPage_connection2,$continent,$xpos,$ypos,$attacker,$defender,
 			setUnitInfo($getPage_connection2,$defender["id"],$defender["continent"],$defender["xpos"],$defender["ypos"],$new_defender_health,$defender["used"],$defender["name"],$defender["type"],$defender["owner"],$defender["level"],$defender["transport"],$defender["created"],$defender["exp"]);
 			setUnitInfo($getPage_connection2,$attacker["id"],$attacker["continent"],$attacker["xpos"],$attacker["ypos"],$new_attacker_health,$attacker["used"],$attacker["name"],$attacker["type"],$attacker["owner"],$attacker["level"],$attacker["transport"],$attacker["created"],$attacker["exp"]);
 		} else if ($formula == 3) {
+			$rand_defenderDamage = mt_rand(1,100);
+			
 			if ($magnitude == 5) {
 				// 10% chance of receiving damage
-				if ($mt_rand_defenderDamage <= 10) {
+				if ($rand_defenderDamage <= 10) {
 					// defender is damaged
 					// health - 0-20% of health
 					$health_percent_defender = $defender["health"] * (1 - ((mt_rand(8,10))*0.1) );
@@ -1028,7 +1038,7 @@ function combat($getPage_connection2,$continent,$xpos,$ypos,$attacker,$defender,
 					
 			} else if ($magnitude == 4) {
 				// 15% chance of receiving damage
-				if ($mt_rand_defenderDamage <= 15) {
+				if ($rand_defenderDamage <= 15) {
 					// defender is damaged
 					// health - 20-40% of health
 					$health_percent_defender = $defender["health"] * (1 - ((mt_rand(6,8))*0.1) );
@@ -1041,7 +1051,7 @@ function combat($getPage_connection2,$continent,$xpos,$ypos,$attacker,$defender,
 
 			} else if ($magnitude == 3) {
 				// 20% chance of receiving damage
-				if ($mt_rand_defenderDamage <= 20) {
+				if ($rand_defenderDamage <= 20) {
 					// defender is damaged
 					// health - 40-60% of health
 					$health_percent_defender = $defender["health"] * (1 - ((mt_rand(4,6))*0.1) );
@@ -1054,7 +1064,7 @@ function combat($getPage_connection2,$continent,$xpos,$ypos,$attacker,$defender,
 					
 			} else if ($magnitude == 2) {
 				// 25% chance of receiving damage
-				if ($mt_rand_defenderDamage <= 25) {
+				if ($rand_defenderDamage <= 25) {
 					// defender is damaged
 					// health - 60-80% of health
 					$health_percent_defender = $defender["health"] * (1 - ((mt_rand(2,4))*0.1) );
@@ -1067,7 +1077,7 @@ function combat($getPage_connection2,$continent,$xpos,$ypos,$attacker,$defender,
 					
 			} else if ($magnitude == 1) {
 				// 30% chance of receiving damage
-				if ($mt_rand_defenderDamage <= 30) {
+				if ($rand_defenderDamage <= 30) {
 					// defender is damaged
 					// health - 80-100% of health
 					$health_percent_defender = $defender["health"] * (1 - ((mt_rand(0,2))*0.1) );

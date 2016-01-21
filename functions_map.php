@@ -429,7 +429,11 @@ function showMapInfo($getPage_connection2) {
 		echo "                      <li class=\"list-group-item\">\n";
 		echo "                        ".$unitInfo["name"]."\n";
 		echo "                        <br />\n";
-		echo "                        ".$unitTypeInfo["name"].", ".$unitInfo["health"]." HP\n";
+		echo "                        ".$unitTypeInfo["name"]."\n";
+		echo "                        <br />\n";
+		echo "                        ".$unitInfo["health"]." / ". $unitTypeInfo["health"] ." HP\n";
+		echo "                        <br />\n";
+		echo "                        Moves: ".($unitTypeInfo["movement"] - $unitInfo["used"])." / ".$unitTypeInfo["movement"]."\n";
 		echo "                        <br />\n";
 		echo "                        Level ".$unitInfo["level"]."\n";
 		echo "                        <br />\n";
@@ -1491,14 +1495,14 @@ function moveUnit($getPage_connection2) {
 					$tileInfoW = getTileInfo($getPage_connection2,$_SESSION["new_continent"],$_SESSION["new_xpos"],$_SESSION["new_ypos"]);
 					$terrainInfoW = getTerrainInfo($getPage_connection2,$tileInfoW["terrain"]);
 					if (($terrainInfoW["movementRestriction"] >= 1 && ($unitInfoW["used"] < $terrainInfoW["movementRestriction"])) || ($terrainInfoW["movementRestriction"] == 0)) {
-						// land
+						// land units
 						if ($unitTypeInfoW["water"] == 0) {
 							if ($tileInfoW["terrain"] != 2 && $tileInfoW["terrain"] >= 1) {
 								if (($_SESSION["new_continent"] == $_SESSION["continent_id"]) && (($_SESSION["new_xpos"] >= $_SESSION["xpos"] - 1) && ($_SESSION["new_xpos"] <= $_SESSION["xpos"] + 1)) && (($_SESSION["new_ypos"] >= $_SESSION["ypos"] - 1) && ($_SESSION["new_ypos"] <= $_SESSION["ypos"] + 1))) {
 									$validMove = true;
 								} // if
 							} // if
-							// water
+						// water units
 						} else {
 							$coastBool = isItCoast($getPage_connection2,$tileInfoW);
 							if ($coastBool === true) {
@@ -1525,7 +1529,15 @@ function moveUnit($getPage_connection2) {
 							if ($unitInfoC["id"] >= 1 && $unitInfoC["owner"] != $_SESSION["nation_id"]) {
 								// land units can only attack other land units, water units can attack both, with the exception of artillery which can attack water units as well
 								if (($unitTypeInfoW["water"] == 0 && $unitTypeInfoC["water"] != 1) || ($unitTypeInfoW["water"] == 0 && $unitTypeInfoC["water"] == 1 && $unitInfoW["type"] == 4) || $unitTypeInfoW["water"] == 1) {
-									combat($getPage_connection2,$_SESSION["new_continent"],$_SESSION["new_xpos"],$_SESSION["new_ypos"],$unitInfoW,$unitInfoC,0);
+									// decide if amphibian assault or not
+									if ($unitTypeInfoW["water"] == 0 && $unitInfoW["xpos"] == -1 && $unitInfoW["ypos"] == -1) {
+										combat($getPage_connection2,$_SESSION["new_continent"],$_SESSION["new_xpos"],$_SESSION["new_ypos"],$unitInfoW,$unitInfoC,1);
+									} else {
+										combat($getPage_connection2,$_SESSION["new_continent"],$_SESSION["new_xpos"],$_SESSION["new_ypos"],$unitInfoW,$unitInfoC,0);
+									} // else
+									$unitInfoW2 = getUnitInfoByID($getPage_connection2,$_SESSION["action_id"]);
+									$new_used = $unitInfoW2["used"] + 1;
+									setUnitInfo($getPage_connection2,$unitInfoW2["id"],$unitInfoW2["continent"],$unitInfoW2["xpos"],$unitInfoW2["ypos"],$unitInfoW2["health"],$new_used,$unitInfoW2["name"],$unitInfoW2["type"],$unitInfoW2["owner"],$unitInfoW2["level"],$unitInfoW2["transport"],$unitInfoW2["created"],$unitInfoW2["exp"]);
 								} else {
 									$_SESSION["warning_message"] = "Cannot complete action: unit cannot attack specified unit.";
 								} // else
