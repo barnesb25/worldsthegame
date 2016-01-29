@@ -2,7 +2,7 @@
 /****************************************************************************
  * Name:        visual.php
  * Author:      Ben Barnes
- * Date:        2016-01-20
+ * Date:        2016-01-29
  * Purpose:     Visualization functions page
  *****************************************************************************/
 
@@ -64,121 +64,17 @@ function compileMenu($getPage_connection2,$pageType) {
 				echo "              </li>\n";
 			} // else
 				
-			if ($pageType == "news") {
-				echo "              <li class=\"dropdown active\">\n";
-				echo "                <a href=\"#\" class=\"dropdown-toggle menu_text\" data-toggle=\"dropdown\" role=\"button\" aria-expanded=\"false\"><span class=\"glyphicon glyphicon-bell menu_glyph\"></span><br />News <span class=\"caret\"></span></a>\n";
-				echo "                <ul class=\"dropdown-menu\" role=\"menu\">\n";
-				echo "                  <li>\n";
-				echo "                    <div class=\"well well-sm\">\n";
-				echo "                      <form action=\"index.php?page=map\" method=\"post\">\n";
-				echo "                        <div class=\"form-group form-group-sm\">\n";
-				if (isset($_SESSION["overlay"])) {
-					echo "                          <input type=\"hidden\" name=\"page\" value=\"map\"><input type=\"hidden\" name=\"overlay\" value=\"".$_SESSION["overlay"]."\" />\n";
-				} else {
-					echo "                          <input type=\"hidden\" name=\"page\" value=\"map\"><input type=\"hidden\" name=\"overlay\" value=\"terrain\" />\n";
-				} // else
-				if (isset($_SESSION["continent_id"])) {
-					echo "                          <label for=\"menu_continentInput\">Continent</label>\n                          <input name=\"continent\" type=\"text\" class=\"form-control\" id=\"menu_continentInput\" placeholder=\"e.g. 1\" value=\"".$_SESSION["continent_id"]."\"/>\n";
-				} else {
-					echo "                          <label for=\"menu_continentInput\">Continent</label>\n                          <input name=\"continent\" type=\"text\" class=\"form-control\" id=\"menu_continentInput\" placeholder=\"e.g. 1\" />\n";
-				} // else
-				echo "                        </div>\n";
-				echo "                        <div class=\"form-group form-group-sm\">\n";
-				if (isset($_SESSION["xpos"])) {
-					echo "                          <label for=\"menu_xPosInput\">X Position</label>\n                          <input name=\"xpos\" type=\"text\" class=\"form-control\" id=\"menu_xPosInput\" placeholder=\"e.g. 1\" value=\"".$_SESSION["xpos"]."\" />\n";
-				} else {
-					echo "                          <label for=\"menu_xPosInput\">X Position</label>\n                          <input name=\"xpos\" type=\"text\" class=\"form-control\" id=\"menu_xPosInput\" placeholder=\"e.g. 1\" />\n";
-				} // else
-				echo "                        </div>\n";
-				echo "                        <div class=\"form-group form-group-sm\">\n";
-				if (isset($_SESSION["ypos"])) {
-					echo "                          <label for=\"menu_yPosInput\">Y Position</label>\n                          <input name=\"ypos\" type=\"text\" class=\"form-control\" id=\"menu_yPosInput\" placeholder=\"e.g. 1\" value=\"".$_SESSION["ypos"]."\" />\n";
-				} else {
-					echo "                          <label for=\"menu_yPosInput\">Y Position</label>\n                          <input name=\"ypos\" type=\"text\" class=\"form-control\" id=\"menu_yPosInput\" placeholder=\"e.g. 1\" />\n";
-				} // else
-				echo "                        </div>\n";
-				echo "                        <div class=\"form-group form-group-sm\">\n";
-				if (isset($_SESSION["overlay"])) {
-					echo "                          <label for=\"menu_overlayInput\">Overlay</label>\n \n";
-					showOverlayOptions($getPage_connection2);
-				} else {
-					echo "                          <label for=\"menu_overlayInput\">Overlay</label>\n \n";
-					showOverlayOptions($getPage_connection2);
-				} // else
-				echo "                        </div>\n";
-				echo "                        <div class=\"form-group form-group-sm\">\n";
-				echo "                          <button onclick=\"loadButton(this)\" id=\"menu_submit\" type=\"submit\" class=\"btn btn-lg btn-primary\">Go</button>\n";
-				echo "                        </div>\n";
-				echo "                      </form>\n";
-				echo "                    </div>\n";
-				echo "                  </li>\n";
-				echo "                </ul>\n";
-				echo "              </li>\n";
-			} else {
-				echo "              <li class=\"dropdown\">\n";
-				echo "                <a href=\"#\" class=\"dropdown-toggle menu_text\" data-toggle=\"dropdown\" role=\"button\" aria-expanded=\"false\"><span class=\"glyphicon glyphicon-bell menu_glyph\"></span><br />News <span class=\"caret\"></span></a>\n";
-				echo "                <ul class=\"dropdown-menu\" role=\"menu\">\n";
-				echo "                  <li>\n";
-				echo "                    <div class=\"well well-sm\">\n";
-				echo "                      <form action=\"index.php?page=map\" method=\"post\">\n";
-				echo "                        <div class=\"form-group form-group-sm\">\n";
-				if (isset($_SESSION["overlay"])) {
-					echo "                          <input type=\"hidden\" name=\"page\" value=\"map\"><input type=\"hidden\" name=\"overlay\" value=\"".$_SESSION["overlay"]."\" />\n";
-				} else {
-					echo "                          <input type=\"hidden\" name=\"page\" value=\"map\"><input type=\"hidden\" name=\"overlay\" value=\"terrain\" />\n";
-				} // else
-				if (isset($_SESSION["continent_id"])) {
-					echo "                          <label for=\"menu_continentInput\">Continent</label>\n                          <input name=\"continent\" type=\"text\" class=\"form-control\" id=\"menu_continentInput\" placeholder=\"e.g. 1\" value=\"".$_SESSION["continent_id"]."\"/>\n";
-				} else {
-					echo "                          <label for=\"menu_continentInput\">Continent</label>\n                          <input name=\"continent\" type=\"text\" class=\"form-control\" id=\"menu_continentInput\" placeholder=\"e.g. 1\" />\n";
-				} // else
-				echo "                        </div>\n";
-				echo "                        <div class=\"form-group form-group-sm\">\n";
-				if (isset($_SESSION["xpos"])) {
-					echo "                          <label for=\"menu_xPosInput\">X Position</label>\n                          <input name=\"xpos\" type=\"text\" class=\"form-control\" id=\"menu_xPosInput\" placeholder=\"e.g. 1\" value=\"".$_SESSION["xpos"]."\" />\n";
-				} else {
-					echo "                          <label for=\"menu_xPosInput\">X Position</label>\n                          <input name=\"xpos\" type=\"text\" class=\"form-control\" id=\"menu_xPosInput\" placeholder=\"e.g. 1\" />\n";
-				} // else
-				echo "                        </div>\n";
-				echo "                        <div class=\"form-group form-group-sm\">\n";
-				if (isset($_SESSION["ypos"])) {
-					echo "                          <label for=\"menu_yPosInput\">Y Position</label>\n                          <input name=\"ypos\" type=\"text\" class=\"form-control\" id=\"menu_yPosInput\" placeholder=\"e.g. 1\" value=\"".$_SESSION["ypos"]."\" />\n";
-				} else {
-					echo "                          <label for=\"menu_yPosInput\">Y Position</label>\n                          <input name=\"ypos\" type=\"text\" class=\"form-control\" id=\"menu_yPosInput\" placeholder=\"e.g. 1\" />\n";
-				} // else
-				echo "                        </div>\n";
-				echo "                        <div class=\"form-group form-group-sm\">\n";
-				if (isset($_SESSION["overlay"])) {
-					echo "                          <label for=\"menu_overlayInput\">Overlay</label>\n \n";
-					showOverlayOptions($getPage_connection2);
-				} else {
-					echo "                          <label for=\"menu_overlayInput\">Overlay</label>\n \n";
-					showOverlayOptions($getPage_connection2);
-				} // else
-				echo "                        </div>\n";
-				echo "                        <div class=\"form-group form-group-sm\">\n";
-				echo "                          <button onclick=\"loadButton(this)\" id=\"menu_submit\" type=\"submit\" class=\"btn btn-lg btn-primary\">Go</button>\n";
-				echo "                        </div>\n";
-				echo "                      </form>\n";
-				echo "                    </div>\n";
-				echo "                  </li>\n";
-				echo "                </ul>\n";
-				echo "              </li>\n";
-			} // else
-				
 			if ($pageType == "map") {
 				echo "              <li class=\"dropdown active\">\n";
 				echo "                <a href=\"#\" class=\"dropdown-toggle menu_text\" data-toggle=\"dropdown\" role=\"button\" aria-expanded=\"false\"><span class=\"glyphicon glyphicon-th menu_glyph\"></span><br />Map <span class=\"caret\"></span></a>\n";
-				echo "                <ul class=\"dropdown-menu\" role=\"menu\">\n";
+				echo "                <ul class=\"spaced_dropdown_menu dropdown-menu\" role=\"menu\">\n";
 				echo "                  <li>\n";
 				echo "                    <div class=\"well well-sm\">\n";
-				echo "                      <form action=\"index.php?page=map\" method=\"post\">\n";
+				echo "                      <form action=\"index.php?page=map\" method=\"get\">\n";
 				echo "                        <div class=\"form-group form-group-sm\">\n";
-				if (isset($_SESSION["overlay"])) {
-					echo "                          <input type=\"hidden\" name=\"page\" value=\"map\"><input type=\"hidden\" name=\"overlay\" value=\"".$_SESSION["overlay"]."\" />\n";
-				} else {
-					echo "                          <input type=\"hidden\" name=\"page\" value=\"map\"><input type=\"hidden\" name=\"overlay\" value=\"terrain\" />\n";
-				} // else
+				
+				echo "                          <input type=\"hidden\" name=\"page\" value=\"map\">\n";
+
 				if (isset($_SESSION["continent_id"])) {
 					echo "                          <label for=\"menu_continentInput\">Continent</label>\n                          <input name=\"continent\" type=\"text\" class=\"form-control\" id=\"menu_continentInput\" placeholder=\"e.g. 1\" value=\"".$_SESSION["continent_id"]."\"/>\n";
 				} else {
@@ -219,16 +115,14 @@ function compileMenu($getPage_connection2,$pageType) {
 			} else {
 				echo "              <li class=\"dropdown\">\n";
 				echo "                <a href=\"#\" class=\"dropdown-toggle menu_text\" data-toggle=\"dropdown\" role=\"button\" aria-expanded=\"false\"><span class=\"glyphicon glyphicon-th menu_glyph\"></span><br />Map <span class=\"caret\"></span></a>\n";
-				echo "                <ul class=\"dropdown-menu\" role=\"menu\">\n";
+				echo "                <ul class=\"spaced_dropdown_menu dropdown-menu\" role=\"menu\">\n";
 				echo "                  <li>\n";
 				echo "                    <div class=\"well well-sm\">\n";
-				echo "                      <form action=\"index.php?page=map\" method=\"post\">\n";
+				echo "                      <form action=\"index.php?page=map\" method=\"get\">\n";
 				echo "                        <div class=\"form-group form-group-sm\">\n";
-				if (isset($_SESSION["overlay"])) {
-					echo "                          <input type=\"hidden\" name=\"page\" value=\"map\"><input type=\"hidden\" name=\"overlay\" value=\"".$_SESSION["overlay"]."\" />\n";
-				} else {
-					echo "                          <input type=\"hidden\" name=\"page\" value=\"map\"><input type=\"hidden\" name=\"overlay\" value=\"terrain\" />\n";
-				} // else
+				
+				echo "                          <input type=\"hidden\" name=\"page\" value=\"map\">\n";
+				
 				if (isset($_SESSION["continent_id"])) {
 					echo "                          <label for=\"menu_continentInput\">Continent</label>\n                          <input name=\"continent\" type=\"text\" class=\"form-control\" id=\"menu_continentInput\" placeholder=\"e.g. 1\" value=\"".$_SESSION["continent_id"]."\"/>\n";
 				} else {

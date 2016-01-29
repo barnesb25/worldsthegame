@@ -2,7 +2,7 @@
 /****************************************************************************
 * Name:        index2.php
 * Author:      Ben Barnes
-* Date:        2016-01-20
+* Date:        2016-01-29
 * Purpose:     Root re-direct to core files
 *****************************************************************************/
 header("Location: http://worldsthegame.com/worldsthegame");

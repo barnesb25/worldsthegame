@@ -2,7 +2,7 @@
 /****************************************************************************
  * Name:        turn.php
  * Author:      Ben Barnes
- * Date:        2016-01-20
+ * Date:        2016-01-29
  * Purpose:     End turn functions page
  *****************************************************************************/
 
@@ -283,7 +283,7 @@ function preliminaryUpdates($getPage_connection2) {
 									$new_owners[$new_index] = $unitInfoW["owner"];
 								} // if
 								
-								setImprovementInfo($getPage_connection2,$improvementInfoW["id"],$improvementInfoW["continent"],$improvementInfoW["xpos"],$improvementInfoW["ypos"],$improvementInfoW["type"],$improvementInfoW["level"],$improvementInfoW["usingResources"],$new_owners);
+								setImprovementInfo($getPage_connection2,$improvementInfoW["id"],$improvementInfoW["continent"],$improvementInfoW["xpos"],$improvementInfoW["ypos"],$improvementInfoW["type"],$improvementInfoW["level"],$improvementInfoW["usingResources"],$new_owners,$improvementInfoW["name"]);
 							} // if
 						} // for
 					} // if

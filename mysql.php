@@ -2,7 +2,7 @@
 /****************************************************************************
  * Name:        mysql.php
  * Author:      Ben Barnes
- * Date:        2016-01-20
+ * Date:        2016-01-29
  * Purpose:     MySQL access functions page
  *****************************************************************************/
 
@@ -428,11 +428,11 @@ function setImprovementTypeInfo($s_connection,$s_id,$s_name,$s_resourcesRequired
 
 // improvementsmap
 function getImprovementInfo($s_connection,$s_id) {
-	$improvement = array("id"=>0,"continent"=>0,"xpos"=>0,"ypos"=>0,"type"=>0,"level"=>0,"usingResources"=>array(0=>0),"owners"=>array(0=>""));
-	if ($stmt = $s_connection->prepare("SELECT id,continent,xpos,ypos,type,level,usingResources,owners FROM improvementsmap WHERE id=? LIMIT 1")) {
+	$improvement = array("id"=>0,"continent"=>0,"xpos"=>0,"ypos"=>0,"type"=>0,"level"=>0,"usingResources"=>array(0=>0),"owners"=>array(0=>""),"name"=>"");
+	if ($stmt = $s_connection->prepare("SELECT id,continent,xpos,ypos,type,level,usingResources,owners,name FROM improvementsmap WHERE id=? LIMIT 1")) {
 		$stmt->bind_param("i", $s_id);
 		$stmt->execute();
-		$stmt->bind_result($r_id,$r_continent,$r_xpos,$r_ypos,$r_type,$r_level,$r_usingResources,$r_owners);
+		$stmt->bind_result($r_id,$r_continent,$r_xpos,$r_ypos,$r_type,$r_level,$r_usingResources,$r_owners,$r_name);
 		$stmt->fetch();
 		$improvement["id"] = $r_id;
 		$improvement["continent"] = $r_continent;
@@ -450,6 +450,7 @@ function getImprovementInfo($s_connection,$s_id) {
 		} else {
 			$improvement["owners"] = array(0=>$r_owners);
 		} // else
+		$improvement["name"] = $r_name;
 		$stmt->close();
 	} else {
 	} // else
@@ -457,7 +458,7 @@ function getImprovementInfo($s_connection,$s_id) {
 	return $improvement;
 } // getImprovementInfo
 
-function setImprovementInfo($s_connection,$s_id,$s_continent,$s_xpos,$s_ypos,$s_type,$s_level,$s_usingResources,$s_owners) {
+function setImprovementInfo($s_connection,$s_id,$s_continent,$s_xpos,$s_ypos,$s_type,$s_level,$s_usingResources,$s_owners,$s_name) {
 	if (count($s_usingResources) > 1) {
 		$new_usingResources = implode(",",$s_usingResources);
 	} else {
@@ -468,8 +469,8 @@ function setImprovementInfo($s_connection,$s_id,$s_continent,$s_xpos,$s_ypos,$s_
 	} else {
 		$new_owners = $s_owners[0];
 	} // else
-	if ($stmt = $s_connection->prepare("UPDATE improvementsmap SET continent=?,xpos=?,ypos=?,type=?,level=?,usingResources=?,owners=? WHERE id=?")) {
-		$stmt->bind_param("iiiiissi", $s_continent, $s_xpos, $s_ypos, $s_type, $s_level, $new_usingResources, $new_owners, $s_id);
+	if ($stmt = $s_connection->prepare("UPDATE improvementsmap SET continent=?,xpos=?,ypos=?,type=?,level=?,usingResources=?,owners=?,name=? WHERE id=?")) {
+		$stmt->bind_param("iiiiisssi", $s_continent, $s_xpos, $s_ypos, $s_type, $s_level, $new_usingResources, $new_owners, $s_name, $s_id);
 		$stmt->execute();
 		$stmt->close();
 	} else {
@@ -526,7 +527,7 @@ function deleteImprovementInfo($s_connection,$s_id,$s_continent,$s_xpos,$s_ypos)
 	} // else
 } // deleteImprovementInfo
 
-function addImprovementInfo($s_connection,$s_continent,$s_xpos,$s_ypos,$s_type,$s_level,$s_usingResources,$s_owners) {
+function addImprovementInfo($s_connection,$s_continent,$s_xpos,$s_ypos,$s_type,$s_level,$s_usingResources,$s_owners,$s_name) {
 	$new_id = 0;
 	if (count($s_usingResources) > 1) {
 		$new_usingResources = implode(",",$s_usingResources);
@@ -538,8 +539,8 @@ function addImprovementInfo($s_connection,$s_continent,$s_xpos,$s_ypos,$s_type,$
 	} else {
 		$new_owners = $s_owners[0];
 	} // else
-	if ($stmt = $s_connection->prepare("INSERT INTO improvementsmap (continent,xpos,ypos,type,level,usingResources,owners) VALUES (?,?,?,?,?,?,?)")) {
-		$stmt->bind_param("iiiiiss", $s_continent, $s_xpos, $s_ypos, $s_type, $s_level, $new_usingResources, $new_owners);
+	if ($stmt = $s_connection->prepare("INSERT INTO improvementsmap (continent,xpos,ypos,type,level,usingResources,owners,name) VALUES (?,?,?,?,?,?,?,?)")) {
+		$stmt->bind_param("iiiiisss", $s_continent, $s_xpos, $s_ypos, $s_type, $s_level, $new_usingResources, $new_owners, $s_name);
 		$stmt->execute();
 		$stmt->close();
 	} else {

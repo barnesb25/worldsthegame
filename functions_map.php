@@ -2,7 +2,7 @@
 /****************************************************************************
  * Name:        functions_map.php
  * Author:      Ben Barnes
- * Date:        2016-01-20
+ * Date:        2016-01-29
  * Purpose:     Map functions page
  *****************************************************************************/
 
@@ -113,7 +113,15 @@ function getGlobals_map($getPage_connection2) {
 			$_SESSION["new_continent"] = cleanString($_POST["newcontinent"],true);
 		} else {
 			$_SESSION["new_continent"] = 0;
-		} // else						
+		} // else
+
+		// post: new name for item
+		if (isset($_POST["rename"])) {
+			$_SESSION["rename"] = cleanString($_POST["rename"],false);
+		} else {
+			$_SESSION["rename"] = "";
+		} // else
+		
 	} else if (count($_GET)) {		
 		// get: current continent id
 		if (isset($_GET["continent"])) {
@@ -246,10 +254,7 @@ function getGlobals_map($getPage_connection2) {
 	$_SESSION["prev_continent"] = $prev_continent;
 	
 	// get info
-	//$_SESSION["continentInfo"] = getContinentInfo($getPage_connection2,$_SESSION["next_continent"]);
 	$_SESSION["tileInfo"] = getTileInfo($getPage_connection2,$_SESSION["continent_id"],$_SESSION["xpos"],$_SESSION["ypos"]);
-	//$_SESSION["terrainInfo"] = getTerrainInfo($getPage_connection2,$_SESSION["tileInfo"]["terrain"]);
-	//$_SESSION["userInfo"] = getUserInfo($getPage_connection2,$_SESSION["user_id"]);
 } // getGlobals_map
 
 /********************************
@@ -259,6 +264,8 @@ function getGlobals_map($getPage_connection2) {
 function performAction_map($getPage_connection2) {
 	if ($_SESSION["action"] == "unit-remove") {
 		removeUnit($getPage_connection2);
+	} else if ($_SESSION["action"] == "unit-rename") {
+		renameUnit($getPage_connection2);
 	} else if ($_SESSION["action"] == "unit-unload") {
 		unloadUnit($getPage_connection2);
 	} else if ($_SESSION["action"] == "unit-move") {
@@ -269,6 +276,8 @@ function performAction_map($getPage_connection2) {
 		upgradeImprovement($getPage_connection2);
 	} else if ($_SESSION["action"] == "improvement-remove") {
 		removeImprovement($getPage_connection2);
+	} else if ($_SESSION["action"] == "improvement-rename") {
+		renameImprovement($getPage_connection2);
 	} else if ($_SESSION["action"] == "improvement-build") {
 		buildImprovement($getPage_connection2);
 	} else if ($_SESSION["action"] == "unit-upgrade") {
@@ -345,6 +354,10 @@ function showMap($getPage_connection2) {
 				} // if
 				
 				if ($x == $_SESSION["new_xpos"] && $y == $_SESSION["new_ypos"]) {
+					$tokenSet = false;
+				} // if
+				
+				if ($_SESSION["overlay"] != $_SESSION["prev_overlay"]) {
 					$tokenSet = false;
 				} // if
 						
@@ -470,10 +483,50 @@ function showMapInfo($getPage_connection2) {
 			echo "                            <button onclick=\"loadButton(this)\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Remove unit.\" value=\"map\" name=\"page\" type=\"submit\" class=\"btn btn-primary btn-sm\"><img src=\"images/buttons/btn_remove.png\" alt=\"Remove\" /></button>\n";
 			echo "                          </form>\n";
 			echo "                        </div>\n";
-
-			echo "                        <div class=\"col-xs-3\">\n";
-			echo "                        </div>\n";
-
+			
+			
+			echo "                        <div class=\"col-xs-3\">\n\n";						
+			echo "                          <span data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Rename unit.\">\n";
+			
+			$rand_modal = mt_rand(1,100);
+			
+			echo "                          <button type=\"button\" data-toggle=\"modal\" data-target=\"#renameUnitModal".$rand_modal."\" class=\"btn btn-primary btn-sm\"><img src=\"images/buttons/btn_rename.png\" alt=\"Rename\" /></button>\n\n";
+			echo "                          <!-- Modal -->\n";
+			echo "                          <div id=\"renameUnitModal".$rand_modal."\" class=\"modal fade\" role=\"dialog\">\n";
+			echo "                            <div class=\"modal-dialog\">\n";
+			
+			echo "                              <!-- Modal content-->\n";
+			echo "                              <div class=\"modal-content\">\n";
+			echo "                                <div class=\"modal-header\">\n";
+			echo "                                  <button type=\"button\" class=\"close\" data-dismiss=\"modal\">&times;</button>\n";
+			echo "                                  <h4 class=\"modal-title\">Rename Unit</h4>\n";
+			echo "                                </div>\n";
+			echo "                                <div class=\"modal-body\">\n";
+			echo "                                  <form action=\"index.php?page=map&amp;overlay=units\" method=\"post\">\n";
+			echo "                            	      <input type=\"hidden\" name=\"continent\" value=\"".$_SESSION["continent_id"]."\" />\n";
+			echo "                                    <input type=\"hidden\" name=\"xpos\" value=\"".$_SESSION["xpos"]."\" />\n";
+			echo "                                    <input type=\"hidden\" name=\"ypos\" value=\"".$_SESSION["ypos"]."\" />\n";
+			echo "                                    <input type=\"hidden\" name=\"actionid\" value=\"".$unitInfo["id"]."\" />\n";
+			echo "                                    <input type=\"hidden\" name=\"action\" value=\"unit-rename\" />\n";
+			echo "                                    <input type=\"hidden\" name=\"overlay\" value=\"units\" />\n";
+			echo "                                    <div class=\"form-group form-group-sm\">\n";
+			echo "                                      <input data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Your unit's new name.\" name=\"rename\" type=\"text\" class=\"form-control\" id=\"rename_unit\" placeholder=\"Bravo Regiment\" />\n";
+			echo "                                    </div>\n";
+			echo "                                    <div class=\"form-group form-group-sm\">\n";
+			echo "                                      <button onclick=\"loadButton(this)\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Rename unit.\" value=\"map\" name=\"page\" type=\"submit\" class=\"btn btn-primary btn-md\">Rename</button>\n";
+			echo "                                    </div>\n";
+			echo "                                  </form>\n";
+			echo "                                </div>\n";
+			echo "                                <div class=\"modal-footer\">\n";
+			echo "                                  <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">Close</button>\n";
+			echo "                                </div>\n";
+			echo "                              </div>\n";
+			echo "                            </div>\n";			
+			echo "                          </div>\n\n";
+			
+			echo "                          </span>\n";			
+			echo "                        </div>\n";	
+				
 			echo "                      </div>\n";
 
 			echo "                    </li>\n";
@@ -1021,6 +1074,8 @@ function showMapInfo($getPage_connection2) {
 			$improvementTypeInfo = getImprovementTypeInfo($getPage_connection2,$improvementInfo["type"]);
 			$currentPlayer = false;
 			echo "                    <li class=\"list-group-item\">\n";
+			echo "                      ".$improvementInfo["name"]."\n";
+			echo "                      <br />\n";
 			echo "                      ".$improvementTypeInfo["name"]."\n";
 			echo "                      <br />\n";
 			echo "                      Level ".$improvementInfo["level"]."\n";
@@ -1082,6 +1137,49 @@ function showMapInfo($getPage_connection2) {
 				echo "                            <button onclick=\"loadButton(this)\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Remove improvement.\" value=\"map\" name=\"page\" type=\"submit\" class=\"btn btn-primary btn-sm\"><img src=\"images/buttons/btn_remove.png\" alt=\"Remove\" /></button>\n";
 				echo "                          </form>\n";
 				echo "                        </div>\n";
+				
+				echo "                        <div class=\"col-xs-3\">\n\n";
+				echo "                          <span data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Rename improvement.\">\n";
+					
+				$rand_modal = mt_rand(1,100);
+					
+				echo "                          <button type=\"button\" data-toggle=\"modal\" data-target=\"#renameImprovementModal".$rand_modal."\" class=\"btn btn-primary btn-sm\"><img src=\"images/buttons/btn_rename.png\" alt=\"Rename\" /></button>\n\n";
+				echo "                          <!-- Modal -->\n";
+				echo "                          <div id=\"renameImprovementModal".$rand_modal."\" class=\"modal fade\" role=\"dialog\">\n";
+				echo "                            <div class=\"modal-dialog\">\n";
+					
+				echo "                              <!-- Modal content-->\n";
+				echo "                              <div class=\"modal-content\">\n";
+				echo "                                <div class=\"modal-header\">\n";
+				echo "                                  <button type=\"button\" class=\"close\" data-dismiss=\"modal\">&times;</button>\n";
+				echo "                                  <h4 class=\"modal-title\">Rename Improvement</h4>\n";
+				echo "                                </div>\n";
+				echo "                                <div class=\"modal-body\">\n";
+				echo "                                  <form action=\"index.php?page=map&amp;overlay=control\" method=\"post\">\n";
+				echo "                            	      <input type=\"hidden\" name=\"continent\" value=\"".$_SESSION["continent_id"]."\" />\n";
+				echo "                                    <input type=\"hidden\" name=\"xpos\" value=\"".$_SESSION["xpos"]."\" />\n";
+				echo "                                    <input type=\"hidden\" name=\"ypos\" value=\"".$_SESSION["ypos"]."\" />\n";
+				echo "                                    <input type=\"hidden\" name=\"actionid\" value=\"".$improvementInfo["id"]."\" />\n";
+				echo "                                    <input type=\"hidden\" name=\"action\" value=\"improvement-rename\" />\n";
+				echo "                                    <input type=\"hidden\" name=\"overlay\" value=\"control\" />\n";
+				echo "                                    <div class=\"form-group form-group-sm\">\n";
+				echo "                                      <input data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Your improvement's new name.\" name=\"rename\" type=\"text\" class=\"form-control\" id=\"rename_improvement\" placeholder=\"Moscow\" />\n";
+				echo "                                    </div>\n";
+				echo "                                    <div class=\"form-group form-group-sm\">\n";
+				echo "                                      <button onclick=\"loadButton(this)\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Rename improvement.\" value=\"map\" name=\"page\" type=\"submit\" class=\"btn btn-primary btn-md\">Rename</button>\n";
+				echo "                                    </div>\n";
+				echo "                                  </form>\n";
+				echo "                                </div>\n";
+				echo "                                <div class=\"modal-footer\">\n";
+				echo "                                  <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">Close</button>\n";
+				echo "                                </div>\n";
+				echo "                              </div>\n";
+				echo "                            </div>\n";
+				echo "                          </div>\n\n";
+					
+				echo "                          </span>\n";
+				echo "                        </div>\n";
+				
 				echo "                      </div>\n";
 				echo "                    </li>\n";
 				// if it is a depot, allow construction of military units
@@ -1474,6 +1572,38 @@ function removeUnit($getPage_connection2) {
 } // removeUnit
 
 /********************************
+ renameUnit
+ validation and processing for renaming unit
+ ********************************/
+function renameUnit($getPage_connection2) {
+	if ($_SESSION["action_id"] >= 1) {
+		if (isset($_SESSION["rename"])) {
+			if (strlen($_SESSION["rename"]) >= 1) {
+				$unitInfoW = getUnitInfoByID($getPage_connection2,$_SESSION["action_id"]);
+				// is it a valid entity?
+				if ($unitInfoW["continent"] == $_SESSION["continent_id"] && $unitInfoW["xpos"] == $_SESSION["xpos"] && $unitInfoW["ypos"] == $_SESSION["ypos"]) {
+					// is it owned by current player?
+					if ($unitInfoW["owner"] == $_SESSION["nation_id"]) {
+						$_SESSION["success_message"] = "Player's unit has been renamed successfully!";
+						setUnitInfo($getPage_connection2, $unitInfoW["id"], $unitInfoW["continent"], $unitInfoW["xpos"], $unitInfoW["ypos"], $unitInfoW["health"], $unitInfoW["used"], $_SESSION["rename"], $unitInfoW["type"], $unitInfoW["owner"], $unitInfoW["level"], $unitInfoW["transport"], $unitInfoW["created"], $unitInfoW["exp"]);
+					} else {
+						$_SESSION["warning_message"] = "Cannot complete action: unit is not owned by current player.";
+					} // else
+				} else {
+					$_SESSION["warning_message"] = "Cannot complete action: unit is not valid.";
+				} // else
+			} else {
+				$_SESSION["warning_message"] = "Cannot complete action: unit is not valid.";
+			} // else
+		} else {
+			$_SESSION["warning_message"] = "Cannot complete action: unit is not valid.";
+		} // else
+	} else {
+		$_SESSION["warning_message"] = "Cannot complete action: unit is not valid.";
+	} // else				
+} // renameUnit
+
+/********************************
  moveUnit
  validation and processing for moving unit
  ********************************/
@@ -1778,7 +1908,7 @@ function upgradeImprovement($getPage_connection2) {
 					$new_money = $nationInfoW["money"] - $final_cost;
 					setNationInfo($getPage_connection2,$_SESSION["nation_id"],$nationInfoW["name"],$nationInfoW["home"],$nationInfoW["formal"],$nationInfoW["flag"],$nationInfoW["production"],$new_money,$nationInfoW["debt"],$nationInfoW["happiness"],$nationInfoW["food"],$nationInfoW["authority"],$nationInfoW["authorityChanged"],$nationInfoW["economy"],$nationInfoW["economyChanged"],$nationInfoW["organizations"],$nationInfoW["invites"],$nationInfoW["goods"],$nationInfoW["resources"],$nationInfoW["population"],$nationInfoW["strike"]);
 					$new_level = $improvementInfoW["level"] + 1;
-					setImprovementInfo($getPage_connection2,$_SESSION["action_id"],$improvementInfoW["continent"],$improvementInfoW["xpos"],$improvementInfoW["ypos"],$improvementInfoW["type"],$new_level,$improvementInfoW["usingResources"],$improvementInfoW["owners"]);
+					setImprovementInfo($getPage_connection2,$_SESSION["action_id"],$improvementInfoW["continent"],$improvementInfoW["xpos"],$improvementInfoW["ypos"],$improvementInfoW["type"],$new_level,$improvementInfoW["usingResources"],$improvementInfoW["owners"],$improvementInfoW["name"]);
 				} else {
 					$_SESSION["warning_message"] = "Cannot complete action: current player cannot afford this expense.";
 				} // else
@@ -1795,7 +1925,7 @@ function upgradeImprovement($getPage_connection2) {
 
 /********************************
  removeImprovement
- validation and processing for removing unit
+ validation and processing for removing improvement
  ********************************/
 function removeImprovement($getPage_connection2) {
 	$validImprovement = false;
@@ -1835,6 +1965,55 @@ function removeImprovement($getPage_connection2) {
 		$_SESSION["warning_message"] = "Cannot complete action: improvement is not valid.";
 	} // else
 } // removeImprovement
+
+/********************************
+ renameImprovement
+ validation and processing for renaming improvement
+ ********************************/
+function renameImprovement($getPage_connection2) {
+	if ($_SESSION["action_id"] >= 1) {
+		$validImprovement = false;
+		if (isset($_SESSION["rename"])) {
+			if (strlen($_SESSION["rename"]) >= 1) {
+				$improvementInfoW = getImprovementInfo($getPage_connection2,$_SESSION["action_id"]);
+				// is it a valid entity?
+				$tileInfoW = getTileInfo($getPage_connection2,$_SESSION["continent_id"],$_SESSION["xpos"],$_SESSION["ypos"]);
+				for ($q=0;$q < count($tileInfoW["improvements"]);$q++) {
+					if ($tileInfoW["improvements"][$q] == $_SESSION["action_id"]) {
+						$validImprovement = true;
+						break;
+					} // if
+				} // for
+				if ($validImprovement === true) {
+					$validImprovement = false;
+					for ($q=0;$q < count($improvementInfoW["owners"]);$q++) {
+						if ($improvementInfoW["owners"][$q] == $_SESSION["nation_id"]) {
+							$improvementTypeInfoW = getImprovementTypeInfo($getPage_connection2,$improvementInfoW["type"]);
+							$validImprovement = true;
+							break;
+						} // if
+					} // for
+					// is it owned by current player?
+					if ($validImprovement === true) {					
+						setImprovementInfo($getPage_connection2, $improvementInfoW["id"], $improvementInfoW["continent"], $improvementInfoW["xpos"], $improvementInfoW["ypos"], $improvementInfoW["type"], $improvementInfoW["level"], $improvementInfoW["usingResources"], $improvementInfoW["owners"], $_SESSION["rename"]);
+						
+						$_SESSION["success_message"] = "Player's improvement has been renamed successfully!";
+					} else {
+						$_SESSION["warning_message"] = "Cannot complete action: improvement is not owned by current player.";
+					} // else
+				} else {
+					$_SESSION["warning_message"] = "Cannot complete action: improvement is not valid.";
+				} // else
+			} else {
+				$_SESSION["warning_message"] = "Cannot complete action: improvement is not valid.";
+			} // else
+		} else {
+			$_SESSION["warning_message"] = "Cannot complete action: improvement is not valid.";
+		} // else
+	} else {
+		$_SESSION["warning_message"] = "Cannot complete action: improvement is not valid.";
+	} // else
+} // renameImprovement
 
 /********************************
  buildImprovement
@@ -1969,7 +2148,9 @@ function buildImprovement($getPage_connection2) {
 							$new_population = $nationInfoE["population"] + 1000;
 							setNationInfo($getPage_connection2,$nationInfoE["id"],$nationInfoE["name"],$nationInfoE["home"],$nationInfoE["formal"],$nationInfoE["flag"],$nationInfoE["production"],$nationInfoE["money"],$nationInfoE["debt"],$nationInfoE["happiness"],$nationInfoE["food"],$nationInfoE["authority"],$nationInfoE["authorityChanged"],$nationInfoE["economy"],$nationInfoE["economyChanged"],$nationInfoE["organizations"],$nationInfoE["invites"],$nationInfoE["goods"],$nationInfoE["resources"],$new_population,$nationInfoE["strike"]);
 						} // else if
-						addImprovementInfo($getPage_connection2,$_SESSION["continent_id"],$_SESSION["xpos"],$_SESSION["ypos"],$_SESSION["action_id"],1,$using,$new_owners);
+						$mt_rand = mt_rand(100,9999);
+						$new_name = "Improvement ".$mt_rand;
+						addImprovementInfo($getPage_connection2,$_SESSION["continent_id"],$_SESSION["xpos"],$_SESSION["ypos"],$_SESSION["action_id"],1,$using,$new_owners,$new_name);
 					} else {
 						$_SESSION["warning_message"] = "Cannot complete action: current player cannot afford this expense.";
 					} // else

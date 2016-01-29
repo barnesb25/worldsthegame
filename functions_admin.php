@@ -2,7 +2,7 @@
 /****************************************************************************
  * Name:        functions_admin.php
  * Author:      Ben Barnes
- * Date:        2016-01-20
+ * Date:        2016-01-29
  * Purpose:     Admin functions page
  *****************************************************************************/
 
@@ -414,8 +414,8 @@ function resetWorld($getPage_connection3) {
 							$tileInfo2 = getTileInfoByID($getPage_connection3,$finalTiles[$j]);
 							setTileInfo($getPage_connection3,$tileInfo2["id"],$tileInfo2["continent"],$tileInfo2["xpos"],$tileInfo2["ypos"],$tileInfo2["terrain"],$tileInfo2["resources"],$tileInfo2["improvements"],$new_userid,$tileInfo2["claims"],$tileInfo2["population"]);
 							if ($capitalBuilt === false) {
-								addImprovementInfo($getPage_connection3, $tileInfo2["continent"], $tileInfo2["xpos"], $tileInfo2["ypos"], 1, 1, array(0=>0), array(0=>$new_userid)); // add capital
-								addImprovementInfo($getPage_connection3, $tileInfo2["continent"], $tileInfo2["xpos"], $tileInfo2["ypos"], 4, 1, array(0=>0), array(0=>$new_userid)); // add farm
+								addImprovementInfo($getPage_connection3, $tileInfo2["continent"], $tileInfo2["xpos"], $tileInfo2["ypos"], 1, 1, array(0=>0), array(0=>$new_userid), "Capital City"); // add capital
+								addImprovementInfo($getPage_connection3, $tileInfo2["continent"], $tileInfo2["xpos"], $tileInfo2["ypos"], 4, 1, array(0=>0), array(0=>$new_userid), "First Farm"); // add farm
 								$capitalBuilt = true;
 							} // if
 						} // if
