@@ -468,7 +468,7 @@ function showMapInfo($getPage_connection2) {
 				echo "                            <input type=\"hidden\" name=\"actionid\" value=\"".$unitInfo["id"]."\" />\n";
 				echo "                            <input type=\"hidden\" name=\"action\" value=\"unit-upgrade\" />\n";
 				echo "                            <input type=\"hidden\" name=\"overlay\" value=\"units\" />\n";
-				echo "                            <button onclick=\"loadButton(this)\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Upgrade unit.\" value=\"map\" name=\"page\" type=\"submit\" class=\"btn btn-primary btn-sm\"><img src=\"images/buttons/btn_upgrade.png\" alt=\"Upgrade\" /></button>\n";
+				echo "                            <button onclick=\"loadButton(this)\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Upgrade unit.  &nbsp; Cost: ".$unitTypeInfo["baseCost"] * ($unitInfo["level"] + 1)."\" value=\"map\" name=\"page\" type=\"submit\" class=\"btn btn-primary btn-sm\"><img src=\"images/buttons/btn_upgrade.png\" alt=\"Upgrade\" /></button>\n";
 				echo "                          </form>\n";
 				echo "                        </div>\n";
 			} // if
@@ -1122,7 +1122,7 @@ function showMapInfo($getPage_connection2) {
 					echo "                            <input type=\"hidden\" name=\"actionid\" value=\"".$improvementInfo["id"]."\" />\n";
 					echo "                            <input type=\"hidden\" name=\"action\" value=\"improvement-upgrade\" />\n";
 					echo "                            <input type=\"hidden\" name=\"overlay\" value=\"control\" />\n";
-					echo "                            <button onclick=\"loadButton(this)\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Upgrade improvement.\" value=\"map\" name=\"page\" type=\"submit\" class=\"btn btn-primary btn-sm\"><img src=\"images/buttons/btn_upgrade.png\" alt=\"Upgrade\" /></button>\n";
+					echo "                            <button onclick=\"loadButton(this)\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Upgrade improvement.  &nbsp; Cost: ".$improvementTypeInfo["baseCost"] * ($improvementInfo["level"] + 1)."\"\" value=\"map\" name=\"page\" type=\"submit\" class=\"btn btn-primary btn-sm\"><img src=\"images/buttons/btn_upgrade.png\" alt=\"Upgrade\" /></button>\n";
 					echo "                          </form>\n";
 					echo "                        </div>\n";
 				} // if
@@ -1233,7 +1233,7 @@ function showMapInfo($getPage_connection2) {
 										echo "                            <input type=\"hidden\" name=\"actionid\" value=\"".$unitTypeInfo["id"]."\" />\n";
 										echo "                            <input type=\"hidden\" name=\"action\" value=\"unit-build\" />\n";
 										echo "                            <input type=\"hidden\" name=\"overlay\" value=\"units\" />\n";
-										echo "                            <button onclick=\"loadButton(this)\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Train ".$unitTypeInfo["name"].".\" value=\"map\" name=\"page\" type=\"submit\" class=\"btn btn-primary btn-sm\"><img src=\"".$unitTypeInfo["image"]."\" alt=\"Train ".$unitTypeInfo["name"]."\" /></button>\n";
+										echo "                            <button onclick=\"loadButton(this)\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Train ".$unitTypeInfo["name"].".  &nbsp; Cost: ".round($unitTypeInfo["baseCost"],2,PHP_ROUND_HALF_UP)."\" value=\"map\" name=\"page\" type=\"submit\" class=\"btn btn-primary btn-sm\"><img src=\"".$unitTypeInfo["image"]."\" alt=\"Train ".$unitTypeInfo["name"]."\" /></button>\n";
 										echo "                          </form>\n";
 										echo "                        </div>\n";
 										if ($wrapCounter == 3) {
@@ -1348,7 +1348,7 @@ function showMapInfo($getPage_connection2) {
 									echo "                            <input type=\"hidden\" name=\"actionid\" value=\"".$next_improvementTypes."\" />\n";
 									echo "                            <input type=\"hidden\" name=\"action\" value=\"improvement-build\" />\n";
 									echo "                            <input type=\"hidden\" name=\"overlay\" value=\"units\" />\n";
-									echo "                            <button onclick=\"loadButton(this)\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Build ".$improvementTypeInfo1["name"].".\" value=\"map\" name=\"page\" type=\"submit\" class=\"btn btn-primary btn-sm\"><img src=\"".$improvementTypeInfo1["image"]."\" alt=\"Build ".$improvementTypeInfo1["name"]."\" /></button>\n";
+									echo "                            <button onclick=\"loadButton(this)\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Build ".$improvementTypeInfo1["name"].".  &nbsp; Cost: ".round($improvementTypeInfo1["baseCost"],2,PHP_ROUND_HALF_UP)."\" value=\"map\" name=\"page\" type=\"submit\" class=\"btn btn-primary btn-sm\"><img src=\"".$improvementTypeInfo1["image"]."\" alt=\"Build ".$improvementTypeInfo1["name"]."\" /></button>\n";
 									echo "                          </form>\n";
 									echo "                        </div>\n";
 									if ($wrapCounter == 3) {
@@ -1369,7 +1369,7 @@ function showMapInfo($getPage_connection2) {
 								echo "                            <input type=\"hidden\" name=\"actionid\" value=\"".$next_improvementTypes."\" />\n";
 								echo "                            <input type=\"hidden\" name=\"action\" value=\"improvement-build\" />\n";
 								echo "                            <input type=\"hidden\" name=\"overlay\" value=\"units\" />\n";
-								echo "                            <button onclick=\"loadButton(this)\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Build ".$improvementTypeInfo1["name"].".\" value=\"map\" name=\"page\" type=\"submit\" class=\"btn btn-primary btn-sm\"><img src=\"".$improvementTypeInfo1["image"]."\" alt=\"Build ".$improvementTypeInfo1["name"]."\" /></button>\n";
+								echo "                            <button onclick=\"loadButton(this)\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Build ".$improvementTypeInfo1["name"].".  &nbsp; Cost: ".round($improvementTypeInfo1["baseCost"],2,PHP_ROUND_HALF_UP)."\" value=\"map\" name=\"page\" type=\"submit\" class=\"btn btn-primary btn-sm\"><img src=\"".$improvementTypeInfo1["image"]."\" alt=\"Build ".$improvementTypeInfo1["name"]."\" /></button>\n";
 								echo "                          </form>\n";
 								echo "                        </div>\n";
 								if ($wrapCounter == 3) {
@@ -1420,7 +1420,7 @@ function showMapInfo($getPage_connection2) {
 								echo "                            <input type=\"hidden\" name=\"actionid\" value=\"".$next_improvementTypes."\" />\n";
 								echo "                            <input type=\"hidden\" name=\"action\" value=\"improvement-build\" />\n";
 								echo "                            <input type=\"hidden\" name=\"overlay\" value=\"units\" />\n";
-								echo "                            <button onclick=\"loadButton(this)\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Build ".$improvementTypeInfo1["name"].".\" value=\"map\" name=\"page\" type=\"submit\" class=\"btn btn-primary btn-sm\"><img src=\"".$improvementTypeInfo1["image"]."\" alt=\"Build ".$improvementTypeInfo1["name"]."\" /></button>\n";
+								echo "                            <button onclick=\"loadButton(this)\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Build ".$improvementTypeInfo1["name"].".  &nbsp; Cost: ".round($improvementTypeInfo1["baseCost"],2,PHP_ROUND_HALF_UP)."\" value=\"map\" name=\"page\" type=\"submit\" class=\"btn btn-primary btn-sm\"><img src=\"".$improvementTypeInfo1["image"]."\" alt=\"Build ".$improvementTypeInfo1["name"]."\" /></button>\n";
 								echo "                          </form>\n";
 								echo "                        </div>\n";
 								if ($wrapCounter == 3) {
@@ -1463,6 +1463,9 @@ function showMapInfo($getPage_connection2) {
 	echo "                    </li>\n";
 	echo "                    <li class=\"list-group-item\">\n";
 	echo "                      Population: ".$_SESSION["tileInfo"]["population"]."\n";
+	echo "                    </li>\n";
+	echo "                    <li class=\"list-group-item\">\n";
+	echo "                      Improvement Slots: ".(count($_SESSION["tileInfo"]["improvements"]) - 1)." / 4\n";
 	echo "                    </li>\n";
 	echo "                    <li class=\"list-group-item\">\n";
 	if (isset($nationInfoN["name"])) {

@@ -114,7 +114,7 @@ function showHomeInfo($getPage_connection2) {
 	echo "                  <h1>Register now!</h1>\n";
 	echo "                  <div class=\"form-group form-group-sm\">\n";
 	echo "                    <label for=\"register_username\">Username</label>\n";
-	echo "                    <input data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Your in-game user account name.\" name=\"register_username\" type=\"text\" class=\"form-control\" id=\"register_username\" placeholder=\"Username\" />\n";
+	echo "                    <input data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Your in-game user account name.  Should be 5-35 characters.\" name=\"register_username\" type=\"text\" class=\"form-control\" id=\"register_username\" placeholder=\"Username\" />\n";
 	echo "                  </div>\n";
 	echo "                  <div class=\"form-group form-group-sm\">\n";
 	echo "                    <label for=\"register_password\">Password</label>\n";
@@ -161,7 +161,7 @@ function showHomeInfo($getPage_connection2) {
  ********************************/
 function registerUser($getPage_connection2) {
 	if ($_SESSION["action"] == "register") {
-		if (strlen($_SESSION["register_username"]) >= 8 && strlen($_SESSION["register_username"]) <= 35) {
+		if (strlen($_SESSION["register_username"]) >= 5 && strlen($_SESSION["register_username"]) <= 35) {
 			if (strlen($_SESSION["register_password"]) >= 8 && strlen($_SESSION["register_password"]) <= 35 && strlen($_SESSION["register_confirm_password"]) >= 8 && strlen($_SESSION["register_confirm_password"]) <= 35) {
 				if ($_SESSION["register_confirm_password"] == $_SESSION["register_password"]) {
 					$userInfoA = getUserInfoByName($getPage_connection2,$_SESSION["register_username"]);

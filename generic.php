@@ -70,7 +70,11 @@ function getPage($getPage_connection,$getPage_connection2,$getPage_connection3) 
 					require "map.php";
 				} // else
 			} else {
-				require $_SESSION["pageTypeInfo"]["layout"];
+				if (strlen($_SESSION["pageTypeInfo"]["layout"]) >= 1) {
+					require $_SESSION["pageTypeInfo"]["layout"];
+				} else {
+					require "map.php";
+				} // else
 			} // else
 		} // else
 	// default
@@ -79,7 +83,11 @@ function getPage($getPage_connection,$getPage_connection2,$getPage_connection3) 
 		if ($_SESSION["pageTypeInfo"]["login"] == 1 || $_SESSION["pageTypeInfo"]["admin"] == 1) {
 			require "home.php";
 		} else {
-			require $_SESSION["pageTypeInfo"]["layout"];
+			if (strlen($_SESSION["pageTypeInfo"]["layout"]) >= 1) {
+				require $_SESSION["pageTypeInfo"]["layout"];
+			} else {
+				require "home.php";
+			} // else
 		} // else
 	} // else
 } // getPage

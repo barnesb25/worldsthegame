@@ -99,11 +99,11 @@ function showInfoInfo($getPage_connection2) {
 		echo "                <br />\n";
 		echo "                Home Continent: ".$continentInfo["name"]." (".$nationInfo["home"].") \n";
 		echo "                <br />\n";
-		echo "                Authority: ".$nationInfo["authority"]."\n";
+		echo "                Authority: ".$nationInfo["authority"]."/10\n";
 		echo "                <br />\n";
 		echo "                ".$authorityReport."\n";
 		echo "                <br />\n";
-		echo "                Economy: ".$nationInfo["economy"]."\n";
+		echo "                Economy: ".$nationInfo["economy"]."/10\n";
 		echo "                <br />\n";
 		echo "                ".$economyReport."\n";
 		echo "              </div>\n";
@@ -122,9 +122,19 @@ function showInfoInfo($getPage_connection2) {
 		echo "                <br />\n";
 		echo "                Debt: ".$nationInfo["debt"]."\n";
 		echo "                <br />\n";
-		echo "                Happiness: ".$nationInfo["happiness"].", #".$rankingInfo["happiness"]." in world\n";
+		
+		if ($nationInfo["happiness"] >= 4) {
+			echo "                Happiness: <img src=\"images/happiness/4.png\" alt=\"Very Happy\" />".$nationInfo["happiness"].", #".$rankingInfo["happiness"]." in world\n";
+		} else if ($nationInfo["happiness"] >= 3) {
+			echo "                Happiness: <img src=\"images/happiness/3.png\" alt=\"Happy\" />".$nationInfo["happiness"].", #".$rankingInfo["happiness"]." in world\n";
+		} else if ($nationInfo["happiness"] >= 2) {
+			echo "                Happiness: <img src=\"images/happiness/2.png\" alt=\"Neutral\" />".$nationInfo["happiness"].", #".$rankingInfo["happiness"]." in world\n";
+		} else {
+			echo "                Happiness: <img src=\"images/happiness/1.png\" alt=\"Unhappy\" />".$nationInfo["happiness"].", #".$rankingInfo["happiness"]." in world\n";
+		} // else
+			
 		echo "                <br />\n";
-		echo "                Food: ".$nationInfo["food"].", #".$rankingInfo["food"]." in world\n";
+		echo "                Food: ".round($nationInfo["food"],2,PHP_ROUND_HALF_UP).", #".$rankingInfo["food"]." in world\n";
 		echo "                <br />\n";
 		echo "                Population: ".$nationInfo["population"].", #".$rankingInfo["population"]." in world\n";
 		echo "              </div>\n";
