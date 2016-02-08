@@ -70,8 +70,8 @@ function preliminaryUpdates($getPage_connection2) {
 	if ($limit_allOffers >= 1) {
 		if ($stmt = $getPage_connection2->prepare("SELECT id FROM offers ORDER BY id ASC")) {
 			$stmt->execute();
-			$stmt->bind_result($r_result);
 			$stmt->store_result();
+			$stmt->bind_result($r_result);
 
 			while ($stmt->fetch()) {	
 				$next_offers = $r_result;
@@ -119,8 +119,8 @@ function preliminaryUpdates($getPage_connection2) {
 	if ($limit_allUnits >= 1) {
 		if ($stmt = $getPage_connection2->prepare("SELECT id FROM unitsmap ORDER BY id ASC")) {
 			$stmt->execute();
-			$stmt->bind_result($r_result);
 			$stmt->store_result();
+			$stmt->bind_result($r_result);
 
 			while ($stmt->fetch()) {
 				$next_units = $r_result;
@@ -172,8 +172,8 @@ function preliminaryUpdates($getPage_connection2) {
 		// search through all tiles and look for illegally placed improvements or dead or invalid level improvements and remove them
 		if ($stmt = $getPage_connection2->prepare("SELECT id FROM tilesmap ORDER BY id ASC")) {
 			$stmt->execute();
-			$stmt->bind_result($r_result);
 			$stmt->store_result();
+			$stmt->bind_result($r_result);
 
 			while ($stmt->fetch()) {
 				$next_tiles = $r_result;
@@ -249,8 +249,8 @@ function preliminaryUpdates($getPage_connection2) {
 		// setup new claims and change control if needed
 		if ($stmt = $getPage_connection2->prepare("SELECT id FROM tilesmap ORDER BY id ASC")) {
 			$stmt->execute();
-			$stmt->bind_result($r_result);
 			$stmt->store_result();
+			$stmt->bind_result($r_result);
 
 			while ($stmt->fetch()) {
 				$next_tiles1 = $r_result;
@@ -510,8 +510,8 @@ function preliminaryUpdates($getPage_connection2) {
 	if ($limit_allClaims >= 1) {
 		if ($stmt = $getPage_connection2->prepare("SELECT id FROM claims ORDER BY id ASC")) {
 			$stmt->execute();
-			$stmt->bind_result($r_result);
 			$stmt->store_result();
+			$stmt->bind_result($r_result);
 
 			while ($stmt->fetch()) {
 				$next_claims = $r_result;
@@ -549,8 +549,8 @@ function updateNations($getPage_connection2) {
 	$_SESSION["scriptOutput"] = "<br /><br />Running main sequence...<br />";
 	if ($stmt = $getPage_connection2->prepare("SELECT id FROM nations ORDER BY id ASC")) {
 		$stmt->execute();
-		$stmt->bind_result($r_result);
 		$stmt->store_result();
+		$stmt->bind_result($r_result);
 		
 		while ($stmt->fetch()) {
 			$next_nations = $r_result;
@@ -580,8 +580,8 @@ function updateNations($getPage_connection2) {
 			$new_debt = $nationInfoW["debt"];
 			$money_debt = 0.0;
 			$food_debt = 0.0;
-			$foreignTradePercent = $nationInfoW["economy"]*10;
-			$productionPercent = 100 - $foreignTradePercent;
+			$productionPercent = $nationInfoW["economy"]*10;
+			$foreignTradePercent = 100 - $productionPercent;
 			$efficiencyPercent = $nationInfoW["authority"]*10;
 			$happinessPenalty = $nationInfoW["authority"]*5;
 			$productionInfoW = getProductionInfo($getPage_connection2,$next_nations);
@@ -623,8 +623,8 @@ function updateNations($getPage_connection2) {
 			$_SESSION["scriptOutput"] .= "Get tiles info for production/claims/bonus addition...<br />";
 			if ($stmt1 = $getPage_connection2->prepare("SELECT id FROM tilesmap ORDER BY id ASC")) {
 				$stmt1->execute();
-				$stmt1->bind_result($r_result);
 				$stmt1->store_result();
+				$stmt1->bind_result($r_result);
 
 				while ($stmt1->fetch()) {
 					$next_tiles = $r_result;
@@ -733,8 +733,8 @@ function updateNations($getPage_connection2) {
 			
 			if ($stmt1 = $getPage_connection2->prepare("SELECT id FROM improvementsmap ORDER BY id ASC")) {
 				$stmt1->execute();
-				$stmt1->bind_result($r_result);
 				$stmt1->store_result();
+				$stmt1->bind_result($r_result);
 
 				while ($stmt1->fetch()) {
 					$next_improvements = $r_result;
@@ -899,8 +899,9 @@ function updateNations($getPage_connection2) {
 			// do individual trades action if current nation involved
 			if ($stmt1 = $getPage_connection2->prepare("SELECT id FROM offers ORDER BY id ASC")) {
 				$stmt1->execute();
-				$stmt1->bind_result($r_result);
 				$stmt1->store_result();
+				$stmt1->bind_result($r_result);
+				
 				while ($stmt1->fetch()) {
 					$next_offers = $r_result;
 					$offerInfoW = getOfferInfo($getPage_connection2,$next_offers);
@@ -995,14 +996,6 @@ function updateNations($getPage_connection2) {
 			
 			$new_production = $new_production + $productionBonus;
 			
-			$formula = $tradeBonus * ($foreignTradePercent*0.01);
-			
-			// tax
-			$tax = ($new_population*0.1)*($efficiencyPercent*0.01);
-					
-			// production
-			$formula = $formula + (($productionPercent*0.01) * ($new_production * 10));
-			
 			/********************************
 			 PRODUCTION COSTS
 			********************************/
@@ -1068,8 +1061,8 @@ function updateNations($getPage_connection2) {
 								if ($goodsInfoW["improvementTypesRequired"][$j] >= 1) {														
 									if ($stmt2 = $getPage_connection2->prepare("SELECT id FROM improvementsmap ORDER BY id ASC")) {
 										$stmt2->execute();
-										$stmt2->bind_result($r_result);
 										$stmt2->store_result();
+										$stmt2->bind_result($r_result);
 										while ($stmt2->fetch()) {
 											$next_improvements2 = $r_result;
 											$improvementInfoY = getImprovementInfo($getPage_connection2,$next_improvements2);
@@ -1121,9 +1114,13 @@ function updateNations($getPage_connection2) {
 					} // while
 				} // if
 			} // for
-			
-			
+						
 			$new_production = $new_production - $used_production;
+			
+			// tax
+			$tax = ($old_population*0.11)*($efficiencyPercent*0.01);
+			// trade and production bonus formula
+			$formula = ($productionPercent*0.01) * ($new_production * 14);
 			
 			$_SESSION["scriptOutput"] .= "prod: ".$new_production."<br />";
 			$_SESSION["scriptOutput"] .= "formula: ".$formula."<br />";
@@ -1142,8 +1139,8 @@ function updateNations($getPage_connection2) {
 			// unit upkeep
 			if ($stmt1 = $getPage_connection2->prepare("SELECT id FROM unitsmap ORDER BY id ASC")) {
 				$stmt1->execute();
-				$stmt1->bind_result($r_result);
 				$stmt1->store_result();
+				$stmt1->bind_result($r_result);
 		
 				while ($stmt1->fetch()) {
 					$next_units = $r_result;
@@ -1218,8 +1215,8 @@ function updateNations($getPage_connection2) {
 			// improvement upkeep and nation's population update
 			if ($stmt2 = $getPage_connection2->prepare("SELECT id FROM tilesmap ORDER BY id ASC")) {
 				$stmt2->execute();
-				$stmt2->bind_result($r_result);
 				$stmt2->store_result();
+				$stmt2->bind_result($r_result);
 
 				while ($stmt2->fetch()) {
 					$next_tiles = $r_result;
@@ -1239,7 +1236,7 @@ function updateNations($getPage_connection2) {
 								}
 		
 								$mod = 0.01;
-								$money_upkeep = $money_upkeep + ($improvementTypeInfoW["baseCost"] / count($improvementInfoW["owners"])) + (($improvementTypeInfoW["baseCost"] / count($improvementInfoW["owners"])) *( ($distanceModifier + $terrainInfoW["upkeepModifier"])*$mod));
+								$money_upkeep = $money_upkeep + (($improvementTypeInfoW["baseCost"]/4) / count($improvementInfoW["owners"])) + ((($improvementTypeInfoW["baseCost"]/4) / count($improvementInfoW["owners"])) * ( ($distanceModifier + $terrainInfoW["upkeepModifier"])*$mod));
 							} // if
 						} // for
 					} // for
@@ -1278,8 +1275,8 @@ function updateNations($getPage_connection2) {
 				$next_tiles = 1;
 				if ($stmt2 = $getPage_connection2->prepare("SELECT id FROM tilesmap ORDER BY id ASC")) {
 					$stmt2->execute();
-					$stmt2->bind_result($r_result);
 					$stmt2->store_result();
+					$stmt2->bind_result($r_result);
 					
 					while ($stmt2->fetch()) {	
 						$next_tiles = $r_result;
@@ -1311,8 +1308,8 @@ function updateNations($getPage_connection2) {
 						
 					if ($stmt2 = $getPage_connection2->prepare("SELECT id FROM tilesmap ORDER BY id ASC")) {
 						$stmt2->execute();
+						$stmt2->store_result();
 						$stmt2->bind_result($r_result);
-						$stmt2->fetch();
 						
 						while ($stmt2->fetch()) {	
 							$next_tiles = $r_result;
@@ -1344,8 +1341,8 @@ function updateNations($getPage_connection2) {
 						
 					if ($stmt2 = $getPage_connection2->prepare("SELECT id FROM tilesmap ORDER BY id ASC")) {
 						$stmt2->execute();
+						$stmt2->store_result();
 						$stmt2->bind_result($r_result);
-						$stmt2->fetch();
 						
 						while ($stmt2->fetch()) {	
 							$next_tiles = $r_result;
@@ -1487,8 +1484,8 @@ function updateGlobe($getPage_connection2) {
 	// set new market rates
 	if ($stmt = $getPage_connection2->prepare("SELECT id FROM goods ORDER BY id ASC")) {
 		$stmt->execute();
-		$stmt->bind_result($r_result);
 		$stmt->store_result();
+		$stmt->bind_result($r_result);
 
 		while ($stmt->fetch()) {
 			$next_goods = $r_result;
@@ -1537,8 +1534,8 @@ function updateGlobe($getPage_connection2) {
 	// add to turn counter for trade offers
 	if ($stmt = $getPage_connection2->prepare("SELECT id FROM offers ORDER BY id ASC")) {
 		$stmt->execute();
-		$stmt->bind_result($r_result);
 		$stmt->store_result();
+		$stmt->bind_result($r_result);
 
 		while ($stmt->fetch()) {
 			$next_offers = $r_result;
@@ -1556,8 +1553,8 @@ function updateGlobe($getPage_connection2) {
 
 	if ($stmt = $getPage_connection2->prepare("SELECT id FROM organizations ORDER BY id ASC")) {
 		$stmt->execute();
-		$stmt->bind_result($r_result);
 		$stmt->store_result();
+		$stmt->bind_result($r_result);
 
 		while ($stmt->fetch()) {
 			$next_organizations = $r_result;
@@ -1588,8 +1585,8 @@ function updateGlobe($getPage_connection2) {
 	
 	if ($stmt = $getPage_connection2->prepare("SELECT id FROM nations ORDER BY id ASC")) {
 		$stmt->execute();
-		$stmt->bind_result($r_result);
 		$stmt->store_result();
+		$stmt->bind_result($r_result);
 
 		$offset = 0;
 		
@@ -1704,8 +1701,8 @@ function checkContinents ($getPage_connection2) {
 	$availableContinent = 0;
 	if ($stmt = $getPage_connection2->prepare("SELECT id FROM continents ORDER BY id ASC")) {
 		$stmt->execute();
-		$stmt->bind_result($r_result);
 		$stmt->store_result();
+		$stmt->bind_result($r_result);
 
 		while ($stmt->fetch()) {
 			$next_continents = $r_result;

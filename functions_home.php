@@ -200,8 +200,8 @@ function registerUser($getPage_connection2) {
 						$availableContinent = 0;
 						if ($stmt = $getPage_connection2->prepare("SELECT id FROM continents ORDER BY id ASC")) {
 							$stmt->execute();
-							$stmt->bind_result($r_id);
 							$stmt->store_result();
+							$stmt->bind_result($r_id);
 							
 							while ($stmt->fetch()) {	
 								$next_continents = $r_id;
@@ -210,8 +210,8 @@ function registerUser($getPage_connection2) {
 								$counter1 = 0;
 								if ($stmt2 = $getPage_connection2->prepare("SELECT id FROM tilesmap ORDER BY id ASC")) {
 									$stmt2->execute();
-									$stmt2->bind_result($r_id1);
 									$stmt2->store_result();
+									$stmt2->bind_result($r_id1);
 
 									while ($stmt2->fetch()) {
 										$next_tiles = $r_id1;
@@ -270,8 +270,8 @@ function registerUser($getPage_connection2) {
 							$counter1 = 0;
 							if ($stmt = $getPage_connection2->prepare("SELECT id FROM tilesmap ORDER BY id ASC")) {
 								$stmt->execute();
-								$stmt->bind_result($r_id);
 								$stmt->store_result();
+								$stmt->bind_result($r_id);
 								
 								while ($stmt->fetch()) {
 									$next_tiles = $r_id;

@@ -333,8 +333,8 @@ function showOverlayOptions($getPage_connection2) {
 
 	if ($stmt = $getPage_connection2->prepare("SELECT id,name FROM overlays ORDER BY id ASC")) {
 		$stmt->execute();
-		$stmt->bind_result($r_id,$r_name);
 		$stmt->store_result();
+		$stmt->bind_result($r_id,$r_name);
 		
 		while ($stmt->fetch()) {		
 			$overlayInfo1 = array("id"=>$r_id,"name"=>$r_name);	

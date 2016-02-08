@@ -1193,8 +1193,8 @@ function showMapInfo($getPage_connection2) {
 					$wrapCounter = 0;
 					if ($stmt = $getPage_connection2->prepare("SELECT id FROM units ORDER BY id ASC")) {
 						$stmt->execute();
-						$stmt->bind_result($r_result);
 						$stmt->store_result();
+						$stmt->bind_result($r_result);
 
 						while ($stmt->fetch()) {
 							$next_unitTypes = $r_result;
@@ -1308,8 +1308,8 @@ function showMapInfo($getPage_connection2) {
 		$wrapCounter = 0;
 		if ($stmt = $getPage_connection2->prepare("SELECT id FROM improvements ORDER BY id ASC")) {
 			$stmt->execute();
-			$stmt->bind_result($r_result);
 			$stmt->store_result();
+			$stmt->bind_result($r_result);
 
 			while ($stmt->fetch()) {
 				$next_improvementTypes = $r_result;

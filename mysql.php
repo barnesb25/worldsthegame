@@ -986,8 +986,8 @@ function deleteOrganizationInfo($s_connection,$s_id) {
 
 	if ($stmt = $getPage_connection2->prepare("SELECT id FROM nations ORDER BY id ASC")) {
 		$stmt->execute();
-		$stmt->bind_result($r_result);
 		$stmt->store_result();
+		$stmt->bind_result($r_result);
 
 		while ($stmt->fetch()) {	
 			$next_nations = $r_result;

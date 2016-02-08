@@ -260,8 +260,8 @@ function showTradeInfo($getPage_connection2) {
 	$agreementsExist = false;
 	if ($stmt = $getPage_connection2->prepare("SELECT id FROM agreements ORDER BY id ASC")) {
 		$stmt->execute();
-		$stmt->bind_result($r_result);
 		$stmt->store_result();
+		$stmt->bind_result($r_result);
 
 		while ($stmt->fetch()) {
 			$next_agreements = $r_result;
@@ -307,8 +307,8 @@ function showTradeInfo($getPage_connection2) {
 	$offersExist = false;
 	if ($stmt = $getPage_connection2->prepare("SELECT id FROM offers ORDER BY id ASC")) {
 		$stmt->execute();
-		$stmt->bind_result($r_result);
 		$stmt->store_result();
+		$stmt->bind_result($r_result);
 
 		while ($stmt->fetch()) {
 			$next_offers = $r_result;
@@ -437,8 +437,8 @@ function showTradeInfo($getPage_connection2) {
 			echo "                        <select data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Specify item.\" name=\"offersItems[".$ff."]\" class=\"form-control input-sm\">\n";
 			if ($stmt = $getPage_connection2->prepare("SELECT id FROM resources ORDER BY id ASC")) {
 				$stmt->execute();
-				$stmt->bind_result($r_result);
 				$stmt->store_result();
+				$stmt->bind_result($r_result);
 
 				while ($stmt->fetch()) {
 					$next_resources = $r_result;
@@ -454,8 +454,8 @@ function showTradeInfo($getPage_connection2) {
 			} // else
 			if ($stmt = $getPage_connection2->prepare("SELECT id FROM goods ORDER BY id ASC")) {
 				$stmt->execute();
-				$stmt->bind_result($r_result);
 				$stmt->store_result();
+				$stmt->bind_result($r_result);
 
 				while ($stmt->fetch()) {
 					$next_goods = $r_result;
@@ -487,8 +487,9 @@ function showTradeInfo($getPage_connection2) {
 			echo "                        <select data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Specify item.\" name=\"offersItems[".$ff."]\" class=\"form-control input-sm\">\n";
 			if ($stmt = $getPage_connection2->prepare("SELECT id FROM resources ORDER BY id ASC")) {
 				$stmt->execute();
-				$stmt->bind_result($r_result);
 				$stmt->store_result();
+				$stmt->bind_result($r_result);
+
 				while ($stmt->fetch()) {
 					$next_resources = $r_result;
 					$resourceTypeInfo1 = getResourceTypeInfo($getPage_connection2,$next_resources);
@@ -499,8 +500,8 @@ function showTradeInfo($getPage_connection2) {
 			} // else
 			if ($stmt = $getPage_connection2->prepare("SELECT id FROM goods ORDER BY id ASC")) {
 				$stmt->execute();
-				$stmt->bind_result($r_result);
 				$stmt->store_result();
+				$stmt->bind_result($r_result);
 				
 				while ($stmt->fetch()) {
 					$next_goods = $r_result;
@@ -535,8 +536,8 @@ function showTradeInfo($getPage_connection2) {
 			echo "                        <select data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Specify item.\" name=\"demandsItems[".$ff."]\" class=\"form-control input-sm\">\n";
 			if ($stmt = $getPage_connection2->prepare("SELECT id FROM resources ORDER BY id ASC")) {
 				$stmt->execute();
-				$stmt->bind_result($r_result);
 				$stmt->store_result();
+				$stmt->bind_result($r_result);
 				
 				while ($stmt->fetch()) {
 					$next_resources = $r_result;
@@ -552,8 +553,8 @@ function showTradeInfo($getPage_connection2) {
 			} // else
 			if ($stmt = $getPage_connection2->prepare("SELECT id FROM goods ORDER BY id ASC")) {
 				$stmt->execute();
-				$stmt->bind_result($r_result);
 				$stmt->store_result();
+				$stmt->bind_result($r_result);
 				
 				while ($stmt->fetch()) {
 					$next_goods = $r_result;
@@ -585,8 +586,8 @@ function showTradeInfo($getPage_connection2) {
 			echo "                        <select data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Specify item.\" name=\"demandsItems[".$ff."]\" class=\"form-control input-sm\">\n";
 			if ($stmt = $getPage_connection2->prepare("SELECT id FROM resources ORDER BY id ASC")) {
 				$stmt->execute();
-				$stmt->bind_result($r_result);
 				$stmt->store_result();
+				$stmt->bind_result($r_result);
 
 				while ($stmt->fetch()) {
 					$next_resources = $r_result;
@@ -598,8 +599,8 @@ function showTradeInfo($getPage_connection2) {
 			} // else
 			if ($stmt = $getPage_connection2->prepare("SELECT id FROM goods ORDER BY id ASC")) {
 				$stmt->execute();
-				$stmt->bind_result($r_result);
 				$stmt->store_result();
+				$stmt->bind_result($r_result);
 				
 				while ($stmt->fetch()) {
 					$next_goods = $r_result;
@@ -645,8 +646,8 @@ function showTradeInfo($getPage_connection2) {
 	
 	if ($stmt = $getPage_connection2->prepare("SELECT id FROM market ORDER BY id ASC")) {
 		$stmt->execute();
-		$stmt->bind_result($r_result);
 		$stmt->store_result();
+		$stmt->bind_result($r_result);
 		
 		while ($stmt->fetch()) {
 			$next_market = $r_result;
@@ -671,8 +672,8 @@ function showTradeInfo($getPage_connection2) {
 	$agreementsExist = false;
 	if ($stmt = $getPage_connection2->prepare("SELECT id FROM agreements ORDER BY id ASC")) {
 		$stmt->execute();
-		$stmt->bind_result($r_result);
 		$stmt->store_result();
+		$stmt->bind_result($r_result);
 		
 		while ($stmt->fetch()) {
 			$next_agreements = $r_result;
@@ -710,8 +711,8 @@ function showTradeInfo($getPage_connection2) {
 	$offersExist = false;
 	if ($stmt = $getPage_connection2->prepare("SELECT id FROM offers ORDER BY id ASC")) {
 		$stmt->execute();
-		$stmt->bind_result($r_result);
 		$stmt->store_result();
+		$stmt->bind_result($r_result);
 		
 		while ($stmt->fetch()) {
 			$next_offers = $r_result;
@@ -789,8 +790,8 @@ function showTradeInfo($getPage_connection2) {
 	$agreementsExist = false;
 	if ($stmt = $getPage_connection2->prepare("SELECT id FROM agreements ORDER BY id ASC")) {
 		$stmt->execute();
-		$stmt->bind_result($r_result);
 		$stmt->store_result();
+		$stmt->bind_result($r_result);
 		
 		while ($stmt->fetch()) {
 			$next_agreements = $r_result;
@@ -829,8 +830,8 @@ function showTradeInfo($getPage_connection2) {
 	$offersExist = false;
 	if ($stmt = $getPage_connection2->prepare("SELECT id FROM offers ORDER BY id ASC")) {
 		$stmt->execute();
-		$stmt->bind_result($r_result);
 		$stmt->store_result();
+		$stmt->bind_result($r_result);
 
 		while ($stmt->fetch()) {
 			$next_offers = $r_result;
