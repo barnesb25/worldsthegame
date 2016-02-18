@@ -17,7 +17,7 @@ if (count($_POST)) {
 	compileMenu($getPage_connection2,"map");
 	showWarning($getPage_connection2);
 	showMap($getPage_connection2);
-	showMapInfo($getPage_connection2);
+	//showMapInfo($getPage_connection2);
 	require "section4.txt";
 	resetSession(true);
 } // else

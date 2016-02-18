@@ -327,13 +327,12 @@ function showMap($getPage_connection2) {
 		for ($y = 1; $y < 21; $y++ ) {
 			// go through x positions
 			for ($x = 1; $x < 21; $x++ ) {		
-				$tileInfo1_token = array("token"=>0);
 				if ($stmt11 = $getPage_connection2->prepare("SELECT token FROM tilesmap WHERE continent=? AND xpos=? AND ypos=? LIMIT 1")) {
 					$stmt11->bind_param("iii",$_SESSION["continent_id"],$x,$y);
 					$stmt11->execute();
 					$stmt11->bind_result($r_token);
 					$stmt11->fetch();
-					$tileInfo1_token["token"] = $r_token;
+					$tileInfo1_token = $r_token;
 					$stmt11->close();
 				} else {
 				} // else
@@ -361,7 +360,7 @@ function showMap($getPage_connection2) {
 					$tokenSet = false;
 				} // if
 						
-				if ($tokenSet === true && $_SESSION["mapContentsTokens"][$y][$x] == $tileInfo1_token["token"]) {
+				if ($tokenSet === true && $_SESSION["mapContentsTokens"][$y][$x] == $tileInfo1_token) {
 					$mapContentToken = $_SESSION["mapContentsTokens"][$y][$x];
 					$mapContentString = $_SESSION["mapContents"][$y][$x];
 				} else {	
