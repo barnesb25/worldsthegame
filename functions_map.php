@@ -2322,7 +2322,24 @@ function generateMapTile ($getPage_connection2,$x,$y) {
 	$mapContentToken = 0;
 	
 	$tileInfo1 = getTileInfo($getPage_connection2,$_SESSION["continent_id"],$x,$y);
-	if ($tileInfo1["id"] >= 1) {
+	
+	$tileInfo1 = array("continent"=>0,"xpos"=>0,"ypos"=>0,"terrain"=>0,"owner"=>0,"token"=>"");
+	if ($stmt919 = $getPage_connection2->prepare("SELECT continent,xpos,ypos,terrain,owner,token FROM tilesmap WHERE continent=? AND xpos=? AND ypos=? LIMIT 1")) {
+		$stmt919->bind_param("iii", $_SESSION["continent_id"], $x, $y);
+		$stmt919->execute();
+		$stmt919->bind_result($r_continent,$r_xpos,$r_ypos,$r_terrain,$r_owner,$r_token);
+		$stmt919->fetch();
+		$tileInfo1["continent"] = $r_continent;
+		$tileInfo1["xpos"] = $r_xpos;
+		$tileInfo1["ypos"] = $r_ypos;
+		$tileInfo1["terrain"] = $r_terrain;
+		$tileInfo1["owner"] = $r_owner;
+		$tileInfo1["token"] = $r_token;
+		$stmt919->close();
+	} else {
+	} // else
+		
+	if ($tileInfo1["continent"] >= 1) {
 			
 		$mapContentToken = $tileInfo1["token"];
 			
