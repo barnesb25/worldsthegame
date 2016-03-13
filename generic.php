@@ -2,7 +2,7 @@
 /****************************************************************************
  * Name:        generic.php
  * Author:      Ben Barnes
- * Date:        2016-01-29
+ * Date:        2016-02-20
  * Purpose:     Miscellaneous functions page
  *****************************************************************************/
 
@@ -152,8 +152,18 @@ function checkLoginStatus($getPage_connection2) {
 					$_SESSION["prev_overlay"] = "nations";
 					$_SESSION["overlay"] = "nations";
 					
-					$_SESSION["mapContents"] = array(array(""));
-					$_SESSION["mapContentsTokens"] = array(array(0));
+					$mapMemoryInfo = getMapMemoryInfo($getPage_connection2, $_SESSION["user_id"]);
+							
+					$_SESSION["terrainMapContents"] = $mapMemoryInfo["terrain"];
+					$_SESSION["terrainMapContentsTokens"] = $mapMemoryInfo["terraintokens"];
+					$_SESSION["controlMapContents"] = $mapMemoryInfo["control"];
+					$_SESSION["controlMapContentsTokens"] = $mapMemoryInfo["controltokens"];						
+					$_SESSION["claimsMapContents"] = $mapMemoryInfo["claims"];
+					$_SESSION["claimsMapContentsTokens"] = $mapMemoryInfo["claimstokens"];
+					$_SESSION["unitsMapContents"] = $mapMemoryInfo["units"];
+					$_SESSION["unitsMapContentsTokens"] = $mapMemoryInfo["unitstokens"];		
+					$_SESSION["nationsMapContents"] = $mapMemoryInfo["nations"];
+					$_SESSION["nationsMapContentsTokens"] = $mapMemoryInfo["nationstokens"];
 				} else {
 					$resetLoginVars = true;
 					$_SESSION["warning_message"] = "Cannot complete action: invalid user password credentials submitted.";
@@ -342,15 +352,60 @@ function resetSession($keepCores) {
 		} else {
 			$saved_overlay = 0;
 		} // else
-		if (isset($_SESSION["mapContents"])) {
-			$saved_mapContents = $_SESSION["mapContents"];
+			
+		if (isset($_SESSION["terrainMapContents"])) {
+			$saved_terrainMapContents = $_SESSION["terrainMapContents"];
 		} else {
-			$saved_mapContents = 0;
+			$saved_terrainMapContents = 0;
 		} // else
-		if (isset($_SESSION["mapContentsTokens"])) {
-			$saved_mapContentsTokens = $_SESSION["mapContentsTokens"];
+		if (isset($_SESSION["terrainMapContentsTokens"])) {
+			$saved_terrainMapContentsTokens = $_SESSION["terrainMapContentsTokens"];
 		} else {
-			$saved_mapContentsTokens = 0;
+			$saved_terrainMapContentsTokens = 0;
+		} // else
+			
+		if (isset($_SESSION["controlMapContents"])) {
+			$saved_controlMapContents = $_SESSION["controlMapContents"];
+		} else {
+			$saved_controlMapContents = 0;
+		} // else
+		if (isset($_SESSION["controlMapContentsTokens"])) {
+			$saved_controlMapContentsTokens = $_SESSION["controlMapContentsTokens"];
+		} else {
+			$saved_controlMapContentsTokens = 0;
+		} // else
+			
+		if (isset($_SESSION["claimsMapContents"])) {
+			$saved_claimsMapContents = $_SESSION["claimsMapContents"];
+		} else {
+			$saved_claimsMapContents = 0;
+		} // else
+		if (isset($_SESSION["claimsMapContentsTokens"])) {
+			$saved_claimsMapContentsTokens = $_SESSION["claimsMapContentsTokens"];
+		} else {
+			$saved_claimsMapContentsTokens = 0;
+		} // else
+
+		if (isset($_SESSION["unitsMapContents"])) {
+			$saved_unitsMapContents = $_SESSION["unitsMapContents"];
+		} else {
+			$saved_unitsMapContents = 0;
+		} // else
+		if (isset($_SESSION["unitsMapContentsTokens"])) {
+			$saved_unitsMapContentsTokens = $_SESSION["unitsMapContentsTokens"];
+		} else {
+			$saved_unitsMapContentsTokens = 0;
+		} // else
+			
+		if (isset($_SESSION["nationsMapContents"])) {
+			$saved_nationsMapContents = $_SESSION["nationsMapContents"];
+		} else {
+			$saved_nationsMapContents = 0;
+		} // else
+		if (isset($_SESSION["nationsMapContentsTokens"])) {
+			$saved_nationsMapContentsTokens = $_SESSION["nationsMapContentsTokens"];
+		} else {
+			$saved_nationsMapContentsTokens = 0;
 		} // else
 
 		session_unset();
@@ -370,8 +425,16 @@ function resetSession($keepCores) {
 		$_SESSION["ypos"] = $saved_ypos;
 		$_SESSION["overlay"] = $saved_overlay;
 		
-		$_SESSION["mapContents"] = $saved_mapContents;
-		$_SESSION["mapContentsTokens"] = $saved_mapContentsTokens;
+		$_SESSION["terrainMapContents"] = $saved_terrainMapContents;
+		$_SESSION["terrainMapContentsTokens"] = $saved_terrainMapContentsTokens;
+		$_SESSION["controlMapContents"] = $saved_controlMapContents;
+		$_SESSION["controlMapContentsTokens"] = $saved_controlMapContentsTokens;
+		$_SESSION["claimsMapContents"] = $saved_claimsMapContents;
+		$_SESSION["claimsMapContentsTokens"] = $saved_claimsMapContentsTokens;
+		$_SESSION["unitsMapContents"] = $saved_unitsMapContents;
+		$_SESSION["unitsMapContentsTokens"] = $saved_unitsMapContentsTokens;
+		$_SESSION["nationsMapContents"] = $saved_nationsMapContents;
+		$_SESSION["nationsMapContentsTokens"] = $saved_nationsMapContentsTokens;
 	} else {
 		session_unset();
 	} // else

@@ -2,7 +2,7 @@
 /****************************************************************************
  * Name:        functions_map.php
  * Author:      Ben Barnes
- * Date:        2016-01-29
+ * Date:        2016-02-20
  * Purpose:     Map functions page
  *****************************************************************************/
 
@@ -320,94 +320,8 @@ function showMap($getPage_connection2) {
 	echo "            <div class=\"well well-lg map_well\">\n";
 	echo "              <div id=\"map\">\n";
 	
-	$noTokens = false;
-	
-	if (isset($_SESSION["mapContentsTokens"])) {
-		// go through y positions
-		for ($y = 1; $y < 21; $y++ ) {
-			// go through x positions
-			for ($x = 1; $x < 21; $x++ ) {		
-				if ($stmt11 = $getPage_connection2->prepare("SELECT token FROM tilesmap WHERE continent=? AND xpos=? AND ypos=? LIMIT 1")) {
-					$stmt11->bind_param("iii",$_SESSION["continent_id"],$x,$y);
-					$stmt11->execute();
-					$stmt11->bind_result($r_token);
-					$stmt11->fetch();
-					$tileInfo1_token = $r_token;
-					$stmt11->close();
-				} else {
-				} // else
-						
-				$tokenSet = false;
-				if (isset($_SESSION["mapContentsTokens"][$y][$x])) {
-					$tokenSet = true;
-				} else {
-					$tokenSet = false;
-				} // else	
-
-				if ($x == $_SESSION["xpos"] && $y == $_SESSION["ypos"]) {
-					$tokenSet = false;
-				} // if
-				
-				if ($x == $_SESSION["prev_xpos"] && $y == $_SESSION["prev_ypos"]) {
-					$tokenSet = false;
-				} // if
-				
-				if ($x == $_SESSION["new_xpos"] && $y == $_SESSION["new_ypos"]) {
-					$tokenSet = false;
-				} // if
-				
-				if ($_SESSION["overlay"] != $_SESSION["prev_overlay"]) {
-					$tokenSet = false;
-				} // if
-						
-				if ($tokenSet === true && $_SESSION["mapContentsTokens"][$y][$x] == $tileInfo1_token) {
-					$mapContentToken = $_SESSION["mapContentsTokens"][$y][$x];
-					$mapContentString = $_SESSION["mapContents"][$y][$x];
-				} else {	
-					$mapContentString = "";
-					$mapContentToken = 0;
-					
-					$mapContent_generated = array("",0);
-					$mapContent_generated = generateMapTile($getPage_connection2,$x,$y);
-					
-					$mapContentString = $mapContent_generated[0];
-					$mapContentToken = $mapContent_generated[1];	
-
-					$_SESSION["mapContents"][$y][$x] = $mapContentString;
-					$_SESSION["mapContentsTokens"][$y][$x] = $mapContentToken;
-				} // else
-				echo $mapContentString;
-			} // for
-			echo "                <div class=\"clear\"></div>\n";
-		} // for
-	} else {
-		$noTokens = true;
-	} // else
+	mapGenerate($getPage_connection2);
 		
-	
-	// if no tokens are saved, refresh whole map contents batch
-	if ($noTokens === true) {	
-		// go through y positions
-		for ($y = 1; $y < 21; $y++ ) {
-			// go through x positions
-			for ($x = 1; $x < 21; $x++ ) {		
-				$mapContentString = "";
-				$mapContentToken = 0;
-				
-				$mapContent_generated = array("",0);
-				$mapContent_generated = generateMapTile($getPage_connection2,$x,$y);
-				
-				$mapContentString = $mapContent_generated[0];
-				$mapContentToken = $mapContent_generated[1];
-
-				$_SESSION["mapContents"][$y][$x] = $mapContentString;
-				$_SESSION["mapContentsTokens"][$y][$x] = $mapContentToken;
-				echo $mapContentString;
-			} // for
-			echo "                <div class=\"clear\"></div>\n";
-		} // for	
-	} // if
-	
 	echo "              </div>\n";
 	echo "            </div>\n";
 	echo "          </div>\n";
@@ -2322,11 +2236,11 @@ function generateMapTile ($getPage_connection2,$x,$y) {
 	
 	$tileInfo1 = getTileInfo($getPage_connection2,$_SESSION["continent_id"],$x,$y);
 	
-	$tileInfo1 = array("continent"=>0,"xpos"=>0,"ypos"=>0,"terrain"=>0,"owner"=>0,"token"=>"");
-	if ($stmt919 = $getPage_connection2->prepare("SELECT continent,xpos,ypos,terrain,owner,token FROM tilesmap WHERE continent=? AND xpos=? AND ypos=? LIMIT 1")) {
+	$tileInfo1 = array("continent"=>0,"xpos"=>0,"ypos"=>0,"terrain"=>0,"owner"=>0,"token"=>"","claims"=>array(0=>0));
+	if ($stmt919 = $getPage_connection2->prepare("SELECT continent,xpos,ypos,terrain,owner,token,claims FROM tilesmap WHERE continent=? AND xpos=? AND ypos=? LIMIT 1")) {
 		$stmt919->bind_param("iii", $_SESSION["continent_id"], $x, $y);
 		$stmt919->execute();
-		$stmt919->bind_result($r_continent,$r_xpos,$r_ypos,$r_terrain,$r_owner,$r_token);
+		$stmt919->bind_result($r_continent,$r_xpos,$r_ypos,$r_terrain,$r_owner,$r_token,$r_claims);
 		$stmt919->fetch();
 		$tileInfo1["continent"] = $r_continent;
 		$tileInfo1["xpos"] = $r_xpos;
@@ -2334,6 +2248,11 @@ function generateMapTile ($getPage_connection2,$x,$y) {
 		$tileInfo1["terrain"] = $r_terrain;
 		$tileInfo1["owner"] = $r_owner;
 		$tileInfo1["token"] = $r_token;
+		if (stripos($r_claims,",")) {
+			$tile["claims"] = explode(",",$r_claims);
+		} else {
+			$tile["claims"] = array(0=>$r_claims);
+		} // else
 		$stmt919->close();
 	} else {
 	} // else
@@ -2621,5 +2540,199 @@ function generateMapTile ($getPage_connection2,$x,$y) {
 	} // if
 	
 	return array($mapContentString,$mapContentToken);
-}
+} // generateMapTile
+
+function mapGenerate ($getPage_connection2) {	
+	$noTokens = false;
+	
+	$setTokens = false;
+	if ($_SESSION["overlay"] == "terrain") {
+		if (isset($_SESSION["terrainMapContentsTokens"])) {
+			$setTokens = true;
+		} else {
+			$setTokens = false;
+		} // else
+	} else if ($_SESSION["overlay"] == "control") {
+		if (isset($_SESSION["controlMapContentsTokens"])) {
+			$setTokens = true;
+		} else {
+			$setTokens = false;
+		} // else
+	} else if ($_SESSION["overlay"] == "claims") {
+		if (isset($_SESSION["claimsMapContentsTokens"])) {
+			$setTokens = true;
+		} else {
+			$setTokens = false;
+		} // else
+	} else if ($_SESSION["overlay"] == "units") {
+		if (isset($_SESSION["unitsMapContentsTokens"])) {
+			$setTokens = true;
+		} else {
+			$setTokens = false;
+		} // else
+	} else if ($_SESSION["overlay"] == "nations") {
+		if (isset($_SESSION["nationsMapContentsTokens"])) {
+			$setTokens = true;
+		} else {
+			$setTokens = false;
+		} // else
+	} else {
+		if (isset($_SESSION["nationsMapContentsTokens"])) {
+			$setTokens = true;
+		} else {
+			$setTokens = false;
+		} // else
+	} // else
+	
+	if ($setTokens === true) {
+		// go through y positions
+		for ($y = 1; $y < 21; $y++ ) {
+			// go through x positions
+			for ($x = 1; $x < 21; $x++ ) {
+				if ($stmt11 = $getPage_connection2->prepare("SELECT token FROM tilesmap WHERE continent=? AND xpos=? AND ypos=? LIMIT 1")) {
+					$stmt11->bind_param("iii",$_SESSION["continent_id"],$x,$y);
+					$stmt11->execute();
+					$stmt11->bind_result($r_token);
+					$stmt11->fetch();
+					$tileInfo1_token = $r_token;
+					$stmt11->close();
+				} else {
+				} // else
+					
+				if ($_SESSION["overlay"] == "terrain") {
+					$i_mapContentsTokens = $_SESSION["terrainMapContentsTokens"];
+				} else if ($_SESSION["overlay"] == "control") {
+					$i_mapContentsTokens = $_SESSION["controlMapContentsTokens"];
+				} else if ($_SESSION["overlay"] == "claims") {
+					$i_mapContentsTokens = $_SESSION["claimsMapContentsTokens"];
+				} else if ($_SESSION["overlay"] == "units") {
+					$i_mapContentsTokens = $_SESSION["unitsMapContentsTokens"];
+				} else if ($_SESSION["overlay"] == "nations") {
+					$i_mapContentsTokens = $_SESSION["nationsMapContentsTokens"];
+				} else {
+					$i_mapContentsTokens = $_SESSION["nationsMapContentsTokens"];
+				} // else
+	
+				$tokenSet = false;
+				if (isset($i_mapContentsTokens[$y][$x])) {
+					$tokenSet = true;
+				} else {
+					$tokenSet = false;
+				} // else
+	
+				if ($x == $_SESSION["xpos"] && $y == $_SESSION["ypos"]) {
+					$tokenSet = false;
+				} // if
+	
+				if ($x == $_SESSION["prev_xpos"] && $y == $_SESSION["prev_ypos"]) {
+					$tokenSet = false;
+				} // if
+	
+				if ($x == $_SESSION["new_xpos"] && $y == $_SESSION["new_ypos"]) {
+					$tokenSet = false;
+				} // if
+	
+				if ($_SESSION["overlay"] != $_SESSION["prev_overlay"]) {
+					$tokenSet = false;
+				} // if
+	
+				if ($tokenSet === true && $i_mapContentsTokens[$y][$x] == $tileInfo1_token) {
+					if ($_SESSION["overlay"] == "terrain") {
+						$mapContentToken = $_SESSION["terrainMapContentsTokens"][$y][$x];
+						$mapContentString = $_SESSION["terrainMapContents"][$y][$x];
+					} else if ($_SESSION["overlay"] == "control") {
+						$mapContentToken = $_SESSION["controlMapContentsTokens"][$y][$x];
+						$mapContentString = $_SESSION["controlMapContents"][$y][$x];
+					} else if ($_SESSION["overlay"] == "claims") {
+						$mapContentToken = $_SESSION["overlayMapContentsTokens"][$y][$x];
+						$mapContentString = $_SESSION["overlayMapContents"][$y][$x];
+					} else if ($_SESSION["overlay"] == "units") {
+						$mapContentToken = $_SESSION["unitsMapContentsTokens"][$y][$x];
+						$mapContentString = $_SESSION["unitsMapContents"][$y][$x];
+					} else if ($_SESSION["overlay"] == "nations") {
+						$mapContentToken = $_SESSION["nationsMapContentsTokens"][$y][$x];
+						$mapContentString = $_SESSION["nationsMapContents"][$y][$x];
+					} else {
+						$mapContentToken = $_SESSION["nationsMapContentsTokens"][$y][$x];
+						$mapContentString = $_SESSION["nationsMapContents"][$y][$x];
+					} // else
+				} else {
+					$mapContentString = "";
+					$mapContentToken = 0;
+						
+					$mapContent_generated = array("",0);
+					$mapContent_generated = generateMapTile($getPage_connection2,$x,$y);
+						
+					$mapContentString = $mapContent_generated[0];
+					$mapContentToken = $mapContent_generated[1];
+					
+					if ($_SESSION["overlay"] == "terrain") {
+						$_SESSION["terrainMapContentsTokens"][$y][$x] = $mapContentToken;
+						$_SESSION["terrainMapContents"][$y][$x] = $mapContentString;
+					} else if ($_SESSION["overlay"] == "control") {
+						$_SESSION["controlMapContentsTokens"][$y][$x] = $mapContentToken;
+						$_SESSION["controlMapContents"][$y][$x] = $mapContentString;
+					} else if ($_SESSION["overlay"] == "claims") {
+						$_SESSION["overlayMapContentsTokens"][$y][$x] = $mapContentToken;
+						$_SESSION["overlayMapContents"][$y][$x] = $mapContentString;
+					} else if ($_SESSION["overlay"] == "units") {
+						$_SESSION["unitsMapContentsTokens"][$y][$x] = $mapContentToken;
+						$_SESSION["unitsMapContents"][$y][$x] = $mapContentString;
+					} else if ($_SESSION["overlay"] == "nations") {
+						$_SESSION["nationsMapContentsTokens"][$y][$x] = $mapContentToken;
+						$_SESSION["nationsMapContents"][$y][$x] = $mapContentString;
+					} else {
+						$_SESSION["nationsMapContentsTokens"][$y][$x] = $mapContentToken;
+						$_SESSION["nationsMapContents"][$y][$x] = $mapContentString;
+					} // else
+				} // else
+				echo $mapContentString;
+			} // for
+			echo "                <div class=\"clear\"></div>\n";
+		} // for
+	} else {
+		$noTokens = true;
+	} // else
+	
+	
+	// if no tokens are saved, refresh whole map contents batch
+	if ($noTokens === true) {
+		// go through y positions
+		for ($y = 1; $y < 21; $y++ ) {
+			// go through x positions
+			for ($x = 1; $x < 21; $x++ ) {
+				$mapContentString = "";
+				$mapContentToken = 0;
+	
+				$mapContent_generated = array("",0);
+				$mapContent_generated = generateMapTile($getPage_connection2,$x,$y);
+	
+				$mapContentString = $mapContent_generated[0];
+				$mapContentToken = $mapContent_generated[1];
+				
+				if ($_SESSION["overlay"] == "terrain") {
+					$_SESSION["terrainMapContentsTokens"][$y][$x] = $mapContentToken;
+					$_SESSION["terrainMapContents"][$y][$x] = $mapContentString;
+				} else if ($_SESSION["overlay"] == "control") {
+					$_SESSION["controlMapContentsTokens"][$y][$x] = $mapContentToken;
+					$_SESSION["controlMapContents"][$y][$x] = $mapContentString;
+				} else if ($_SESSION["overlay"] == "claims") {
+					$_SESSION["overlayMapContentsTokens"][$y][$x] = $mapContentToken;
+					$_SESSION["overlayMapContents"][$y][$x] = $mapContentString;
+				} else if ($_SESSION["overlay"] == "units") {
+					$_SESSION["unitsMapContentsTokens"][$y][$x] = $mapContentToken;
+					$_SESSION["unitsMapContents"][$y][$x] = $mapContentString;
+				} else if ($_SESSION["overlay"] == "nations") {
+					$_SESSION["nationsMapContentsTokens"][$y][$x] = $mapContentToken;
+					$_SESSION["nationsMapContents"][$y][$x] = $mapContentString;
+				} else {
+					$_SESSION["nationsMapContentsTokens"][$y][$x] = $mapContentToken;
+					$_SESSION["nationsMapContents"][$y][$x] = $mapContentString;
+				} // else
+				echo $mapContentString;
+			} // for
+			echo "                <div class=\"clear\"></div>\n";
+		} // for
+	} // if
+} // mapGenerate
 ?>

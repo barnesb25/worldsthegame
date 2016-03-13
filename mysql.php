@@ -2,7 +2,7 @@
 /****************************************************************************
  * Name:        mysql.php
  * Author:      Ben Barnes
- * Date:        2016-01-29
+ * Date:        2016-02-20
  * Purpose:     MySQL access functions page
  *****************************************************************************/
 
@@ -562,6 +562,534 @@ function addImprovementInfo($s_connection,$s_continent,$s_xpos,$s_ypos,$s_type,$
 	} else {
 	} // else
 } // addImprovementInfo
+
+// mapmemory
+
+function getMapMemoryInfo($s_connection,$s_id) {
+	$mapMemory = array("id"=>0,"terrain"=>array(0=>""),"control"=>array(0=>""),"claims"=>array(0=>""),"units"=>array(0=>""),"nations"=>array(0=>""),"terraintokens"=>array(0=>""),"controltokens"=>array(0=>""),"claimstokens"=>array(0=>""),"unitstokens"=>array(0=>""),"nationstokens"=>array(0=>""));
+	if ($stmt = $s_connection->prepare("SELECT id,terrain,control,claims,units,nations,terraintokens,controltokens,claimstokens,unitstokens,nationstokens FROM mapmemory WHERE id=? LIMIT 1")) {
+		$stmt->bind_param("i", $s_id);
+		$stmt->execute();
+		$stmt->bind_result($r_id,$r_terrain,$r_control,$r_claims,$r_units,$r_nations,$r_terraintokens,$r_controltokens,$r_claimstokens,$r_unitstokens,$r_nationstokens);
+		$stmt->fetch();
+		$mapMemory["id"] = $r_id;
+		
+		$tt = array(array(1=>0));
+		if (stripos($r_terrain,",")) {	
+			$tt = explode("]]",$r_terrain); // split into y
+			$tt2 = array(1=>0);
+			// go through x positions
+			for ($z = 1; $z < count($tt); $z++ ) {
+				$tt2 = explode(",",$tt[$z]);
+				$mapMemory["terrain"][$z] = $tt2;
+			} // for
+		} else {
+			$mapMemory["terrain"] = "";
+		} // else
+			
+		$tt = array(array(1=>0));
+		if (stripos($r_control,",")) {
+			$tt = explode("]]",$r_control); // split into y
+			$tt2 = array(1=>0);
+			// go through x positions
+			for ($z = 1; $z < count($tt); $z++ ) {
+				$tt2 = explode(",",$tt[$z]);
+				$mapMemory["control"][$z] = $tt2;
+			} // for
+		} else {
+			$mapMemory["control"] = "";
+		} // else
+			
+		
+		$tt = array(array(1=>0));
+		if (stripos($r_claims,",")) {
+			$tt = explode("]]",$r_claims); // split into y
+			$tt2 = array(1=>0);
+			// go through x positions
+			for ($z = 1; $z < count($tt); $z++ ) {
+				$tt2 = explode(",",$tt[$z]);
+				$mapMemory["claims"][$z] = $tt2;
+			} // for
+		} else {
+			$mapMemory["claims"] = "";
+		} // else
+			
+		$tt = array(array(1=>0));
+		if (stripos($r_units,",")) {
+			$tt = explode("]]",$r_units); // split into y
+			$tt2 = array(1=>0);
+			// go through x positions
+			for ($z = 1; $z < count($tt); $z++ ) {
+				$tt2 = explode(",",$tt[$z]);
+				$mapMemory["units"][$z] = $tt2;
+			} // for
+		} else {
+			$mapMemory["units"] = "";
+		} // else
+			
+		$tt = array(array(1=>0));
+		if (stripos($r_nations,",")) {
+			$tt = explode("]]",$r_nations); // split into y
+			$tt2 = array(1=>0);
+			// go through x positions
+			for ($z = 1; $z < count($tt); $z++ ) {
+				$tt2 = explode(",",$tt[$z]);
+				$mapMemory["nations"][$z] = $tt2;
+			} // for
+		} else {
+			$mapMemory["nations"] = "";
+		} // else	
+		
+		$tt = array(array(1=>0));
+		if (stripos($r_terraintokens,",")) {
+			$tt = explode("]]",$r_terraintokens); // split into y
+			$tt2 = array(1=>0);
+			// go through x positions
+			for ($z = 1; $z < count($tt); $z++ ) {
+				$tt2 = explode(",",$tt[$z]);
+				$mapMemory["terraintokens"][$z] = $tt2;
+			} // for
+		} else {
+			$mapMemory["terraintokens"] = "";
+		} // else
+			
+		$tt = array(array(1=>0));
+		if (stripos($r_controltokens,",")) {
+			$tt = explode("]]",$r_controltokens); // split into y
+			$tt2 = array(1=>0);
+			// go through x positions
+			for ($z = 1; $z < count($tt); $z++ ) {
+				$tt2 = explode(",",$tt[$z]);
+				$mapMemory["controltokens"][$z] = $tt2;
+			} // for
+		} else {
+			$mapMemory["controltokens"] = "";
+		} // else
+			
+		
+		$tt = array(array(1=>0));
+		if (stripos($r_claimstokens,",")) {
+			$tt = explode("]]",$r_claimstokens); // split into y
+			$tt2 = array(1=>0);
+			// go through x positions
+			for ($z = 1; $z < count($tt); $z++ ) {
+				$tt2 = explode(",",$tt[$z]);
+				$mapMemory["claimstokens"][$z] = $tt2;
+			} // for
+		} else {
+			$mapMemory["claimstokens"] = "";
+		} // else
+			
+		$tt = array(array(1=>0));
+		if (stripos($r_unitstokens,",")) {
+			$tt = explode("]]",$r_unitstokens); // split into y
+			$tt2 = array(1=>0);
+			// go through x positions
+			for ($z = 1; $z < count($tt); $z++ ) {
+				$tt2 = explode(",",$tt[$z]);
+				$mapMemory["unitstokens"][$z] = $tt2;
+			} // for
+		} else {
+			$mapMemory["unitstokens"] = "";
+		} // else
+			
+		$tt = array(array(1=>0));
+		if (stripos($r_nationstokens,",")) {
+			$tt = explode("]]",$r_nationstokens); // split into y
+			$tt2 = array(1=>0);
+			// go through x positions
+			for ($z = 1; $z < count($tt); $z++ ) {
+				$tt2 = explode(",",$tt[$z]);
+				$mapMemory["nationstokens"][$z] = $tt2;
+			} // for
+		} else {
+			$mapMemory["nationstokens"] = "";
+		} // else
+
+		$stmt->close();
+	} else {
+	} // else
+
+	return $mapMemory;
+} // getMapMemoryInfo
+
+function setMapMemoryInfo($s_connection,$s_id,$s_terrain,$s_control,$s_claims,$s_units,$s_nations,$s_terraintokens,$s_controltokens,$s_claimstokens,$s_unitstokens,$s_nationstokens) {
+	if (isset($s_terrain)) {
+		if (count($s_terrain) > 1) {
+			$new_terrain = "";
+			// go through y positions
+			for ($y = 1; $y < 21; $y++ ) {
+				$tt = implode(",",$s_terrain[$y]);
+				$new_terrain .= $tt;
+				if ($y < 21) {
+					$new_terrain .= "]]";
+				} // if
+			} // for
+		} else {
+			$new_terrain = "";
+		} // else
+	} else {
+		$new_terrain = "";
+	} // else
+		
+	if (isset($s_control)) {
+		if (count($s_control) > 1) {
+			$new_control = "";
+			// go through y positions
+			for ($y = 1; $y < 21; $y++ ) {
+				$tt = implode(",",$s_control[$y]);
+				$new_control .= $tt;
+				if ($y < 21) {
+					$new_control .= "]]";
+				} // if
+			} // for
+		} else {
+			$new_control = "";
+		} // else
+	} else {
+		$new_control = "";
+	} // else
+		
+	if (isset($s_claims)) {
+		if (count($s_claims) > 1) {
+			$new_claims = "";
+			// go through y positions
+			for ($y = 1; $y < 21; $y++ ) {
+				$tt = implode(",",$s_claims[$y]);
+				$new_claims .= $tt;
+				if ($y < 21) {
+					$new_claims .= "]]";
+				} // if
+			} // for
+		} else {
+			$new_claims = "";
+		} // else
+	} else {
+		$new_claims = "";
+	} // else
+		
+	if (isset($s_units)) {
+		if (count($s_units) > 1) {
+			$new_units = "";
+			// go through y positions
+			for ($y = 1; $y < 21; $y++ ) {
+				$tt = implode(",",$s_units[$y]);
+				$new_units .= $tt;
+				if ($y < 21) {
+					$new_units .= "]]";
+				} // if
+			} // for
+		} else {
+			$new_units = "";
+		} // else
+	} else {
+		$new_units = "";
+	} // else
+		
+	if (isset($s_nations)) {
+		if (count($s_nations) > 1) {
+			$new_nations = "";
+			// go through y positions
+			for ($y = 1; $y < 21; $y++ ) {
+				$tt = implode(",",$s_nations[$y]);
+				$new_nations .= $tt;
+				if ($y < 21) {
+					$new_nations .= "]]";
+				} // if
+			} // for
+		} else {
+			$new_nations = "";
+		} // else
+	} else {
+		$new_nations = "";
+	} // else
+	
+	if (isset($s_terraintokens)) {
+		if (count($s_terraintokens) > 1) {
+			$new_terraintokens = "";
+			// go through y positions
+			for ($y = 1; $y < 21; $y++ ) {
+				$tt = implode(",",$s_terraintokens[$y]);
+				$new_terraintokens .= $tt;
+				if ($y < 21) {
+					$new_terraintokens .= "]]";
+				} // if
+			} // for
+		} else {
+			$new_terraintokens = "";
+		} // else
+	} else {
+		$new_terraintokens = "";
+	} // else
+	
+	if (isset($s_controltokens)) {
+		if (count($s_controltokens) > 1) {
+			$new_controltokens = "";
+			// go through y positions
+			for ($y = 1; $y < 21; $y++ ) {
+				$tt = implode(",",$s_controltokens[$y]);
+				$new_controltokens .= $tt;
+				if ($y < 21) {
+					$new_controltokens .= "]]";
+				} // if
+			} // for
+		} else {
+			$new_controltokens = "";
+		} // else
+	} else {
+		$new_controltokens = "";
+	} // else
+	
+	if (isset($s_claimstokens)) {
+		if (count($s_claimstokens) > 1) {
+			$new_claimstokens = "";
+			// go through y positions
+			for ($y = 1; $y < 21; $y++ ) {
+				$tt = implode(",",$s_claimstokens[$y]);
+				$new_claimstokens .= $tt;
+				if ($y < 21) {
+					$new_claimstokens .= "]]";
+				} // if
+			} // for
+		} else {
+			$new_claimstokens = "";
+		} // else
+	} else {
+		$new_claimstokens = "";
+	} // else
+	
+	if (isset($s_unitstokens)) {
+		if (count($s_unitstokens) > 1) {
+			$new_unitstokens = "";
+			// go through y positions
+			for ($y = 1; $y < 21; $y++ ) {
+				$tt = implode(",",$s_unitstokens[$y]);
+				$new_unitstokens .= $tt;
+				if ($y < 21) {
+					$new_unitstokens .= "]]";
+				} // if
+			} // for
+		} else {
+			$new_unitstokens = "";
+		} // else
+	} else {
+		$new_unitstokens = "";
+	} // else
+	
+	if (isset($s_nationstokens)) {
+		if (count($s_nationstokens) > 1) {
+			$new_nationstokens = "";
+			// go through y positions
+			for ($y = 1; $y < 21; $y++ ) {
+				$tt = implode(",",$s_nationstokens[$y]);
+				$new_nationstokens .= $tt;
+				if ($y < 21) {
+					$new_nationstokens .= "]]";
+				} // if
+			} // for
+		} else {
+			$new_nationstokens = "";
+		} // else
+	} else {
+		$new_nationstokens = "";
+	} // else
+	
+	if ($stmt = $s_connection->prepare("UPDATE mapmemory SET terrain=?,control=?,claims=?,units=?,nations=?,terraintokens=?,controltokens=?,claimstokens=?,unitstokens=?,nationstokens=? WHERE id=?")) {
+		$stmt->bind_param("ssssssssssi", $new_terrain, $new_control, $new_claims, $new_units, $new_nations, $new_terraintokens, $new_controltokens, $new_claimstokens, $new_unitstokens, $new_nationstokens, $s_id);
+		$stmt->execute();
+		$stmt->close();
+	} else {
+	} // else
+} // setMapMemoryInfo
+
+function addMapMemoryInfo($s_connection,$s_id,$s_terrain,$s_control,$s_claims,$s_units,$s_nations,$s_terraintokens,$s_controltokens,$s_claimstokens,$s_unitstokens,$s_nationstokens) {	
+	if (isset($s_terrain)) {
+		if (count($s_terrain) > 1) {
+			$new_terrain = "";
+			// go through y positions
+			for ($y = 1; $y < 21; $y++ ) {
+				$tt = implode(",",$s_terrain[$y]);
+				$new_terrain .= $tt;
+				if ($y < 21) {
+					$new_terrain .= "]]";
+				} // if
+			} // for
+		} else {
+			$new_terrain = "";
+		} // else
+	} else {
+		$new_terrain = "";
+	} // else
+	
+	if (isset($s_control)) {
+		if (count($s_control) > 1) {
+			$new_control = "";
+			// go through y positions
+			for ($y = 1; $y < 21; $y++ ) {
+				$tt = implode(",",$s_control[$y]);
+				$new_control .= $tt;
+				if ($y < 21) {
+					$new_control .= "]]";
+				} // if
+			} // for
+		} else {
+			$new_control = "";
+		} // else
+	} else {
+		$new_control = "";
+	} // else
+	
+	if (isset($s_claims)) {
+		if (count($s_claims) > 1) {
+			$new_claims = "";
+			// go through y positions
+			for ($y = 1; $y < 21; $y++ ) {
+				$tt = implode(",",$s_claims[$y]);
+				$new_claims .= $tt;
+				if ($y < 21) {
+					$new_claims .= "]]";
+				} // if
+			} // for
+		} else {
+			$new_claims = "";
+		} // else
+	} else {
+		$new_claims = "";
+	} // else
+	
+	if (isset($s_units)) {
+		if (count($s_units) > 1) {
+			$new_units = "";
+			// go through y positions
+			for ($y = 1; $y < 21; $y++ ) {
+				$tt = implode(",",$s_units[$y]);
+				$new_units .= $tt;
+				if ($y < 21) {
+					$new_units .= "]]";
+				} // if
+			} // for
+		} else {
+			$new_units = "";
+		} // else
+	} else {
+		$new_units = "";
+	} // else
+	
+	if (isset($s_nations)) {
+		if (count($s_nations) > 1) {
+			$new_nations = "";
+			// go through y positions
+			for ($y = 1; $y < 21; $y++ ) {
+				$tt = implode(",",$s_nations[$y]);
+				$new_nations .= $tt;
+				if ($y < 21) {
+					$new_nations .= "]]";
+				} // if
+			} // for
+		} else {
+			$new_nations = "";
+		} // else
+	} else {
+		$new_nations = "";
+	} // else
+	
+	if (isset($s_terraintokens)) {
+		if (count($s_terraintokens) > 1) {
+			$new_terraintokens = "";
+			// go through y positions
+			for ($y = 1; $y < 21; $y++ ) {
+				$tt = implode(",",$s_terraintokens[$y]);
+				$new_terraintokens .= $tt;
+				if ($y < 21) {
+					$new_terraintokens .= "]]";
+				} // if
+			} // for
+		} else {
+			$new_terraintokens = "";
+		} // else
+	} else {
+		$new_terraintokens = "";
+	} // else
+	
+	if (isset($s_controltokens)) {
+		if (count($s_controltokens) > 1) {
+			$new_controltokens = "";
+			// go through y positions
+			for ($y = 1; $y < 21; $y++ ) {
+				$tt = implode(",",$s_controltokens[$y]);
+				$new_controltokens .= $tt;
+				if ($y < 21) {
+					$new_controltokens .= "]]";
+				} // if
+			} // for
+		} else {
+			$new_controltokens = "";
+		} // else
+	} else {
+		$new_controltokens = "";
+	} // else
+	
+	if (isset($s_claimstokens)) {
+		if (count($s_claimstokens) > 1) {
+			$new_claimstokens = "";
+			// go through y positions
+			for ($y = 1; $y < 21; $y++ ) {
+				$tt = implode(",",$s_claimstokens[$y]);
+				$new_claimstokens .= $tt;
+				if ($y < 21) {
+					$new_claimstokens .= "]]";
+				} // if
+			} // for
+		} else {
+			$new_claimstokens = "";
+		} // else
+	} else {
+		$new_claimstokens = "";
+	} // else
+	
+	if (isset($s_unitstokens)) {
+		if (count($s_unitstokens) > 1) {
+			$new_unitstokens = "";
+			// go through y positions
+			for ($y = 1; $y < 21; $y++ ) {
+				$tt = implode(",",$s_unitstokens[$y]);
+				$new_unitstokens .= $tt;
+				if ($y < 21) {
+					$new_unitstokens .= "]]";
+				} // if
+			} // for
+		} else {
+			$new_unitstokens = "";
+		} // else
+	} else {
+		$new_unitstokens = "";
+	} // else
+	
+	if (isset($s_nationstokens)) {
+		if (count($s_nationstokens) > 1) {
+			$new_nationstokens = "";
+			// go through y positions
+			for ($y = 1; $y < 21; $y++ ) {
+				$tt = implode(",",$s_nationstokens[$y]);
+				$new_nationstokens .= $tt;
+				if ($y < 21) {
+					$new_nationstokens .= "]]";
+				} // if
+			} // for
+		} else {
+			$new_nationstokens = "";
+		} // else
+	} else {
+		$new_nationstokens = "";
+	} // else
+	
+	if ($stmt = $s_connection->prepare("INSERT INTO mapmemory (id,terrain,control,claims,units,nations,terraintokens,controltokens,claimstokens,unitstokens,nationstokens) VALUES (?,?,?,?,?,?,?,?,?,?,?)")) {
+		$stmt->bind_param("issssssssss", $s_id, $new_terrain, $new_control, $new_claims, $new_units, $new_nations, $new_terraintokens, $new_controltokens, $new_claimstokens, $new_unitstokens, $new_nationstokens);
+		$stmt->execute();
+		$stmt->close();
+	} else {
+	} // else
+} // addMapMemoryInfo
 
 // market
 function getMarketInfo($s_connection,$s_id) {

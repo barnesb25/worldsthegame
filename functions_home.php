@@ -2,7 +2,7 @@
 /****************************************************************************
  * Name:        functions_home.php
  * Author:      Ben Barnes
- * Date:        2016-01-29
+ * Date:        2016-02-20
  * Purpose:     Home functions page
  *****************************************************************************/
 
@@ -353,7 +353,9 @@ function registerUser($getPage_connection2) {
 						} // for
 	
 						addNationInfo($getPage_connection2,$new_userid,$new_name,$availableContinent,$new_formal,"",12,5000,0,3,2500,5,0,5,0,array(0=>0),array(0=>0),array(0=>5,1=>0,2=>0,3=>5,4=>2,5=>5,6=>0,7=>5),array(0=>5,1=>5,2=>5,3=>5),2000,0);
-	
+						
+						addMapMemoryInfo($getPage_connection2, $new_userid, array(0=>array(0=>0)), array(0=>array(0=>0)), array(0=>array(0=>0)), array(0=>array(0=>0)), array(0=>array(0=>0)), array(0=>array(0=>0)), array(0=>array(0=>0)), array(0=>array(0=>0)), array(0=>array(0=>0)), array(0=>array(0=>0)));
+						
 						$_SESSION["success_message"] = "User has been registered successfully!";
 					} // else
 				} else {
@@ -376,7 +378,11 @@ function registerUser($getPage_connection2) {
  ********************************/
 function logoutUser($getPage_connection2) {
 	if ($_SESSION["action"] == "logout") {
-		resetSession(false);
+		// only logout if logged in...
+		if ($_SESSION["login"] == 1) {
+			setMapMemoryInfo($getPage_connection2, $_SESSION["user_id"], $_SESSION["terrainMapContents"], $_SESSION["controlMapContents"], $_SESSION["claimsMapContents"], $_SESSION["unitsMapContents"], $_SESSION["nationsMapContents"], $_SESSION["terrainMapContentsTokens"], $_SESSION["controlMapContentsTokens"], $_SESSION["claimsMapContentsTokens"], $_SESSION["unitsMapContentsTokens"], $_SESSION["nationsMapContentsTokens"]);
+			resetSession(false);
+		} // if
 	} else {
 		$_SESSION["warning_message"] = "Cannot complete action: user is already logged out.";
 	} // else
