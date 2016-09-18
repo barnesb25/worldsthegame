@@ -320,7 +320,7 @@ function showMap($getPage_connection2) {
 	echo "            <div class=\"well well-lg map_well\">\n";
 	echo "              <div id=\"map\">\n";
 	
-	//mapGenerate($getPage_connection2);
+	mapGenerate($getPage_connection2);
 		
 	echo "              </div>\n";
 	echo "            </div>\n";
