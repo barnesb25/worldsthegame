@@ -710,7 +710,7 @@ function setMapMemoryInfo($s_connection,$s_id,$s_terrain,$s_control,$s_claims,$s
 	} // else
 } // setMapMemoryInfo
 
-function addMapMemoryInfo($s_connection,$s_id,$s_terrain,$s_control,$s_claims,$s_units,$s_nations,$s_terraintokens,$s_controltokens,null,$s_unitstokens,$s_nationstokens) {	
+function addMapMemoryInfo($s_connection,$s_id,$s_terrain,$s_control,$s_claims,$s_units,$s_nations,$s_terraintokens,$s_controltokens,$s_claimstokens,$s_unitstokens,$s_nationstokens) {	
 	if (isset($s_terrain)) {		
 		$new_terrain = serialize($s_terrain);		
 	} else {
