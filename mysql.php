@@ -564,7 +564,7 @@ function addImprovementInfo($s_connection,$s_continent,$s_xpos,$s_ypos,$s_type,$
 } // addImprovementInfo
 
 // mapmemory
-
+/*
 function getMapMemoryInfo($s_connection,$s_id) {
 	$mapMemory = array("id"=>0,"terrain"=>array(0=>""),"control"=>array(0=>""),"claims"=>array(0=>""),"units"=>array(0=>""),"nations"=>array(0=>""),"terraintokens"=>array(0=>""),"controltokens"=>array(0=>""),"claimstokens"=>array(0=>""),"unitstokens"=>array(0=>""),"nationstokens"=>array(0=>""));
 	if ($stmt = $s_connection->prepare("SELECT id,terrain,control,claims,units,nations,terraintokens,controltokens,claimstokens,unitstokens,nationstokens FROM mapmemory WHERE id=? LIMIT 1")) {
@@ -640,7 +640,7 @@ function getMapMemoryInfo($s_connection,$s_id) {
 
 	return $mapMemory;
 } // getMapMemoryInfo
-
+*/
 function setMapMemoryInfo($s_connection,$s_id,$s_terrain,$s_control,$s_claims,$s_units,$s_nations,$s_terraintokens,$s_controltokens,$s_claimstokens,$s_unitstokens,$s_nationstokens) {
 	if (isset($s_terrain)) {		
 		$new_terrain = serialize($s_terrain);		
