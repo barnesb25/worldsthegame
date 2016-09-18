@@ -574,134 +574,62 @@ function getMapMemoryInfo($s_connection,$s_id) {
 		$stmt->fetch();
 		$mapMemory["id"] = $r_id;
 		
-		$tt = array(array(1=>0));
-		if (stripos($r_terrain,",")) {	
-			$tt = explode("]]",$r_terrain); // split into y
-			$tt2 = array(1=>0);
-			// go through x positions
-			for ($z = 1; $z < count($tt); $z++ ) {
-				$tt2 = explode(",",$tt[$z]);
-				$mapMemory["terrain"][$z] = $tt2;
-			} // for
+		if (isset($r_terrain)) {	
+			$mapMemory["terrain"] = unserialize($r_terrain);
 		} else {
 			$mapMemory["terrain"] = "";
 		} // else
 			
-		$tt = array(array(1=>0));
-		if (stripos($r_control,",")) {
-			$tt = explode("]]",$r_control); // split into y
-			$tt2 = array(1=>0);
-			// go through x positions
-			for ($z = 1; $z < count($tt); $z++ ) {
-				$tt2 = explode(",",$tt[$z]);
-				$mapMemory["control"][$z] = $tt2;
-			} // for
+		if (isset($r_control)) {	
+			$mapMemory["control"] = unserialize($r_control);
 		} else {
 			$mapMemory["control"] = "";
 		} // else
 			
-		
-		$tt = array(array(1=>0));
-		if (stripos($r_claims,",")) {
-			$tt = explode("]]",$r_claims); // split into y
-			$tt2 = array(1=>0);
-			// go through x positions
-			for ($z = 1; $z < count($tt); $z++ ) {
-				$tt2 = explode(",",$tt[$z]);
-				$mapMemory["claims"][$z] = $tt2;
-			} // for
+		if (isset($r_claims)) {
+			$mapMemory["claims"] = unserialize($r_claims);
 		} else {
 			$mapMemory["claims"] = "";
 		} // else
 			
-		$tt = array(array(1=>0));
-		if (stripos($r_units,",")) {
-			$tt = explode("]]",$r_units); // split into y
-			$tt2 = array(1=>0);
-			// go through x positions
-			for ($z = 1; $z < count($tt); $z++ ) {
-				$tt2 = explode(",",$tt[$z]);
-				$mapMemory["units"][$z] = $tt2;
-			} // for
+		if (isset($r_units)) {
+			$mapMemory["units"] = unserialize($r_units);
 		} else {
 			$mapMemory["units"] = "";
 		} // else
 			
-		$tt = array(array(1=>0));
-		if (stripos($r_nations,",")) {
-			$tt = explode("]]",$r_nations); // split into y
-			$tt2 = array(1=>0);
-			// go through x positions
-			for ($z = 1; $z < count($tt); $z++ ) {
-				$tt2 = explode(",",$tt[$z]);
-				$mapMemory["nations"][$z] = $tt2;
-			} // for
+		if (isset($r_nations)) {
+			$mapMemory["nations"] = unserialize($r_nations);
 		} else {
 			$mapMemory["nations"] = "";
-		} // else	
-		
-		$tt = array(array(1=>0));
-		if (stripos($r_terraintokens,",")) {
-			$tt = explode("]]",$r_terraintokens); // split into y
-			$tt2 = array(1=>0);
-			// go through x positions
-			for ($z = 1; $z < count($tt); $z++ ) {
-				$tt2 = explode(",",$tt[$z]);
-				$mapMemory["terraintokens"][$z] = $tt2;
-			} // for
+		} // else
+			
+		if (isset($r_terraintokens)) {
+			$mapMemory["terraintokens"] = unserialize($r_terraintokens);
 		} else {
 			$mapMemory["terraintokens"] = "";
 		} // else
-			
-		$tt = array(array(1=>0));
-		if (stripos($r_controltokens,",")) {
-			$tt = explode("]]",$r_controltokens); // split into y
-			$tt2 = array(1=>0);
-			// go through x positions
-			for ($z = 1; $z < count($tt); $z++ ) {
-				$tt2 = explode(",",$tt[$z]);
-				$mapMemory["controltokens"][$z] = $tt2;
-			} // for
+		
+		if (isset($r_controltokens)) {
+			$mapMemory["controltokens"] = unserialize($r_controltokens);
 		} else {
 			$mapMemory["controltokens"] = "";
 		} // else
 			
-		
-		$tt = array(array(1=>0));
-		if (stripos($r_claimstokens,",")) {
-			$tt = explode("]]",$r_claimstokens); // split into y
-			$tt2 = array(1=>0);
-			// go through x positions
-			for ($z = 1; $z < count($tt); $z++ ) {
-				$tt2 = explode(",",$tt[$z]);
-				$mapMemory["claimstokens"][$z] = $tt2;
-			} // for
+		if (isset($r_claimstokens)) {
+			$mapMemory["claimstokens"] = unserialize($r_claimstokens);
 		} else {
 			$mapMemory["claimstokens"] = "";
 		} // else
 			
-		$tt = array(array(1=>0));
-		if (stripos($r_unitstokens,",")) {
-			$tt = explode("]]",$r_unitstokens); // split into y
-			$tt2 = array(1=>0);
-			// go through x positions
-			for ($z = 1; $z < count($tt); $z++ ) {
-				$tt2 = explode(",",$tt[$z]);
-				$mapMemory["unitstokens"][$z] = $tt2;
-			} // for
+		if (isset($r_unitstokens)) {
+			$mapMemory["unitstokens"] = unserialize($r_unitstokens);
 		} else {
 			$mapMemory["unitstokens"] = "";
 		} // else
 			
-		$tt = array(array(1=>0));
-		if (stripos($r_nationstokens,",")) {
-			$tt = explode("]]",$r_nationstokens); // split into y
-			$tt2 = array(1=>0);
-			// go through x positions
-			for ($z = 1; $z < count($tt); $z++ ) {
-				$tt2 = explode(",",$tt[$z]);
-				$mapMemory["nationstokens"][$z] = $tt2;
-			} // for
+		if (isset($r_nationstokens)) {
+			$mapMemory["nationstokens"] = unserialize($r_nationstokens);
 		} else {
 			$mapMemory["nationstokens"] = "";
 		} // else
@@ -714,182 +642,62 @@ function getMapMemoryInfo($s_connection,$s_id) {
 } // getMapMemoryInfo
 
 function setMapMemoryInfo($s_connection,$s_id,$s_terrain,$s_control,$s_claims,$s_units,$s_nations,$s_terraintokens,$s_controltokens,$s_claimstokens,$s_unitstokens,$s_nationstokens) {
-	if (isset($s_terrain)) {
-		if (count($s_terrain) > 1) {
-			$new_terrain = "";
-			// go through y positions
-			for ($y = 1; $y < 21; $y++ ) {
-				$tt = implode(",",$s_terrain[$y]);
-				$new_terrain .= $tt;
-				if ($y < 21) {
-					$new_terrain .= "]]";
-				} // if
-			} // for
-		} else {
-			$new_terrain = "";
-		} // else
+	if (isset($s_terrain)) {		
+		$new_terrain = serialize($s_terrain);		
 	} else {
 		$new_terrain = "";
 	} // else
-		
+	
 	if (isset($s_control)) {
-		if (count($s_control) > 1) {
-			$new_control = "";
-			// go through y positions
-			for ($y = 1; $y < 21; $y++ ) {
-				$tt = implode(",",$s_control[$y]);
-				$new_control .= $tt;
-				if ($y < 21) {
-					$new_control .= "]]";
-				} // if
-			} // for
-		} else {
-			$new_control = "";
-		} // else
+		$new_control = serialize($s_control);
 	} else {
 		$new_control = "";
 	} // else
-		
+	
 	if (isset($s_claims)) {
-		if (count($s_claims) > 1) {
-			$new_claims = "";
-			// go through y positions
-			for ($y = 1; $y < 21; $y++ ) {
-				$tt = implode(",",$s_claims[$y]);
-				$new_claims .= $tt;
-				if ($y < 21) {
-					$new_claims .= "]]";
-				} // if
-			} // for
-		} else {
-			$new_claims = "";
-		} // else
+		$new_claims = serialize($s_claims);
 	} else {
 		$new_claims = "";
 	} // else
-		
+	
 	if (isset($s_units)) {
-		if (count($s_units) > 1) {
-			$new_units = "";
-			// go through y positions
-			for ($y = 1; $y < 21; $y++ ) {
-				$tt = implode(",",$s_units[$y]);
-				$new_units .= $tt;
-				if ($y < 21) {
-					$new_units .= "]]";
-				} // if
-			} // for
-		} else {
-			$new_units = "";
-		} // else
+		$new_units = serialize($s_units);
 	} else {
 		$new_units = "";
 	} // else
-		
+	
 	if (isset($s_nations)) {
-		if (count($s_nations) > 1) {
-			$new_nations = "";
-			// go through y positions
-			for ($y = 1; $y < 21; $y++ ) {
-				$tt = implode(",",$s_nations[$y]);
-				$new_nations .= $tt;
-				if ($y < 21) {
-					$new_nations .= "]]";
-				} // if
-			} // for
-		} else {
-			$new_nations = "";
-		} // else
+		$new_nations = serialize($s_nations);
 	} else {
 		$new_nations = "";
 	} // else
 	
 	if (isset($s_terraintokens)) {
-		if (count($s_terraintokens) > 1) {
-			$new_terraintokens = "";
-			// go through y positions
-			for ($y = 1; $y < 21; $y++ ) {
-				$tt = implode(",",$s_terraintokens[$y]);
-				$new_terraintokens .= $tt;
-				if ($y < 21) {
-					$new_terraintokens .= "]]";
-				} // if
-			} // for
-		} else {
-			$new_terraintokens = "";
-		} // else
+		$new_terraintokens = serialize($s_terraintokens);
 	} else {
 		$new_terraintokens = "";
 	} // else
 	
 	if (isset($s_controltokens)) {
-		if (count($s_controltokens) > 1) {
-			$new_controltokens = "";
-			// go through y positions
-			for ($y = 1; $y < 21; $y++ ) {
-				$tt = implode(",",$s_controltokens[$y]);
-				$new_controltokens .= $tt;
-				if ($y < 21) {
-					$new_controltokens .= "]]";
-				} // if
-			} // for
-		} else {
-			$new_controltokens = "";
-		} // else
+		$new_controltokens = serialize($s_controltokens);
 	} else {
 		$new_controltokens = "";
 	} // else
 	
 	if (isset($s_claimstokens)) {
-		if (count($s_claimstokens) > 1) {
-			$new_claimstokens = "";
-			// go through y positions
-			for ($y = 1; $y < 21; $y++ ) {
-				$tt = implode(",",$s_claimstokens[$y]);
-				$new_claimstokens .= $tt;
-				if ($y < 21) {
-					$new_claimstokens .= "]]";
-				} // if
-			} // for
-		} else {
-			$new_claimstokens = "";
-		} // else
+		$new_claimstokens = serialize($s_claimstokens);
 	} else {
 		$new_claimstokens = "";
 	} // else
 	
 	if (isset($s_unitstokens)) {
-		if (count($s_unitstokens) > 1) {
-			$new_unitstokens = "";
-			// go through y positions
-			for ($y = 1; $y < 21; $y++ ) {
-				$tt = implode(",",$s_unitstokens[$y]);
-				$new_unitstokens .= $tt;
-				if ($y < 21) {
-					$new_unitstokens .= "]]";
-				} // if
-			} // for
-		} else {
-			$new_unitstokens = "";
-		} // else
+		$new_unitstokens = serialize($s_unitstokens);
 	} else {
 		$new_unitstokens = "";
 	} // else
 	
 	if (isset($s_nationstokens)) {
-		if (count($s_nationstokens) > 1) {
-			$new_nationstokens = "";
-			// go through y positions
-			for ($y = 1; $y < 21; $y++ ) {
-				$tt = implode(",",$s_nationstokens[$y]);
-				$new_nationstokens .= $tt;
-				if ($y < 21) {
-					$new_nationstokens .= "]]";
-				} // if
-			} // for
-		} else {
-			$new_nationstokens = "";
-		} // else
+		$new_nationstokens = serialize($s_nationstokens);
 	} else {
 		$new_nationstokens = "";
 	} // else
@@ -903,182 +711,62 @@ function setMapMemoryInfo($s_connection,$s_id,$s_terrain,$s_control,$s_claims,$s
 } // setMapMemoryInfo
 
 function addMapMemoryInfo($s_connection,$s_id,$s_terrain,$s_control,$s_claims,$s_units,$s_nations,$s_terraintokens,$s_controltokens,$s_claimstokens,$s_unitstokens,$s_nationstokens) {	
-	if (isset($s_terrain)) {
-		if (count($s_terrain) > 1) {
-			$new_terrain = "";
-			// go through y positions
-			for ($y = 1; $y < 21; $y++ ) {
-				$tt = implode(",",$s_terrain[$y]);
-				$new_terrain .= $tt;
-				if ($y < 21) {
-					$new_terrain .= "]]";
-				} // if
-			} // for
-		} else {
-			$new_terrain = "";
-		} // else
+	if (isset($s_terrain)) {		
+		$new_terrain = serialize($s_terrain);		
 	} else {
 		$new_terrain = "";
 	} // else
 	
 	if (isset($s_control)) {
-		if (count($s_control) > 1) {
-			$new_control = "";
-			// go through y positions
-			for ($y = 1; $y < 21; $y++ ) {
-				$tt = implode(",",$s_control[$y]);
-				$new_control .= $tt;
-				if ($y < 21) {
-					$new_control .= "]]";
-				} // if
-			} // for
-		} else {
-			$new_control = "";
-		} // else
+		$new_control = serialize($s_control);
 	} else {
 		$new_control = "";
 	} // else
 	
 	if (isset($s_claims)) {
-		if (count($s_claims) > 1) {
-			$new_claims = "";
-			// go through y positions
-			for ($y = 1; $y < 21; $y++ ) {
-				$tt = implode(",",$s_claims[$y]);
-				$new_claims .= $tt;
-				if ($y < 21) {
-					$new_claims .= "]]";
-				} // if
-			} // for
-		} else {
-			$new_claims = "";
-		} // else
+		$new_claims = serialize($s_claims);
 	} else {
 		$new_claims = "";
 	} // else
 	
 	if (isset($s_units)) {
-		if (count($s_units) > 1) {
-			$new_units = "";
-			// go through y positions
-			for ($y = 1; $y < 21; $y++ ) {
-				$tt = implode(",",$s_units[$y]);
-				$new_units .= $tt;
-				if ($y < 21) {
-					$new_units .= "]]";
-				} // if
-			} // for
-		} else {
-			$new_units = "";
-		} // else
+		$new_units = serialize($s_units);
 	} else {
 		$new_units = "";
 	} // else
 	
 	if (isset($s_nations)) {
-		if (count($s_nations) > 1) {
-			$new_nations = "";
-			// go through y positions
-			for ($y = 1; $y < 21; $y++ ) {
-				$tt = implode(",",$s_nations[$y]);
-				$new_nations .= $tt;
-				if ($y < 21) {
-					$new_nations .= "]]";
-				} // if
-			} // for
-		} else {
-			$new_nations = "";
-		} // else
+		$new_nations = serialize($s_nations);
 	} else {
 		$new_nations = "";
 	} // else
 	
 	if (isset($s_terraintokens)) {
-		if (count($s_terraintokens) > 1) {
-			$new_terraintokens = "";
-			// go through y positions
-			for ($y = 1; $y < 21; $y++ ) {
-				$tt = implode(",",$s_terraintokens[$y]);
-				$new_terraintokens .= $tt;
-				if ($y < 21) {
-					$new_terraintokens .= "]]";
-				} // if
-			} // for
-		} else {
-			$new_terraintokens = "";
-		} // else
+		$new_terraintokens = serialize($s_terraintokens);
 	} else {
 		$new_terraintokens = "";
 	} // else
 	
 	if (isset($s_controltokens)) {
-		if (count($s_controltokens) > 1) {
-			$new_controltokens = "";
-			// go through y positions
-			for ($y = 1; $y < 21; $y++ ) {
-				$tt = implode(",",$s_controltokens[$y]);
-				$new_controltokens .= $tt;
-				if ($y < 21) {
-					$new_controltokens .= "]]";
-				} // if
-			} // for
-		} else {
-			$new_controltokens = "";
-		} // else
+		$new_controltokens = serialize($s_controltokens);
 	} else {
 		$new_controltokens = "";
 	} // else
 	
 	if (isset($s_claimstokens)) {
-		if (count($s_claimstokens) > 1) {
-			$new_claimstokens = "";
-			// go through y positions
-			for ($y = 1; $y < 21; $y++ ) {
-				$tt = implode(",",$s_claimstokens[$y]);
-				$new_claimstokens .= $tt;
-				if ($y < 21) {
-					$new_claimstokens .= "]]";
-				} // if
-			} // for
-		} else {
-			$new_claimstokens = "";
-		} // else
+		$new_claimstokens = serialize($s_claimstokens);
 	} else {
 		$new_claimstokens = "";
 	} // else
 	
 	if (isset($s_unitstokens)) {
-		if (count($s_unitstokens) > 1) {
-			$new_unitstokens = "";
-			// go through y positions
-			for ($y = 1; $y < 21; $y++ ) {
-				$tt = implode(",",$s_unitstokens[$y]);
-				$new_unitstokens .= $tt;
-				if ($y < 21) {
-					$new_unitstokens .= "]]";
-				} // if
-			} // for
-		} else {
-			$new_unitstokens = "";
-		} // else
+		$new_unitstokens = serialize($s_unitstokens);
 	} else {
 		$new_unitstokens = "";
 	} // else
 	
 	if (isset($s_nationstokens)) {
-		if (count($s_nationstokens) > 1) {
-			$new_nationstokens = "";
-			// go through y positions
-			for ($y = 1; $y < 21; $y++ ) {
-				$tt = implode(",",$s_nationstokens[$y]);
-				$new_nationstokens .= $tt;
-				if ($y < 21) {
-					$new_nationstokens .= "]]";
-				} // if
-			} // for
-		} else {
-			$new_nationstokens = "";
-		} // else
+		$new_nationstokens = serialize($s_nationstokens);
 	} else {
 		$new_nationstokens = "";
 	} // else
