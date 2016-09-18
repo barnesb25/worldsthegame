@@ -216,7 +216,12 @@ function resetWorld($getPage_connection3) {
 					$stmt->execute();
 					$stmt->close();
 				} else {
-				} // else	
+				} // else
+				if ($stmt = $getPage_connection3->prepare("TRUNCATE TABLE mapmemory")) {
+					$stmt->execute();
+					$stmt->close();
+				} else {
+				} // else
 
 				if ($stmt = $getPage_connection3->prepare("SELECT id FROM market ORDER BY id ASC")) {
 					$stmt->execute();
