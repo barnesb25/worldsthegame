@@ -360,6 +360,8 @@ function registerUser($getPage_connection2) {
 							for ($x = 1; $x < 21; $x++ ) {
 								$mapContentString = "";
 								$mapContentToken = 0;
+								
+								$_SESSION["overlay"] = "nations";
 						
 								$mapContent_generated = array("",0);
 								$mapContent_generated = generateMapTile($getPage_connection2,$availableContinent,$x,$y);

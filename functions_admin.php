@@ -430,6 +430,8 @@ function resetWorld($getPage_connection3) {
 					for ($x = 1; $x < 21; $x++ ) {
 						$mapContentString = "";
 						$mapContentToken = 0;
+						
+						$_SESSION["overlay"] = "nations";
 				
 						$mapContent_generated = array("",0);
 						$mapContent_generated = generateMapTile($getPage_connection3,$availableContinent,$x,$y);
@@ -438,7 +440,7 @@ function resetWorld($getPage_connection3) {
 				
 						$mapContentString = $mapContent_generated[0];
 						$mapContentToken = $mapContent_generated[1];
-				
+		
 						if ($_SESSION["overlay"] == "terrain") {
 							$_SESSION["terrainMapContentsTokens"][$y][$x] = $mapContentToken;
 							$_SESSION["terrainMapContents"][$y][$x] = $mapContentString;
