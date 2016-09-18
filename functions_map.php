@@ -2234,6 +2234,14 @@ function generateMapTile ($getPage_connection2,$continent,$x,$y) {
 	$mapContentString = "";
 	$mapContentToken = 0;
 	
+	if (!(isset($_SESSION["xpos"]))) {
+		$_SESSION["xpos"] = 0;
+	} // if
+	
+	if (!(isset($_SESSION["ypos"]))) {
+		$_SESSION["ypos"] = 0;
+	} // if
+	
 	$tileInfo1 = getTileInfo($getPage_connection2,$continent,$x,$y);
 	
 	$tileInfo1 = array("continent"=>0,"xpos"=>0,"ypos"=>0,"terrain"=>0,"owner"=>0,"token"=>"","claims"=>array(0=>0));
