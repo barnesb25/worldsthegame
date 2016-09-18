@@ -362,7 +362,7 @@ function registerUser($getPage_connection2) {
 								$mapContentToken = 0;
 						
 								$mapContent_generated = array("",0);
-								$mapContent_generated = generateMapTile($getPage_connection2,$x,$y);
+								$mapContent_generated = generateMapTile($getPage_connection2,$availableContinent,$x,$y);
 						
 								$mapContentString = $mapContent_generated[0];
 								$mapContentToken = $mapContent_generated[1];

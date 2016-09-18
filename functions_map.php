@@ -2230,15 +2230,15 @@ function buildUnit($getPage_connection2) {
 	} // else
 } // buildUnit
 
-function generateMapTile ($getPage_connection2,$x,$y) {
+function generateMapTile ($getPage_connection2,$continent,$x,$y) {
 	$mapContentString = "";
 	$mapContentToken = 0;
 	
-	$tileInfo1 = getTileInfo($getPage_connection2,$_SESSION["continent_id"],$x,$y);
+	$tileInfo1 = getTileInfo($getPage_connection2,$continent,$x,$y);
 	
 	$tileInfo1 = array("continent"=>0,"xpos"=>0,"ypos"=>0,"terrain"=>0,"owner"=>0,"token"=>"","claims"=>array(0=>0));
 	if ($stmt919 = $getPage_connection2->prepare("SELECT continent,xpos,ypos,terrain,owner,token,claims FROM tilesmap WHERE continent=? AND xpos=? AND ypos=? LIMIT 1")) {
-		$stmt919->bind_param("iii", $_SESSION["continent_id"], $x, $y);
+		$stmt919->bind_param("iii", $continent, $x, $y);
 		$stmt919->execute();
 		$stmt919->bind_result($r_continent,$r_xpos,$r_ypos,$r_terrain,$r_owner,$r_token,$r_claims);
 		$stmt919->fetch();
@@ -2301,7 +2301,7 @@ function generateMapTile ($getPage_connection2,$x,$y) {
 		} // else
 	
 		if ($_SESSION["overlay"] == "terrain") {
-			$mapContentString .= "                <div class=\"tile_container\"><a class=\"tile_link\" href=\"index.php?page=map&amp;continent=".$_SESSION["continent_id"]."&amp;xpos=".$x."&amp;ypos=".$y."&amp;overlay=".$_SESSION["overlay"]."\">";
+			$mapContentString .= "                <div class=\"tile_container\"><a class=\"tile_link\" href=\"index.php?page=map&amp;continent=".$continent."&amp;xpos=".$x."&amp;ypos=".$y."&amp;overlay=".$_SESSION["overlay"]."\">";
 	
 			if ($unitInfo1["id"] >= 1) {
 				if ($tileInfo1["xpos"] == $_SESSION["xpos"] && $tileInfo1["ypos"] == $_SESSION["ypos"]) {
@@ -2319,7 +2319,7 @@ function generateMapTile ($getPage_connection2,$x,$y) {
 			$mapContentString .= "</a></div>\n";
 	
 		} else if ($_SESSION["overlay"] == "control") {
-			$mapContentString .= "                <div class=\"tile_container\"><a class=\"tile_link\" href=\"index.php?page=map&amp;continent=".$_SESSION["continent_id"]."&amp;xpos=".$x."&amp;ypos=".$y."&amp;overlay=".$_SESSION["overlay"]."\">";
+			$mapContentString .= "                <div class=\"tile_container\"><a class=\"tile_link\" href=\"index.php?page=map&amp;continent=".$continent."&amp;xpos=".$x."&amp;ypos=".$y."&amp;overlay=".$_SESSION["overlay"]."\">";
 	
 			if ($tileInfo1["owner"] == $_SESSION["nation_id"]) {
 				if ($unitInfo1["id"] >= 1) {
@@ -2353,7 +2353,7 @@ function generateMapTile ($getPage_connection2,$x,$y) {
 			$mapContentString .= "</a></div>\n";
 	
 		} else if ($_SESSION["overlay"] == "claims") {
-			$mapContentString .= "                <div class=\"tile_container\"><a class=\"tile_link\" href=\"index.php?page=map&amp;continent=".$_SESSION["continent_id"]."&amp;xpos=".$x."&amp;ypos=".$y."&amp;overlay=".$_SESSION["overlay"]."\">";
+			$mapContentString .= "                <div class=\"tile_container\"><a class=\"tile_link\" href=\"index.php?page=map&amp;continent=".$continent."&amp;xpos=".$x."&amp;ypos=".$y."&amp;overlay=".$_SESSION["overlay"]."\">";
 	
 			$claimState = checkClaimsState($getPage_connection2, $tileInfo1, $_SESSION["nation_id"]);
 	
@@ -2437,7 +2437,7 @@ function generateMapTile ($getPage_connection2,$x,$y) {
 			$mapContentString .= "</a></div>\n";
 	
 		} else if ($_SESSION["overlay"] == "units") {
-			$mapContentString .= "                <div class=\"tile_container\"><a class=\"tile_link\" href=\"index.php?page=map&amp;continent=".$_SESSION["continent_id"] ."&amp;xpos=".$x."&amp;ypos=".$y."&amp;overlay=".$_SESSION["overlay"]."\">";
+			$mapContentString .= "                <div class=\"tile_container\"><a class=\"tile_link\" href=\"index.php?page=map&amp;continent=".$continent ."&amp;xpos=".$x."&amp;ypos=".$y."&amp;overlay=".$_SESSION["overlay"]."\">";
 	
 			if ($unitInfo1["id"] >= 1) {
 				if ($unitInfo1["owner"] == $_SESSION["nation_id"] ) {
@@ -2471,7 +2471,7 @@ function generateMapTile ($getPage_connection2,$x,$y) {
 			$mapContentString .= "</a></div>\n";
 	
 		} else if ($_SESSION["overlay"] == "nations") {
-			$mapContentString .= "                <div class=\"tile_container\"><a class=\"tile_link\" href=\"index.php?page=map&amp;continent=".$_SESSION["continent_id"]."&amp;xpos=".$x."&amp;ypos=".$y."&amp;overlay=".$_SESSION["overlay"]."\">";
+			$mapContentString .= "                <div class=\"tile_container\"><a class=\"tile_link\" href=\"index.php?page=map&amp;continent=".$continent."&amp;xpos=".$x."&amp;ypos=".$y."&amp;overlay=".$_SESSION["overlay"]."\">";
 	
 			$nationsMap = array(0=>0);
 	
@@ -2518,7 +2518,7 @@ function generateMapTile ($getPage_connection2,$x,$y) {
 	
 			$mapContentString .= "</a></div>\n";
 		} else {
-			$mapContentString .= "                <div class=\"tile_container\"><a class=\"tile_link\" href=\"index.php?page=map&amp;continent=".$_SESSION["continent_id"] ."&amp;xpos=".$x."&amp;ypos=".$y."&amp;overlay=".$_SESSION["overlay"]."\">";
+			$mapContentString .= "                <div class=\"tile_container\"><a class=\"tile_link\" href=\"index.php?page=map&amp;continent=".$continent ."&amp;xpos=".$x."&amp;ypos=".$y."&amp;overlay=".$_SESSION["overlay"]."\">";
 	
 			if ($unitInfo1["id"] >= 1) {
 				if ($tileInfo1["xpos"] == $_SESSION["xpos"] && $tileInfo1["ypos"] == $_SESSION["ypos"]) {
@@ -2666,7 +2666,7 @@ function mapGenerate ($getPage_connection2) {
 					$mapContentToken = 0;
 						
 					$mapContent_generated = array("",0);
-					$mapContent_generated = generateMapTile($getPage_connection2,$x,$y);
+					$mapContent_generated = generateMapTile($getPage_connection2,$_SESSION["continent_id"],$x,$y);
 						
 					$mapContentString = $mapContent_generated[0];
 					$mapContentToken = $mapContent_generated[1];
@@ -2710,7 +2710,7 @@ function mapGenerate ($getPage_connection2) {
 				$mapContentToken = 0;
 	
 				$mapContent_generated = array("",0);
-				$mapContent_generated = generateMapTile($getPage_connection2,$x,$y);
+				$mapContent_generated = generateMapTile($getPage_connection2,$_SESSION["continent_id"],$x,$y);
 	
 				$mapContentString = $mapContent_generated[0];
 				$mapContentToken = $mapContent_generated[1];
