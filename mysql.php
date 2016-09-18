@@ -710,66 +710,17 @@ function setMapMemoryInfo($s_connection,$s_id,$s_terrain,$s_control,$s_claims,$s
 	} // else
 } // setMapMemoryInfo
 
-function addMapMemoryInfo($s_connection,$s_id,$s_terrain,$s_control,$s_claims,$s_units,$s_nations,$s_terraintokens,$s_controltokens,$s_claimstokens,$s_unitstokens,$s_nationstokens) {	
-	if (isset($s_terrain)) {		
-		$new_terrain = serialize($s_terrain);		
-	} else {
-		$new_terrain = "";
-	} // else
-	
-	if (isset($s_control)) {
-		$new_control = serialize($s_control);
-	} else {
-		$new_control = "";
-	} // else
-	
-	if (isset($s_claims)) {
-		$new_claims = serialize($s_claims);
-	} else {
-		$new_claims = "";
-	} // else
-	
-	if (isset($s_units)) {
-		$new_units = serialize($s_units);
-	} else {
-		$new_units = "";
-	} // else
-	
-	if (isset($s_nations)) {
-		$new_nations = serialize($s_nations);
-	} else {
-		$new_nations = "";
-	} // else
-	
-	if (isset($s_terraintokens)) {
-		$new_terraintokens = null;
-	} else {
-		$new_terraintokens = "";
-	} // else
-	
-	if (isset($s_controltokens)) {
-		$new_controltokens = null;
-	} else {
-		$new_controltokens = "";
-	} // else
-	
-	if (isset($s_claimstokens)) {
-		$new_claimstokens = null;
-	} else {
-		$new_claimstokens = "";
-	} // else
-	
-	if (isset($s_unitstokens)) {
-		$new_unitstokens = null;
-	} else {
-		$new_unitstokens = "";
-	} // else
-	
-	if (isset($s_nationstokens)) {
-		$new_nationstokens = null;
-	} else {
-		$new_nationstokens = "";
-	} // else
+function addMapMemoryInfo($s_connection,$s_id) {	
+	$new_terrain = "";
+	$new_control = "";	
+	$new_claims = "";
+	$new_units = "";
+	$new_nations = "";
+	$new_terraintokens = "";
+	$new_controltokens = "";
+	$new_claimstokens = "";
+	$new_unitstokens = "";
+	$new_nationstokens = "";
 	
 	if ($stmt = $s_connection->prepare("INSERT INTO mapmemory (id,terrain,control,claims,units,nations,terraintokens,controltokens,claimstokens,unitstokens,nationstokens) VALUES (?,?,?,?,?,?,?,?,?,?,?)")) {
 		$stmt->bind_param("issssssssss", $s_id, $new_terrain, $new_control, $new_claims, $new_units, $new_nations, $new_terraintokens, $new_controltokens, $new_claimstokens, $new_unitstokens, $new_nationstokens);

@@ -354,7 +354,7 @@ function registerUser($getPage_connection2) {
 	
 						addNationInfo($getPage_connection2,$new_userid,$new_name,$availableContinent,$new_formal,"",12,5000,0,3,2500,5,0,5,0,array(0=>0),array(0=>0),array(0=>5,1=>0,2=>0,3=>5,4=>2,5=>5,6=>0,7=>5),array(0=>5,1=>5,2=>5,3=>5),2000,0);
 						
-						addMapMemoryInfo($getPage_connection2, $new_userid, array(0=>array(0=>0)), array(0=>array(0=>0)), array(0=>array(0=>0)), array(0=>array(0=>0)), array(0=>array(0=>0)), array(0=>array(0=>0)), array(0=>array(0=>0)), array(0=>array(0=>0)), array(0=>array(0=>0)), array(0=>array(0=>0)));
+						addMapMemoryInfo($getPage_connection2, $new_userid);
 						
 						$_SESSION["success_message"] = "User has been registered successfully!";
 					} // else
