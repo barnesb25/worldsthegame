@@ -440,8 +440,6 @@ function resetWorld($getPage_connection3) {
 				
 						$mapContent_generated = array("",0);
 						$mapContent_generated = generateMapTile($getPage_connection3,$availableContinent,$x,$y);
-						error_log($mapContent_generated[0]);
-						error_log($mapContent_generated[1]);
 				
 						$mapContentString = $mapContent_generated[0];
 						$mapContentToken = $mapContent_generated[1];
