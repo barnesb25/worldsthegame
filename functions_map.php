@@ -2235,12 +2235,16 @@ function generateMapTile ($getPage_connection2,$continent,$x,$y) {
 	$mapContentToken = 0;
 	
 	if (!(isset($_SESSION["xpos"]))) {
-		$_SESSION["xpos"] = 0;
-	} // if
-	
+		$currentX = 0;
+	} else {
+		$currentX = $_SESSION["xpos"];
+	} // else
+		
 	if (!(isset($_SESSION["ypos"]))) {
-		$_SESSION["ypos"] = 0;
-	} // if
+		$currentY = 0;
+	} else {
+		$currentY = $_SESSION["ypos"];
+	} // else
 	
 	$tileInfo1 = getTileInfo($getPage_connection2,$continent,$x,$y);
 	
@@ -2312,13 +2316,13 @@ function generateMapTile ($getPage_connection2,$continent,$x,$y) {
 			$mapContentString .= "                <div class=\"tile_container\"><a class=\"tile_link\" href=\"index.php?page=map&amp;continent=".$continent."&amp;xpos=".$x."&amp;ypos=".$y."&amp;overlay=".$_SESSION["overlay"]."\">";
 	
 			if ($unitInfo1["id"] >= 1) {
-				if ($tileInfo1["xpos"] == $_SESSION["xpos"] && $tileInfo1["ypos"] == $_SESSION["ypos"]) {
+				if ($tileInfo1["xpos"] == $currentX && $tileInfo1["ypos"] == $currentY) {
 					$mapContentString .= "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."\" src=\"".$unitTypeInfo1["selected"]."\" alt=\"".$terrainInfo1["name"]."\" />";
 				} else {
 					$mapContentString .= "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."\" src=\"".$unitTypeInfo1["image"]."\" alt=\"".$terrainInfo1["name"]."\" />";
 				} // else
 			} else {
-				if ($tileInfo1["xpos"] == $_SESSION["xpos"] && $tileInfo1["ypos"] == $_SESSION["ypos"]) {
+				if ($tileInfo1["xpos"] == $currentX && $tileInfo1["ypos"] == $currentY) {
 					$mapContentString .= "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."\" src=\"images/selected.png\" alt=\"".$terrainInfo1["name"]."\" />";
 				} else {
 					$mapContentString .= "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."\" src=\"images/blank.png\" alt=\"".$terrainInfo1["name"]."\" />";
@@ -2331,13 +2335,13 @@ function generateMapTile ($getPage_connection2,$continent,$x,$y) {
 	
 			if ($tileInfo1["owner"] == $_SESSION["nation_id"]) {
 				if ($unitInfo1["id"] >= 1) {
-					if ($tileInfo1["xpos"] == $_SESSION["xpos"] && $tileInfo1["ypos"] == $_SESSION["ypos"]) {
+					if ($tileInfo1["xpos"] == $currentX && $tileInfo1["ypos"] == $currentY) {
 						$mapContentString .= "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."_friendly\" src=\"".$unitTypeInfo1["selected"]."\" alt=\"1\" />";
 					} else {
 						$mapContentString .= "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."_friendly\" src=\"".$unitTypeInfo1["image"]."\" alt=\"1\" />";
 					} // else
 				} else {
-					if ($tileInfo1["xpos"] == $_SESSION["xpos"] && $tileInfo1["ypos"] == $_SESSION["ypos"]) {
+					if ($tileInfo1["xpos"] == $currentX && $tileInfo1["ypos"] == $currentY) {
 						$mapContentString .= "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."_friendly\" src=\"images/selected.png\" alt=\"0\" />";
 					} else {
 						$mapContentString .= "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."_friendly\" src=\"images/blank.png\" alt=\"0\" />";
@@ -2345,13 +2349,13 @@ function generateMapTile ($getPage_connection2,$continent,$x,$y) {
 				} // else
 			} else {
 				if ($unitInfo1["id"] >= 1) {
-					if ($tileInfo1["xpos"] == $_SESSION["xpos"] && $tileInfo1["ypos"] == $_SESSION["ypos"]) {
+					if ($tileInfo1["xpos"] == $currentX && $tileInfo1["ypos"] == $currentY) {
 						$mapContentString .= "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."_enemy\" src=\"".$unitTypeInfo1["selected"]."\" alt=\"0\" />";
 					} else {
 						$mapContentString .= "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."_enemy\" src=\"".$unitTypeInfo1["image"]."\" alt=\"0\" />";
 					} // else
 				} else {
-					if ($tileInfo1["xpos"] == $_SESSION["xpos"] && $tileInfo1["ypos"] == $_SESSION["ypos"]) {
+					if ($tileInfo1["xpos"] == $currentX && $tileInfo1["ypos"] == $currentY) {
 						$mapContentString .= "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."_enemy\" src=\"images/selected.png\" alt=\"0\" />";
 					} else {
 						$mapContentString .= "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."_enemy\" src=\"images/blank.png\" alt=\"0\" />";
@@ -2368,13 +2372,13 @@ function generateMapTile ($getPage_connection2,$continent,$x,$y) {
 			// if current nation claims successfully
 			if ($claimState == 1) {
 				if ($unitInfo1["id"] >= 1) {
-					if ($tileInfo1["xpos"] == $_SESSION["xpos"] && $tileInfo1["ypos"] == $_SESSION["ypos"]) {
+					if ($tileInfo1["xpos"] == $currentX && $tileInfo1["ypos"] == $currentY) {
 						$mapContentString .= "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."_friendly\" src=\"".$unitTypeInfo1["selected"]."\" alt=\"1\" />";
 					} else {
 						$mapContentString .= "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."_friendly\" src=\"".$unitTypeInfo1["image"]."\" alt=\"1\" />";
 					} // else
 				} else {
-					if ($tileInfo1["xpos"] == $_SESSION["xpos"] && $tileInfo1["ypos"] == $_SESSION["ypos"]) {
+					if ($tileInfo1["xpos"] == $currentX && $tileInfo1["ypos"] == $currentY) {
 						$mapContentString .= "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."_friendly\" src=\"images/selected.png\" alt=\"1\" />";
 					} else {
 						$mapContentString .= "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."_friendly\" src=\"images/blank.png\" alt=\"1\" />";
@@ -2383,13 +2387,13 @@ function generateMapTile ($getPage_connection2,$continent,$x,$y) {
 				// if enemy nation claims successfully
 			} else if ($claimState == 2) {
 				if ($unitInfo1["id"] >= 1) {
-					if ($tileInfo1["xpos"] == $_SESSION["xpos"] && $tileInfo1["ypos"] == $_SESSION["ypos"]) {
+					if ($tileInfo1["xpos"] == $currentX && $tileInfo1["ypos"] == $currentY) {
 						$mapContentString .= "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."_enemy\" src=\"".$unitTypeInfo1["selected"]."\" alt=\"0\" />";
 					} else {
 						$mapContentString .= "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."_enemy\" src=\"".$unitTypeInfo1["image"]."\" alt=\"0\" />";
 					} // else
 				} else {
-					if ($tileInfo1["xpos"] == $_SESSION["xpos"] && $tileInfo1["ypos"] == $_SESSION["ypos"]) {
+					if ($tileInfo1["xpos"] == $currentX && $tileInfo1["ypos"] == $currentY) {
 						$mapContentString .= "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."_enemy\" src=\"images/selected.png\" alt=\"0\" />";
 					} else {
 						$mapContentString .= "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."_enemy\" src=\"images/blank.png\" alt=\"0\" />";
@@ -2398,13 +2402,13 @@ function generateMapTile ($getPage_connection2,$continent,$x,$y) {
 				// if claim is contested and player is involved
 			} else if ($claimState == 3) {
 				if ($unitInfo1["id"] >= 1) {
-					if ($tileInfo1["xpos"] == $_SESSION["xpos"] && $tileInfo1["ypos"] == $_SESSION["ypos"]) {
+					if ($tileInfo1["xpos"] == $currentX && $tileInfo1["ypos"] == $currentY) {
 						$mapContentString .= "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."_player_contested\" src=\"".$unitTypeInfo1["selected"]."\" alt=\"0\" />";
 					} else {
 						$mapContentString .= "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."_player_contested\" src=\"".$unitTypeInfo1["image"]."\" alt=\"0\" />";
 					} // else
 				} else {
-					if ($tileInfo1["xpos"] == $_SESSION["xpos"] && $tileInfo1["ypos"] == $_SESSION["ypos"]) {
+					if ($tileInfo1["xpos"] == $currentX && $tileInfo1["ypos"] == $currentY) {
 						$mapContentString .= "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."_enemy\" src=\"images/selected.png\" alt=\"0\" />";
 					} else {
 						$mapContentString .= "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."_enemy\" src=\"images/blank.png\" alt=\"0\" />";
@@ -2413,13 +2417,13 @@ function generateMapTile ($getPage_connection2,$continent,$x,$y) {
 				// if claim is contested and player is not involved
 			} else if ($claimState == 4) {
 				if ($unitInfo1["id"] >= 1) {
-					if ($tileInfo1["xpos"] == $_SESSION["xpos"] && $tileInfo1["ypos"] == $_SESSION["ypos"]) {
+					if ($tileInfo1["xpos"] == $currentX && $tileInfo1["ypos"] == $currentY) {
 						$mapContentString .= "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."_enemy_contested\" src=\"".$unitTypeInfo1["selected"]."\" alt=\"0\" />";
 					} else {
 						$mapContentString .= "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."_enemy_contested\" src=\"".$unitTypeInfo1["image"]."\" alt=\"0\" />";
 					} // else
 				} else {
-					if ($tileInfo1["xpos"] == $_SESSION["xpos"] && $tileInfo1["ypos"] == $_SESSION["ypos"]) {
+					if ($tileInfo1["xpos"] == $currentX && $tileInfo1["ypos"] == $currentY) {
 						$mapContentString .= "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."_enemy\" src=\"images/selected.png\" alt=\"0\" />";
 					} else {
 						$mapContentString .= "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."_enemy\" src=\"images/blank.png\" alt=\"0\" />";
@@ -2428,13 +2432,13 @@ function generateMapTile ($getPage_connection2,$continent,$x,$y) {
 				// default to enemy claim
 			} else {
 				if ($unitInfo1["id"] >= 1) {
-					if ($tileInfo1["xpos"] == $_SESSION["xpos"] && $tileInfo1["ypos"] == $_SESSION["ypos"]) {
+					if ($tileInfo1["xpos"] == $currentX && $tileInfo1["ypos"] == $currentY) {
 						$mapContentString .= "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."_enemy\" src=\"".$unitTypeInfo1["selected"]."\" alt=\"0\" />";
 					} else {
 						$mapContentString .= "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."_enemy\" src=\"".$unitTypeInfo1["image"]."\" alt=\"0\" />";
 					} // else
 				} else {
-					if ($tileInfo1["xpos"] == $_SESSION["xpos"] && $tileInfo1["ypos"] == $_SESSION["ypos"]) {
+					if ($tileInfo1["xpos"] == $currentX && $tileInfo1["ypos"] == $currentY) {
 						$mapContentString .= "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."_enemy\" src=\"images/selected.png\" alt=\"0\" />";
 					} else {
 						$mapContentString .= "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."_enemy\" src=\"images/blank.png\" alt=\"0\" />";
@@ -2449,13 +2453,13 @@ function generateMapTile ($getPage_connection2,$continent,$x,$y) {
 	
 			if ($unitInfo1["id"] >= 1) {
 				if ($unitInfo1["owner"] == $_SESSION["nation_id"] ) {
-					if ($tileInfo1["xpos"] == $_SESSION["xpos"] && $tileInfo1["ypos"] == $_SESSION["ypos"]) {
+					if ($tileInfo1["xpos"] == $currentX && $tileInfo1["ypos"] == $currentY) {
 						$mapContentString .= "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."_friendly\" src=\"".$unitTypeInfo1["selected"]."\" alt=\"".$unitTypeInfo1["name"]."\" />";
 					} else {
 						$mapContentString .= "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."_friendly\" src=\"".$unitTypeInfo1["image"]."\" alt=\"".$unitTypeInfo1["name"]."\" />";
 					} // else
 				} else {
-					if ($tileInfo1["xpos"] == $_SESSION["xpos"] && $tileInfo1["ypos"] == $_SESSION["ypos"]) {
+					if ($tileInfo1["xpos"] == $currentX && $tileInfo1["ypos"] == $currentY) {
 						$mapContentString .= "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."_enemy\" src=\"".$unitTypeInfo1["selected"]."\" alt=\"".$unitTypeInfo1["name"]."\" />";
 					} else {
 						$mapContentString .= "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."_enemy\" src=\"".$unitTypeInfo1["image"]."\" alt=\"".$unitTypeInfo1["name"]."\" />";
@@ -2463,13 +2467,13 @@ function generateMapTile ($getPage_connection2,$continent,$x,$y) {
 				} // else
 			} else {
 				if ($tileInfo1["owner"] == $_SESSION["nation_id"] ) {
-					if ($tileInfo1["xpos"] == $_SESSION["xpos"] && $tileInfo1["ypos"] == $_SESSION["ypos"]) {
+					if ($tileInfo1["xpos"] == $currentX && $tileInfo1["ypos"] == $currentY) {
 						$mapContentString .= "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."_friendly\" src=\"images/selected.png\" alt=\"".$terrainInfo1["name"]."\" />";
 					} else {
 						$mapContentString .= "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."_friendly\" src=\"images/blank.png\" alt=\"".$terrainInfo1["name"]."\" />";
 					} // else
 				} else {
-					if ($tileInfo1["xpos"] == $_SESSION["xpos"] && $tileInfo1["ypos"] == $_SESSION["ypos"]) {
+					if ($tileInfo1["xpos"] == $currentX && $tileInfo1["ypos"] == $currentY) {
 						$mapContentString .= "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."_enemy\" src=\"images/selected.png\" alt=\"".$terrainInfo1["name"]."\" />";
 					} else {
 						$mapContentString .= "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."_enemy\" src=\"images/blank.png\" alt=\"".$terrainInfo1["name"]."\" />";
@@ -2509,13 +2513,13 @@ function generateMapTile ($getPage_connection2,$continent,$x,$y) {
 				$nation1 = $nation_index;
 				if ($nationsMap[$u] == $tileInfo1["owner"]) {
 					if ($unitInfo1["id"] >= 1) {
-						if ($tileInfo1["xpos"] == $_SESSION["xpos"] && $tileInfo1["ypos"] == $_SESSION["ypos"]) {
+						if ($tileInfo1["xpos"] == $currentX && $tileInfo1["ypos"] == $currentY) {
 							$mapContentString .= "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."_nation_".$nation1."\" src=\"".$unitTypeInfo1["selected"]."\" alt=\"0\" />";
 						} else {
 							$mapContentString .= "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."_nation_".$nation1."\" src=\"".$unitTypeInfo1["image"]."\" alt=\"0\" />";
 						} // else
 					} else {
-						if ($tileInfo1["xpos"] == $_SESSION["xpos"] && $tileInfo1["ypos"] == $_SESSION["ypos"]) {
+						if ($tileInfo1["xpos"] == $currentX && $tileInfo1["ypos"] == $currentY) {
 							$mapContentString .= "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."_nation_".$nation1."\" src=\"images/selected.png\" alt=\"0\" />";
 						} else {
 							$mapContentString .= "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."_nation_".$nation1."\" src=\"images/blank.png\" alt=\"0\" />";
@@ -2529,13 +2533,13 @@ function generateMapTile ($getPage_connection2,$continent,$x,$y) {
 			$mapContentString .= "                <div class=\"tile_container\"><a class=\"tile_link\" href=\"index.php?page=map&amp;continent=".$continent ."&amp;xpos=".$x."&amp;ypos=".$y."&amp;overlay=".$_SESSION["overlay"]."\">";
 	
 			if ($unitInfo1["id"] >= 1) {
-				if ($tileInfo1["xpos"] == $_SESSION["xpos"] && $tileInfo1["ypos"] == $_SESSION["ypos"]) {
+				if ($tileInfo1["xpos"] == $currentX && $tileInfo1["ypos"] == $currentY) {
 					$mapContentString .= "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."\" src=\"".$unitTypeInfo1["selected"]."\" alt=\"".$terrainInfo1["name"]."\" />";
 				} else {
 					$mapContentString .= "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."\" src=\"".$unitTypeInfo1["image"]."\" alt=\"".$terrainInfo1["name"]."\" />";
 				} // else
 			} else {
-				if ($tileInfo1["xpos"] == $_SESSION["xpos"] && $tileInfo1["ypos"] == $_SESSION["ypos"]) {
+				if ($tileInfo1["xpos"] == $currentX && $tileInfo1["ypos"] == $currentY) {
 					$mapContentString .= "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."\" src=\"images/selected.png\" alt=\"".$terrainInfo1["name"]."\" />";
 				} else {
 					$mapContentString .= "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."\" src=\"images/blank.png\" alt=\"".$terrainInfo1["name"]."\" />";
