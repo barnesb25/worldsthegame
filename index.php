@@ -23,7 +23,7 @@ $mysqli3 = getConnection($connection_host,$connection_user3,$connection_password
 
 session_start();
 
-error_reporting(E_ALL);
+//error_reporting(E_ALL);
 
 set_time_limit(14400);
 
