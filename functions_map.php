@@ -2584,6 +2584,7 @@ function mapGenerate ($getPage_connection2) {
 		} // else
 	} // else
 	
+	// if tokens have been set, check contents
 	if ($setTokens === true) {
 		// go through y positions
 		for ($y = 1; $y < 21; $y++ ) {
@@ -2598,7 +2599,8 @@ function mapGenerate ($getPage_connection2) {
 					$stmt11->close();
 				} else {
 				} // else
-					
+				
+				// get correct overlay tokens
 				if ($_SESSION["overlay"] == "terrain") {
 					$i_mapContentsTokens = $_SESSION["terrainMapContentsTokens"];
 				} else if ($_SESSION["overlay"] == "control") {
@@ -2614,6 +2616,7 @@ function mapGenerate ($getPage_connection2) {
 				} // else
 	
 				$tokenSet = false;
+				
 				if (isset($i_mapContentsTokens[$y][$x])) {
 					$tokenSet = true;
 				} else {
@@ -2636,6 +2639,7 @@ function mapGenerate ($getPage_connection2) {
 					$tokenSet = false;
 				} // if
 	
+				// if tokenSet conditions are fulfilled and selected tile token eqauls token retrieved,
 				if ($tokenSet === true && $i_mapContentsTokens[$y][$x] == $tileInfo1_token) {
 					if ($_SESSION["overlay"] == "terrain") {
 						$mapContentToken = $_SESSION["terrainMapContentsTokens"][$y][$x];
@@ -2656,6 +2660,7 @@ function mapGenerate ($getPage_connection2) {
 						$mapContentToken = $_SESSION["nationsMapContentsTokens"][$y][$x];
 						$mapContentString = $_SESSION["nationsMapContents"][$y][$x];
 					} // else
+				// otherwise generate new content and token
 				} else {
 					$mapContentString = "";
 					$mapContentToken = 0;

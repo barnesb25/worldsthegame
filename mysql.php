@@ -710,7 +710,7 @@ function setMapMemoryInfo($s_connection,$s_id,$s_terrain,$s_control,$s_claims,$s
 	} // else
 } // setMapMemoryInfo
 
-function addMapMemoryInfo($s_connection,$s_id,$s_terrain,$s_control,$s_claims,$s_units,$s_nations,$s_terraintokens,$s_controltokens,$s_claimstokens,$s_unitstokens,$s_nationstokens) {	
+function addMapMemoryInfo($s_connection,$s_id,$s_terrain,$s_control,$s_claims,$s_units,$s_nations,$s_terraintokens,$s_controltokens,null,$s_unitstokens,$s_nationstokens) {	
 	if (isset($s_terrain)) {		
 		$new_terrain = serialize($s_terrain);		
 	} else {
@@ -742,31 +742,31 @@ function addMapMemoryInfo($s_connection,$s_id,$s_terrain,$s_control,$s_claims,$s
 	} // else
 	
 	if (isset($s_terraintokens)) {
-		$new_terraintokens = serialize($s_terraintokens);
+		$new_terraintokens = null;
 	} else {
 		$new_terraintokens = "";
 	} // else
 	
 	if (isset($s_controltokens)) {
-		$new_controltokens = serialize($s_controltokens);
+		$new_controltokens = null;
 	} else {
 		$new_controltokens = "";
 	} // else
 	
 	if (isset($s_claimstokens)) {
-		$new_claimstokens = serialize($s_claimstokens);
+		$new_claimstokens = null;
 	} else {
 		$new_claimstokens = "";
 	} // else
 	
 	if (isset($s_unitstokens)) {
-		$new_unitstokens = serialize($s_unitstokens);
+		$new_unitstokens = null;
 	} else {
 		$new_unitstokens = "";
 	} // else
 	
 	if (isset($s_nationstokens)) {
-		$new_nationstokens = serialize($s_nationstokens);
+		$new_nationstokens = null;
 	} else {
 		$new_nationstokens = "";
 	} // else
