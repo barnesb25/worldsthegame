@@ -441,11 +441,20 @@ function logoutUser($getPage_connection2) {
 	if ($_SESSION["action"] == "logout") {
 		// only logout if logged in...
 		if ($_SESSION["login"] == 1) {
-			if (size($_SESSION["terrainMapContents"]) < 2 || size($_SESSION["controlMapContents"]) < 2 || size($_SESSION["claimsMapContents"]) < 2 || size($_SESSION["unitsMapContents"]) < 2 || size($_SESSION["nationsMapContents"]) < 2 || size($_SESSION["terrainMapContentsTokens"]) < 2 || size($_SESSION["controlMapContentsTokens"]) < 2 || size($_SESSION["claimsMapContentsTokens"]) < 2 || size($_SESSION["unitsMapContentsTokens"]) < 2 || size($_SESSION["nationsMapContentsTokens"])) {				
+			if (count($_SESSION["terrainMapContents"]) < 2 || 
+				count($_SESSION["controlMapContents"]) < 2 || 
+				count($_SESSION["claimsMapContents"]) < 2 || 
+				count($_SESSION["unitsMapContents"]) < 2 || 
+				count($_SESSION["nationsMapContents"]) < 2 || 
+				count($_SESSION["terrainMapContentsTokens"]) < 2 || 
+				count($_SESSION["controlMapContentsTokens"]) < 2 || 
+				count($_SESSION["claimsMapContentsTokens"]) < 2 || 
+				count($_SESSION["unitsMapContentsTokens"]) < 2 || 
+				count($_SESSION["nationsMapContentsTokens"]) < 2) {				
 			} else {
 				setMapMemoryInfo($getPage_connection2, $_SESSION["user_id"], $_SESSION["terrainMapContents"], $_SESSION["controlMapContents"], $_SESSION["claimsMapContents"], $_SESSION["unitsMapContents"], $_SESSION["nationsMapContents"], $_SESSION["terrainMapContentsTokens"], $_SESSION["controlMapContentsTokens"], $_SESSION["claimsMapContentsTokens"], $_SESSION["unitsMapContentsTokens"], $_SESSION["nationsMapContentsTokens"]);			
 			} // else
-				
+		
 			resetSession(false);
 		} // if
 	} else {
