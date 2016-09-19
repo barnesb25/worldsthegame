@@ -455,6 +455,17 @@ function resetWorld($getPage_connection3) {
 							$mapContentString = $mapContent_generated[0];
 							$mapContentToken = $mapContent_generated[1];	
 							
+							$_SESSION["terrainMapContentsTokens"] = array(0);
+							$_SESSION["terrainMapContents"] = array(0);
+							$_SESSION["controlMapContentsTokens"] = array(0);
+							$_SESSION["controlMapContents"] = array(0);
+							$_SESSION["claimsMapContentsTokens"] = array(0);
+							$_SESSION["claimsMapContents"] = array(0);
+							$_SESSION["unitsMapContentsTokens"] = array(0);
+							$_SESSION["unitsMapContents"] = array(0);
+							$_SESSION["nationsMapContentsTokens"] = array(0);
+							$_SESSION["nationsMapContents"] = array(0);						
+													
 							if ($_SESSION["overlay"] == "terrain") {
 								$_SESSION["terrainMapContentsTokens"][$y][$x] = $mapContentToken;
 								$_SESSION["terrainMapContents"][$y][$x] = $mapContentString;
@@ -462,8 +473,8 @@ function resetWorld($getPage_connection3) {
 								$_SESSION["controlMapContentsTokens"][$y][$x] = $mapContentToken;
 								$_SESSION["controlMapContents"][$y][$x] = $mapContentString;
 							} else if ($_SESSION["overlay"] == "claims") {
-								$_SESSION["overlayMapContentsTokens"][$y][$x] = $mapContentToken;
-								$_SESSION["overlayMapContents"][$y][$x] = $mapContentString;
+								$_SESSION["claimsMapContentsTokens"][$y][$x] = $mapContentToken;
+								$_SESSION["claimsMapContents"][$y][$x] = $mapContentString;
 							} else if ($_SESSION["overlay"] == "units") {
 								$_SESSION["unitsMapContentsTokens"][$y][$x] = $mapContentToken;
 								$_SESSION["unitsMapContents"][$y][$x] = $mapContentString;

@@ -379,6 +379,17 @@ function registerUser($getPage_connection2) {
 										
 									$mapContentString = $mapContent_generated[0];
 									$mapContentToken = $mapContent_generated[1];
+									
+									$_SESSION["terrainMapContentsTokens"] = array(0);
+									$_SESSION["terrainMapContents"] = array(0);
+									$_SESSION["controlMapContentsTokens"] = array(0);
+									$_SESSION["controlMapContents"] = array(0);
+									$_SESSION["claimsMapContentsTokens"] = array(0);
+									$_SESSION["claimsMapContents"] = array(0);
+									$_SESSION["unitsMapContentsTokens"] = array(0);
+									$_SESSION["unitsMapContents"] = array(0);
+									$_SESSION["nationsMapContentsTokens"] = array(0);
+									$_SESSION["nationsMapContents"] = array(0);
 										
 									if ($_SESSION["overlay"] == "terrain") {
 										$_SESSION["terrainMapContentsTokens"][$y][$x] = $mapContentToken;
@@ -387,8 +398,8 @@ function registerUser($getPage_connection2) {
 										$_SESSION["controlMapContentsTokens"][$y][$x] = $mapContentToken;
 										$_SESSION["controlMapContents"][$y][$x] = $mapContentString;
 									} else if ($_SESSION["overlay"] == "claims") {
-										$_SESSION["overlayMapContentsTokens"][$y][$x] = $mapContentToken;
-										$_SESSION["overlayMapContents"][$y][$x] = $mapContentString;
+										$_SESSION["claimsMapContentsTokens"][$y][$x] = $mapContentToken;
+										$_SESSION["claimsMapContents"][$y][$x] = $mapContentString;
 									} else if ($_SESSION["overlay"] == "units") {
 										$_SESSION["unitsMapContentsTokens"][$y][$x] = $mapContentToken;
 										$_SESSION["unitsMapContents"][$y][$x] = $mapContentString;
@@ -430,7 +441,11 @@ function logoutUser($getPage_connection2) {
 	if ($_SESSION["action"] == "logout") {
 		// only logout if logged in...
 		if ($_SESSION["login"] == 1) {
-			setMapMemoryInfo($getPage_connection2, $_SESSION["user_id"], $_SESSION["terrainMapContents"], $_SESSION["controlMapContents"], $_SESSION["claimsMapContents"], $_SESSION["unitsMapContents"], $_SESSION["nationsMapContents"], $_SESSION["terrainMapContentsTokens"], $_SESSION["controlMapContentsTokens"], $_SESSION["claimsMapContentsTokens"], $_SESSION["unitsMapContentsTokens"], $_SESSION["nationsMapContentsTokens"]);
+			if (size($_SESSION["terrainMapContents"]) < 2 || size($_SESSION["controlMapContents"]) < 2 || size($_SESSION["claimsMapContents"]) < 2 || size($_SESSION["unitsMapContents"]) < 2 || size($_SESSION["nationsMapContents"]) < 2 || size($_SESSION["terrainMapContentsTokens"]) < 2 || size($_SESSION["controlMapContentsTokens"]) < 2 || size($_SESSION["claimsMapContentsTokens"]) < 2 || size($_SESSION["unitsMapContentsTokens"]) < 2 || size($_SESSION["nationsMapContentsTokens"])) {				
+			} else {
+				setMapMemoryInfo($getPage_connection2, $_SESSION["user_id"], $_SESSION["terrainMapContents"], $_SESSION["controlMapContents"], $_SESSION["claimsMapContents"], $_SESSION["unitsMapContents"], $_SESSION["nationsMapContents"], $_SESSION["terrainMapContentsTokens"], $_SESSION["controlMapContentsTokens"], $_SESSION["claimsMapContentsTokens"], $_SESSION["unitsMapContentsTokens"], $_SESSION["nationsMapContentsTokens"]);			
+			} // else
+				
 			resetSession(false);
 		} // if
 	} else {

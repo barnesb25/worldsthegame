@@ -2740,8 +2740,8 @@ function mapGenerate ($getPage_connection2) {
 					$_SESSION["controlMapContentsTokens"][$y][$x] = $mapContentToken;
 					$_SESSION["controlMapContents"][$y][$x] = $mapContentString;
 				} else if ($_SESSION["overlay"] == "claims") {
-					$_SESSION["overlayMapContentsTokens"][$y][$x] = $mapContentToken;
-					$_SESSION["overlayMapContents"][$y][$x] = $mapContentString;
+					$_SESSION["claimsMapContentsTokens"][$y][$x] = $mapContentToken;
+					$_SESSION["claimsMapContents"][$y][$x] = $mapContentString;
 				} else if ($_SESSION["overlay"] == "units") {
 					$_SESSION["unitsMapContentsTokens"][$y][$x] = $mapContentToken;
 					$_SESSION["unitsMapContents"][$y][$x] = $mapContentString;
