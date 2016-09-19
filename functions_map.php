@@ -2251,6 +2251,12 @@ function generateMapTile ($getPage_connection2,$continent,$x,$y) {
 	} else {
 		$currentOverlay = $_SESSION["overlay"];
 	} // else
+		
+	if (!(isset($_SESSION["nation_id"]))) {
+		$currentNation = $_SESSION["user_id"];
+	} else {
+		$currentNation = $_SESSION["nation_id"];
+	} // else
 	
 	$tileInfo1 = getTileInfo($getPage_connection2,$continent,$x,$y);
 	
@@ -2339,7 +2345,7 @@ function generateMapTile ($getPage_connection2,$continent,$x,$y) {
 		} else if ($currentOverlay == "control") {
 			$mapContentString .= "                <div class=\"tile_container\"><a class=\"tile_link\" href=\"index.php?page=map&amp;continent=".$continent."&amp;xpos=".$x."&amp;ypos=".$y."&amp;overlay=".$currentOverlay."\">";
 	
-			if ($tileInfo1["owner"] == $_SESSION["nation_id"]) {
+			if ($tileInfo1["owner"] == $currentNation) {
 				if ($unitInfo1["id"] >= 1) {
 					if ($tileInfo1["xpos"] == $currentX && $tileInfo1["ypos"] == $currentY) {
 						$mapContentString .= "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."_friendly\" src=\"".$unitTypeInfo1["selected"]."\" alt=\"1\" />";
@@ -2373,7 +2379,7 @@ function generateMapTile ($getPage_connection2,$continent,$x,$y) {
 		} else if ($currentOverlay == "claims") {
 			$mapContentString .= "                <div class=\"tile_container\"><a class=\"tile_link\" href=\"index.php?page=map&amp;continent=".$continent."&amp;xpos=".$x."&amp;ypos=".$y."&amp;overlay=".$currentOverlay."\">";
 	
-			$claimState = checkClaimsState($getPage_connection2, $tileInfo1, $_SESSION["nation_id"]);
+			$claimState = checkClaimsState($getPage_connection2, $tileInfo1, $currentNation);
 	
 			// if current nation claims successfully
 			if ($claimState == 1) {
@@ -2458,7 +2464,7 @@ function generateMapTile ($getPage_connection2,$continent,$x,$y) {
 			$mapContentString .= "                <div class=\"tile_container\"><a class=\"tile_link\" href=\"index.php?page=map&amp;continent=".$continent ."&amp;xpos=".$x."&amp;ypos=".$y."&amp;overlay=".$currentOverlay."\">";
 	
 			if ($unitInfo1["id"] >= 1) {
-				if ($unitInfo1["owner"] == $_SESSION["nation_id"] ) {
+				if ($unitInfo1["owner"] == $currentNation ) {
 					if ($tileInfo1["xpos"] == $currentX && $tileInfo1["ypos"] == $currentY) {
 						$mapContentString .= "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."_friendly\" src=\"".$unitTypeInfo1["selected"]."\" alt=\"".$unitTypeInfo1["name"]."\" />";
 					} else {
@@ -2472,7 +2478,7 @@ function generateMapTile ($getPage_connection2,$continent,$x,$y) {
 					} // else
 				} // else
 			} else {
-				if ($tileInfo1["owner"] == $_SESSION["nation_id"] ) {
+				if ($tileInfo1["owner"] == $currentNation ) {
 					if ($tileInfo1["xpos"] == $currentX && $tileInfo1["ypos"] == $currentY) {
 						$mapContentString .= "<img class=\"tile_img ".strtolower($terrainInfo1["name"])."_friendly\" src=\"images/selected.png\" alt=\"".$terrainInfo1["name"]."\" />";
 					} else {
