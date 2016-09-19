@@ -2245,6 +2245,12 @@ function generateMapTile ($getPage_connection2,$continent,$x,$y) {
 	} else {
 		$currentY = $_SESSION["ypos"];
 	} // else
+		
+	if (!(isset($_SESSION["overlay"]))) {
+		$currentOverlay = "nations";
+	} else {
+		$currentOverlay = $_SESSION["overlay"];
+	} // else
 	
 	$tileInfo1 = getTileInfo($getPage_connection2,$continent,$x,$y);
 	
@@ -2312,8 +2318,8 @@ function generateMapTile ($getPage_connection2,$continent,$x,$y) {
 		} else {
 		} // else
 	
-		if ($_SESSION["overlay"] == "terrain") {
-			$mapContentString .= "                <div class=\"tile_container\"><a class=\"tile_link\" href=\"index.php?page=map&amp;continent=".$continent."&amp;xpos=".$x."&amp;ypos=".$y."&amp;overlay=".$_SESSION["overlay"]."\">";
+		if ($currentOverlay == "terrain") {
+			$mapContentString .= "                <div class=\"tile_container\"><a class=\"tile_link\" href=\"index.php?page=map&amp;continent=".$continent."&amp;xpos=".$x."&amp;ypos=".$y."&amp;overlay=".$currentOverlay."\">";
 	
 			if ($unitInfo1["id"] >= 1) {
 				if ($tileInfo1["xpos"] == $currentX && $tileInfo1["ypos"] == $currentY) {
@@ -2330,8 +2336,8 @@ function generateMapTile ($getPage_connection2,$continent,$x,$y) {
 			} // else
 			$mapContentString .= "</a></div>\n";
 	
-		} else if ($_SESSION["overlay"] == "control") {
-			$mapContentString .= "                <div class=\"tile_container\"><a class=\"tile_link\" href=\"index.php?page=map&amp;continent=".$continent."&amp;xpos=".$x."&amp;ypos=".$y."&amp;overlay=".$_SESSION["overlay"]."\">";
+		} else if ($currentOverlay == "control") {
+			$mapContentString .= "                <div class=\"tile_container\"><a class=\"tile_link\" href=\"index.php?page=map&amp;continent=".$continent."&amp;xpos=".$x."&amp;ypos=".$y."&amp;overlay=".$currentOverlay."\">";
 	
 			if ($tileInfo1["owner"] == $_SESSION["nation_id"]) {
 				if ($unitInfo1["id"] >= 1) {
@@ -2364,8 +2370,8 @@ function generateMapTile ($getPage_connection2,$continent,$x,$y) {
 			} // else
 			$mapContentString .= "</a></div>\n";
 	
-		} else if ($_SESSION["overlay"] == "claims") {
-			$mapContentString .= "                <div class=\"tile_container\"><a class=\"tile_link\" href=\"index.php?page=map&amp;continent=".$continent."&amp;xpos=".$x."&amp;ypos=".$y."&amp;overlay=".$_SESSION["overlay"]."\">";
+		} else if ($currentOverlay == "claims") {
+			$mapContentString .= "                <div class=\"tile_container\"><a class=\"tile_link\" href=\"index.php?page=map&amp;continent=".$continent."&amp;xpos=".$x."&amp;ypos=".$y."&amp;overlay=".$currentOverlay."\">";
 	
 			$claimState = checkClaimsState($getPage_connection2, $tileInfo1, $_SESSION["nation_id"]);
 	
@@ -2448,8 +2454,8 @@ function generateMapTile ($getPage_connection2,$continent,$x,$y) {
 				
 			$mapContentString .= "</a></div>\n";
 	
-		} else if ($_SESSION["overlay"] == "units") {
-			$mapContentString .= "                <div class=\"tile_container\"><a class=\"tile_link\" href=\"index.php?page=map&amp;continent=".$continent ."&amp;xpos=".$x."&amp;ypos=".$y."&amp;overlay=".$_SESSION["overlay"]."\">";
+		} else if ($currentOverlay == "units") {
+			$mapContentString .= "                <div class=\"tile_container\"><a class=\"tile_link\" href=\"index.php?page=map&amp;continent=".$continent ."&amp;xpos=".$x."&amp;ypos=".$y."&amp;overlay=".$currentOverlay."\">";
 	
 			if ($unitInfo1["id"] >= 1) {
 				if ($unitInfo1["owner"] == $_SESSION["nation_id"] ) {
@@ -2482,8 +2488,8 @@ function generateMapTile ($getPage_connection2,$continent,$x,$y) {
 			} // else
 			$mapContentString .= "</a></div>\n";
 	
-		} else if ($_SESSION["overlay"] == "nations") {
-			$mapContentString .= "                <div class=\"tile_container\"><a class=\"tile_link\" href=\"index.php?page=map&amp;continent=".$continent."&amp;xpos=".$x."&amp;ypos=".$y."&amp;overlay=".$_SESSION["overlay"]."\">";
+		} else if ($currentOverlay == "nations") {
+			$mapContentString .= "                <div class=\"tile_container\"><a class=\"tile_link\" href=\"index.php?page=map&amp;continent=".$continent."&amp;xpos=".$x."&amp;ypos=".$y."&amp;overlay=".$currentOverlay."\">";
 	
 			$nationsMap = array(0=>0);
 	
@@ -2530,7 +2536,7 @@ function generateMapTile ($getPage_connection2,$continent,$x,$y) {
 	
 			$mapContentString .= "</a></div>\n";
 		} else {
-			$mapContentString .= "                <div class=\"tile_container\"><a class=\"tile_link\" href=\"index.php?page=map&amp;continent=".$continent ."&amp;xpos=".$x."&amp;ypos=".$y."&amp;overlay=".$_SESSION["overlay"]."\">";
+			$mapContentString .= "                <div class=\"tile_container\"><a class=\"tile_link\" href=\"index.php?page=map&amp;continent=".$continent ."&amp;xpos=".$x."&amp;ypos=".$y."&amp;overlay=".$currentOverlay."\">";
 	
 			if ($unitInfo1["id"] >= 1) {
 				if ($tileInfo1["xpos"] == $currentX && $tileInfo1["ypos"] == $currentY) {
